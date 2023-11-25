@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "489611157233",
+    "project_id": "kickinsights-ccc1e",
+    "storage_bucket": "kickinsights-ccc1e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:489611157233:android:e026fb98620b871edb9350",
+        "android_client_info": {
+          "package_name": "com.fyp23083.kickinsights"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDHr7CIVZTNgzrAE10sLK_ORkgqVgD9fwo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
