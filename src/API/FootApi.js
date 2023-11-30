@@ -1,13 +1,14 @@
 // This function fetches the League Table (All) from  FootApi, transforms it and adds it to Firestore
 import { addData, setData } from "../firebase/firestore";
+import { X_RapidAPI_Key, X_RapidAPI_Host } from "@env"
 
 const fetchAllTables = async () => {
     const url = 'https://footapi7.p.rapidapi.com/api/tournament/17/season/52186/standings/total';
     const options = {
         method: 'GET',
         headers: {
-            'X-RapidAPI-Key': '2d38569861mshff35f4f34de88e4p1ff015jsn6729c1c3f3d0',
-            'X-RapidAPI-Host': 'footapi7.p.rapidapi.com'
+            'X-RapidAPI-Key': X_RapidAPI_Key,
+            'X-RapidAPI-Host': X_RapidAPI_Host
         }
     };
     let result;
