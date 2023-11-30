@@ -26,17 +26,17 @@ const fetchAllTables = async () => {
     // keep only the needed data
     const tempTable = inputTable.map((club) => {
         return {
-            clubFullName: club.team.name,
-            clubShortName: club.team.nameCode,
-            clubID: club.team.id,
-            clubPosition: club.position,
-            clubPlayed: club.matches,
-            clubWin: club.wins,
-            clubDraw: club.draws,
-            clubLoss: club.losses,
-            clubGF: club.scoresFor,
-            clubGA: club.scoresAgainst,
-            clubPts: club.points,
+            name_full: club.team.name,
+            name_short: club.team.nameCode,
+            id: club.team.id,
+            position: club.position,
+            played: club.matches,
+            win: club.wins,
+            draw: club.draws,
+            loss: club.losses,
+            goal_for: club.scoresFor,
+            goal_against: club.scoresAgainst,
+            points: club.points,
         }
     });
 
@@ -44,7 +44,7 @@ const fetchAllTables = async () => {
     const newTable = tempTable.map((club) => {
         return {
             ...club,
-            clubGD: club.clubGF - club.clubGA
+            goal_difference: club.goal_for - club.goal_against
         }
     });
 
