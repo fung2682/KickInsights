@@ -41,17 +41,17 @@ const fetchAllTables = async () => {
     });
 
     // add the goal difference to the table
-    const newTable = tempTable.map((club) => {
+    const table = tempTable.map((club) => {
         return {
             ...club,
             goal_difference: club.goal_for - club.goal_against
         }
     });
 
-    console.log(newTable);
+    //console.log(newTable);
 
     // add the table to Firestore
-    setData('league_tables', 'all', {newTable});
+    setData('league_tables', 'all', {table});
 }
 
 export { fetchAllTables };

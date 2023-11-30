@@ -21,12 +21,13 @@ const setData = async (collectionName, docName, data) => {
 }
 
 const getData = async (collectionName, docName) => {
-    console.log(collectionName, docName)
+    //console.log(collectionName, docName)
     const docRef = doc(db, collectionName, docName);
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
-        console.log("Document data:", docSnap.data());
+        // console.log("Document data:", docSnap.data());
+        return docSnap.data();
     } else {
         // doc.data() will be undefined in this case
         console.log("No such document!");

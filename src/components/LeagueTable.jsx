@@ -12,19 +12,21 @@ const Item = ({club, nav, lastItem}) => (
         activeOpacity={0.8}
         onPress={() => nav.navigate("ClubDetails", {clubData: tempData_ClubDetail[temp_club_index]})}
     >
-        <Text style={[styles.num, {marginLeft:5}]}>{club.rank}</Text>
-        <Image source={{uri: `${clubLogo[`${club.clubName}`]}`}} style={styles.image}/>
-        <Text style={[styles.clubName, {marginLeft:10}]}>{club.clubName}</Text>
+        <Text style={[styles.num, {marginLeft:5}]}>{club.position}</Text>
+        <Image source={{uri: `${clubLogo[`${club.name_short}`]}`}} style={styles.image}/>
+        <Text style={[styles.clubName, {marginLeft:10}]}>{club.name_short}</Text>
         <Text style={[styles.num, {marginLeft:18}]}>{club.played}</Text>
         <Text style={[styles.num, {marginLeft:14.6}]}>{club.win}</Text>
         <Text style={[styles.num, {marginLeft:14.6}]}>{club.draw}</Text>
         <Text style={[styles.num, {marginLeft:14.6}]}>{club.loss}</Text>
-        <Text style={[styles.longnum, {marginLeft:10}]}>{club.goalDiff}</Text>
+        <Text style={[styles.longnum, {marginLeft:10}]}>{club.goal_difference}</Text>
         <Text style={[styles.longnum, {marginLeft:5.5}, {fontWeight: "bold"}]}>{club.points}</Text>
     </TouchableOpacity>
 );
 
 const LeagueTable = ({Data, nav}) => {
+    // console.log(Data, "----------")
+
     return (
         <View style={styles.container}>
             <View style={styles.topcover}></View>
@@ -39,7 +41,7 @@ const LeagueTable = ({Data, nav}) => {
                         <Item club={item} nav={nav} lastItem={true}/>
                     )
                 }
-                keyExtractor={item => item.clubName}
+                keyExtractor={item => item.id}
                 ListHeaderComponent={<TableTopBar/>}
                 stickyHeaderIndices={[0]}
                 indicatorStyle="white"
