@@ -2,8 +2,7 @@
 import { addData, setData } from "../firebase/firestore";
 import { X_RapidAPI_Key, X_RapidAPI_Host } from "@env"
 
-const fetchAllTables = async () => {
-    const url = 'https://footapi7.p.rapidapi.com/api/tournament/17/season/52186/standings/total';
+const fetchTables = async (url) => {
     const options = {
         method: 'GET',
         headers: {
@@ -48,10 +47,22 @@ const fetchAllTables = async () => {
         }
     });
 
-    //console.log(newTable);
+    return table;
+}
 
-    // add the table to Firestore
+const fetchAllTables = async () => {
+    const table = await fetchTables('https://footapi7.p.rapidapi.com/api/tournament/17/season/52186/standings/total');
     setData('league_tables', 'all', {table});
 }
 
-export { fetchAllTables };
+const fetchHomeTables = async () => {
+    const table = await fetchTables('https://footapi7.p.rapidapi.com/api/tournament/17/season/52186/standings/home');
+    setData('league_tables', 'home', {table});
+}
+
+const fetchAwayTables = async () => {
+    const table = await fetchTables('https://footapi7.p.rapidapi.com/api/tournament/17/season/52186/standings/away');
+    setData('league_tables', 'away', {table});
+}
+
+export { fetchAllTables, fetchHomeTables, fetchAwayTables };

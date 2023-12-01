@@ -31,7 +31,9 @@ const Table = () => {
             }}
             initialRouteName="TableMain"
         >
-            <Stack.Screen name="TableMain" component={TableMain}/>
+            <Stack.Screen name="TableMain">
+                {() => <TableMain/>}
+            </Stack.Screen>
             <Stack.Screen name="ClubDetails" 
                 options={({route}) => ({ headerTitle: route.params.clubData.name })}
             >
