@@ -13,8 +13,8 @@ const Item = ({club, nav, lastItem}) => (
         onPress={() => nav.navigate("ClubDetails", {clubData: tempData_ClubDetail[temp_club_index]})}
     >
         <Text style={[styles.num, {marginLeft:5}]}>{club.position}</Text>
-        <Image source={{uri: `${clubLogo[`${club.name_short}`]}`}} style={styles.image}/>
-        <Text style={[styles.clubName, {marginLeft:10}]}>{club.name_short}</Text>
+        <Image source={{uri: `${clubLogo[`${club.name_code}`]}`}} style={styles.image}/>
+        <Text style={[styles.clubName, {marginLeft:10}]}>{club.name_code}</Text>
         <Text style={[styles.num, {marginLeft:18}]}>{club.played}</Text>
         <Text style={[styles.num, {marginLeft:14.6}]}>{club.win}</Text>
         <Text style={[styles.num, {marginLeft:14.6}]}>{club.draw}</Text>
