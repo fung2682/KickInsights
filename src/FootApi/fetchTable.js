@@ -1,5 +1,5 @@
 // This function fetches the League Table (All) from  FootApi, transforms it and adds it to Firestore
-import { addData, setData } from "../firebase/firestore";
+import { setData } from "../firebase/firestore";
 import { X_RapidAPI_Key, X_RapidAPI_Host } from "@env"
 
 const fetchTables = async (url) => {
