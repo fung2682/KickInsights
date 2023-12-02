@@ -1,6 +1,5 @@
 import React from "react";
 import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity } from "react-native";
-import { tempData_ClubPane } from "../tempData_ClubPane";
 import { tempData_ClubDetail } from "../tempData_ClubDetail";
 import { clubColor } from "../clubColor";
 import { clubLogo } from "../clubLogo";

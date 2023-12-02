@@ -1,5 +1,5 @@
 import { app } from './base';
-import { getFirestore, collection, addDoc, getDoc, getDocs, doc, setDoc } from "firebase/firestore";
+import { getFirestore, collection, addDoc, getDoc, getDocs, doc, setDoc, query } from "firebase/firestore";
 
 const db = getFirestore(app);
 
@@ -34,5 +34,15 @@ const getData = async (collectionName, docName) => {
     }
 }
 
+const getClubs = async () => {
+    const club_array = [];
+    const q = query(collection(db, "clubs"));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+        club_array.push(doc.data());
+    });
+    return club_array;
+}
 
-export { addData, setData, getData };
+
+export { addData, setData, getData, getClubs };

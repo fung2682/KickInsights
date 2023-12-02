@@ -1,23 +1,29 @@
 import React, {useEffect} from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import { addData, getData } from "../firebase/firestore";
+import { getData, getClubs } from "../firebase/firestore";
 import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
-import { fetchAllTables, fetchHomeTables, fetchAwayTables } from "../API/FootApi.js";
+import { fetchAllTables, fetchHomeTables, fetchAwayTables } from "../FootApi/fetchTable.js";
+import { fetchClubs } from "../FootApi/fetchClub.js";
 
 export let dataAll = [];
 export let dataHome = [];
 export let dataAway = [];
+export let dataClubs = [];
 
 const TempScreen = () => {
 
     useEffect(() => {
         const fetchData = async () => {
+            // for league table
             const data_all = await getData("league_tables", "all");
             dataAll = data_all.table;
             const data_home = await getData("league_tables", "home");
             dataHome = data_home.table;
             const data_away = await getData("league_tables", "away");
             dataAway = data_away.table;
+            // for club pane
+            const data_clubs = await getClubs();
+            dataClubs = data_clubs;
         }
         fetchData();
     }, [])
@@ -36,7 +42,19 @@ const TempScreen = () => {
                     borderRadius: 10,
                 }}
             >
-                <Text>fetch and save table(all) to firestore</Text>
+                <Text>fetch and save league tables to firestore</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+                onPress={() => {
+                    fetchClubs();
+                }}
+                style={{
+                    backgroundColor: "white",
+                    padding: 10,
+                    borderRadius: 10,
+                }}
+            >
+                <Text>fetch and save club details to firestore</Text>
             </TouchableOpacity>
         </View>
     );
