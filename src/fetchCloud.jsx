@@ -7,22 +7,25 @@ export let dataHome = [];
 export let dataAway = [];
 export let dataClubs = [];
 
-const Loading = async () => {
-    // for club logo
-    // const image = <Image source={clubLogo['ARS']} style={{width: 50, height: 50}}/>
-    // logoImage.push(image);
-    // for league table
-    const data_all = await getData("league_tables", "all");
-    dataAll = data_all.table;
-    const data_home = await getData("league_tables", "home");
-    dataHome = data_home.table;
-    const data_away = await getData("league_tables", "away");
-    dataAway = data_away.table;
-    // for club pane
-    const data_clubs = await getClubs();
-    dataClubs = data_clubs;
-    // return false to App after finishing loading
-    return false;
+const fetchCloud = async (progress) => {
+
+    // progess between 0 and 1, shown on progress bar
+    if (progress == 0) {
+        const data_all = await getData("league_tables", "all");
+        dataAll = data_all.table;
+    } else if (progress == 0.33) {
+        const data_home = await getData("league_tables", "home");
+        dataHome = data_home.table;
+    } else if (progress == 0.66) {
+        const data_away = await getData("league_tables", "away");
+        dataAway = data_away.table;
+    } else {
+        const data_clubs = await getClubs();
+        dataClubs = data_clubs;
+        console.log("all data loaded")
+    }
+
+    return progress + 0.33;
 }
 
-export default Loading;
+export default fetchCloud;

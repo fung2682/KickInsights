@@ -1,42 +1,33 @@
 import 'react-native-gesture-handler';
 import React, {useState, useEffect} from 'react';
-import { Text, View, StyleSheet } from 'react-native';
 import BottomTabs from "./src/components/BottomTabs";
+import LoadingScreen from "./src/screens/Loading";
 import { NavigationContainer } from "@react-navigation/native";
-import Loading from './src/fetchCloud';
+import fetchCloud from './src/fetchCloud';
 
 const App = () => {
 
     const [loading, setLoading] = useState(true);
+    const [progress, setProgress] = useState(0);
 
     useEffect(() => {
         const load_data = async () => {
-            result = await Loading();
-            setLoading(result);
+            if (progress < 1) {
+                const temp_progress = await fetchCloud(progress);
+                setProgress(temp_progress);
+            } else {
+                setLoading(false);
+            }
         }
         load_data();
-    })
+    }, [progress]);
 
-    // display loading screen if data is not loaded
-    if (loading) {
-        return (
-            <NavigationContainer>
-                <View style={{backgroundColor: "red", flex: 1, justifyContent: "center", alignItems: "center"}}>
-                    <Text style={{color: "white", fontSize: 20}}>Loading...</Text>
-                </View>
-            </NavigationContainer>
-        )
-    }
-    // display app after data is loaded
     return (
         <NavigationContainer>
-            <BottomTabs/>
+            {loading ? <LoadingScreen width={progress}/> : <BottomTabs/>}
         </NavigationContainer>
     );
 }
-
-const styles = StyleSheet.create({
-});
 
 export default App;
 
