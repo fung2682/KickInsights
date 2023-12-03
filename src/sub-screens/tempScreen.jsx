@@ -1,32 +1,10 @@
-import React, {useEffect} from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import { getData, getClubs } from "../firebase/firestore";
+import React from "react";
+import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 import { fetchAllTables, fetchHomeTables, fetchAwayTables } from "../FootApi/fetchTable.js";
 import { fetchClubs } from "../FootApi/fetchClub.js";
 
-export let dataAll = [];
-export let dataHome = [];
-export let dataAway = [];
-export let dataClubs = [];
-
 const TempScreen = () => {
-
-    useEffect(() => {
-        const fetchData = async () => {
-            // for league table
-            const data_all = await getData("league_tables", "all");
-            dataAll = data_all.table;
-            const data_home = await getData("league_tables", "home");
-            dataHome = data_home.table;
-            const data_away = await getData("league_tables", "away");
-            dataAway = data_away.table;
-            // for club pane
-            const data_clubs = await getClubs();
-            dataClubs = data_clubs;
-        }
-        fetchData();
-    }, [])
 
     return (
         <View style={styles.container}>

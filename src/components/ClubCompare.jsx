@@ -39,9 +39,9 @@ const ClubPaneRow = ({setBox, row, dim, dimDisplay, setDim, pos}) => {
                 }}
             >
                 {dimDisplay[i]?
-                    <Image source={{uri: `${clubLogo[club]}`}} style={[styles.image, {opacity: 0.5}]}/>
+                    <Image source={clubLogo[club]} style={[styles.image, {opacity: 0.5}]}/>
                     :
-                    <Image source={{uri: `${clubLogo[club]}`}} style={styles.image}/>  
+                    <Image source={clubLogo[club]} style={styles.image}/>  
                 }
             </TouchableOpacity>
         )}

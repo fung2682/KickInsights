@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity } from "react-native";
-import { dataClubs } from "../sub-screens/tempScreen";
+import { dataClubs, logoImage } from "../fetchCloud";
 import { tempData_ClubDetail } from "../tempData_ClubDetail";
 import { clubColor } from "../clubColor";
 import { clubLogo } from "../clubLogo";
@@ -23,7 +23,7 @@ const Item = ({club, nav}) => {
             <Text style={[styles.description, {marginTop: 2}]}>Est: {club.founded}</Text>
             <View style={styles.square}></View>
             <View style={styles.triangle}></View>
-            <Image source={{uri: `${clubLogo[`${club.name_code}`]}`}} style={styles.image}/>
+            <Image source={clubLogo[club.name_code]} style={styles.image}/>
         </TouchableOpacity>
     );
 };

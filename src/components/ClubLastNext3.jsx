@@ -11,7 +11,7 @@ const Match = ({lastMatch, nextMatch, last}) => {
             <Text style={styles.date}>{last? lastMatch.date : nextMatch.date}</Text>
             <View style={styles.row}>
                 <Text style={styles.teamLeft}>{last? lastMatch.home : nextMatch.home}</Text>
-                <Image source={{uri: clubLogo[`${last? `${lastMatch.homeShortName}` : `${nextMatch.homeShortName}`}`]}} 
+                <Image source={clubLogo[`${last? `${lastMatch.homeShortName}` : `${nextMatch.homeShortName}`}`]} 
                 style={styles.image}/>
                 {
                     last?
@@ -34,7 +34,7 @@ const Match = ({lastMatch, nextMatch, last}) => {
                         <Text style={styles.timeText}>{nextMatch.time}</Text>
                     </View>
                 }
-                <Image source={{uri: clubLogo[`${last? `${lastMatch.awayShortName}` : `${nextMatch.awayShortName}`}`]}} 
+                <Image source={clubLogo[`${last? `${lastMatch.awayShortName}` : `${nextMatch.awayShortName}`}`]} 
                 style={styles.image}/>
                 <Text style={styles.teamRight}>{last? lastMatch.away : nextMatch.away}</Text>
             </View>

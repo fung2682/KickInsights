@@ -8,7 +8,7 @@ import Clubs from "../screens/Clubs";
 import Prediction from "../screens/Prediction";
 import Players from "../screens/Players";
 import Matches from "../screens/Matches";
-import { SafeAreaView } from "react-native";
+import { SafeAreaView, Image } from "react-native";
 
 const Tab = createBottomTabNavigator();
 
@@ -43,7 +43,7 @@ const Tabs = () => {
                         top: -1,
                     },
                     headerTintColor: "#54a761",
-                    unmountOnBlur: true,
+                    unmountOnBlur: false,
                 }}
                 initialRouteName="Prediction"
                 headershadowVisible={false}
