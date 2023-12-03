@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet, ScrollView } from "react-native";
-import ClubStats from "../components/ClubStats";
+import ClubStats from "../components/club/club_details/ClubStats";
 import { clubColor } from "../clubColor";
 
 const ClubDetails_Stats = ({ club }) => {

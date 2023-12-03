@@ -1,10 +1,10 @@
 import React from "react";
 import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity } from "react-native";
 import TableTopBar from "./TableTopBar";
-import { tempData_ClubDetail } from "../tempData_ClubDetail";
+import { tempData_ClubDetail } from "../../tempData_ClubDetail";
 const temp_club_index = 0;
-import { clubLogo } from "../clubLogo";
-import { logoImage } from "../fetchCloud";
+import { clubLogo } from "../../clubLogo";
+import { logoImage } from "../../fetchCloud";
 
 const Item = ({club, nav, lastItem}) => (
     <TouchableOpacity 

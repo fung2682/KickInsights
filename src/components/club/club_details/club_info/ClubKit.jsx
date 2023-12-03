@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
-import DetailBoxHeader from "./DetailBoxHeader";
-import { clubColor } from "../clubColor";
+import DetailBoxHeader from "../DetailBoxHeader";
+import { clubColor } from "../../../../clubColor";
 
 const ClubKit = ({club}) => {
     //console.log(club);

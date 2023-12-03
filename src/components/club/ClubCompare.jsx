@@ -1,8 +1,8 @@
 import React, {useState} from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
-import { clubLogo } from "../clubLogo";
-import ClubDetails_Stats from "../sub-screens/ClubDetails_Stats";
-import { tempData_ClubDetail } from "../tempData_ClubDetail";
+import { clubLogo } from "../../clubLogo";
+import ClubDetails_Stats from "../../sub-screens/ClubDetails_Stats";
+import { tempData_ClubDetail } from "../../tempData_ClubDetail";
 
 const Clubs = ["ARS", "AVL", "BOU", "BRE", "BHA", "BUR", "CHE", "CRY", "EVE", "FUL", 
 "LIV", "LUT", "MCI", "MUN", "NEW", "NFO", "SHU", "TOT", "WHU", "WOL"];

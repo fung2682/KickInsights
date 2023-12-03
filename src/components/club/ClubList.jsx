@@ -1,9 +1,9 @@
 import React from "react";
 import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity } from "react-native";
-import { dataClubs, logoImage } from "../fetchCloud";
-import { tempData_ClubDetail } from "../tempData_ClubDetail";
-import { clubColor } from "../clubColor";
-import { clubLogo } from "../clubLogo";
+import { dataClubs, logoImage } from "../../fetchCloud";
+import { tempData_ClubDetail } from "../../tempData_ClubDetail";
+import { clubColor } from "../../clubColor";
+import { clubLogo } from "../../clubLogo";
 const temp_club_index = 1;
 
 const Item = ({club, nav}) => {

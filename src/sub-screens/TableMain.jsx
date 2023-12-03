@@ -1,6 +1,6 @@
 import React from "react";
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import LeagueTable from "../components/LeagueTable";
+import LeagueTable from "../components/table/LeagueTable";
 import { dataAll, dataHome, dataAway } from "../fetchCloud";
 
 const Tab = createMaterialTopTabNavigator();

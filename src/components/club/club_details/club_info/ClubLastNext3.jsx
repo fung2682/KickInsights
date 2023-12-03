@@ -1,8 +1,8 @@
 import React from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
-import DetailBoxHeader from "./DetailBoxHeader";
-import { clubColor } from "../clubColor";
-import { clubLogo } from "../clubLogo";
+import DetailBoxHeader from "../DetailBoxHeader";
+import { clubColor } from "../../../../clubColor";
+import { clubLogo } from "../../../../clubLogo";
 
 const Match = ({lastMatch, nextMatch, last}) => {
     //console.log(lastMatch.result);

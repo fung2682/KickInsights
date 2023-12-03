@@ -20,7 +20,7 @@ const TempScreen = () => {
                     borderRadius: 10,
                 }}
             >
-                <Text>fetch and save league tables to firestore</Text>
+                <Text>fetch & save league tables to firestore (3)</Text>
             </TouchableOpacity>
             <TouchableOpacity
                 onPress={() => {
@@ -32,7 +32,7 @@ const TempScreen = () => {
                     borderRadius: 10,
                 }}
             >
-                <Text>fetch and save club details to firestore</Text>
+                <Text>fetch & save club details to firestore (20)</Text>
             </TouchableOpacity>
         </View>
     );
