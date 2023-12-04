@@ -2,9 +2,18 @@ import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import DetailBoxHeader from "../DetailBoxHeader";
 import { clubColor } from "../../../../clubColor";
+import { dataAll } from "../../../../fetchCloud";
 
 const ClubOverView = ({club}) => {
-    //console.log(club);
+    
+    let club_rank;
+    for (let i = 0; i < dataAll.length; i++) {
+        if (dataAll[i].name_code === club.name_code) {
+            club_rank = i + 1;
+            break;
+        }
+    }
+
     return (
         <View style={[styles.container, {borderColor: `${clubColor[club.name_code]}66`}]}>
             <DetailBoxHeader text="Overview" color={clubColor[club.name_code]}/>
@@ -22,7 +31,7 @@ const ClubOverView = ({club}) => {
                     <Text numberOfLines={1} style={styles.rightText}>{club.founded}</Text>
                     <Text numberOfLines={1} style={styles.rightText}>{club.PL_titles}</Text>
                     <Text numberOfLines={1} style={styles.rightText}></Text>
-                    <Text numberOfLines={1} style={styles.rightText}>-----to be filled-----</Text>
+                    <Text numberOfLines={1} style={styles.rightText}>{club_rank}</Text>
                     <Text numberOfLines={1} style={styles.rightText}>{club.manager}</Text>
                 </View>
             </View>
