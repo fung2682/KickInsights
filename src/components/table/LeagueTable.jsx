@@ -8,7 +8,7 @@ const Item = ({club, nav, lastItem}) => (
     <TouchableOpacity 
         style={lastItem? styles.row: [styles.row, {borderBottomWidth: 2, borderBottomLeftRadius: 5, borderBottomRightRadius: 5}]}
         activeOpacity={0.8}
-        onPress={() => nav.navigate("ClubDetails", {clubData: dataClubs[club.club_id].club})}
+        onPress={() => nav.navigate("ClubDetails", {clubData: dataClubs[club.club_id]})}
     >
         <Text style={[styles.num, {marginLeft:5}]}>{club.position}</Text>
         <Image source={clubLogo[club.name_code]} style={styles.image}/>
