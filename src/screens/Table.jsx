@@ -33,7 +33,7 @@ const Table = () => {
         >
             <Stack.Screen name="TableMain" component={TableMain}/>
             <Stack.Screen name="ClubDetails" 
-                options={({route}) => ({ headerTitle: route.params.clubData.name_full })}
+                options={({route}) => ({ headerTitle: route.params.clubData.club.name_full })}
             >
                 {(clubData) => <ClubDetails club={clubData}/>}
             </Stack.Screen>
