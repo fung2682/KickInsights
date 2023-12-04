@@ -14,7 +14,7 @@ const Item = ({club, nav}) => {
         <TouchableOpacity 
             style={[styles.clubPane, {backgroundColor: clubColor[club.name_code]}]}
             activeOpacity={0.8}
-            onPress={() => nav.navigate("ClubDetails", {clubData: dataClubs[club.id].club})}
+            onPress={() => nav.navigate("ClubDetails", {clubData: dataClubs[club.id]})}
         >
             <Text style={styles.name}>{club.name_full}</Text>
             <Text style={[styles.description, {marginTop: 17}]}>{club.stadium}, {club.city}</Text>

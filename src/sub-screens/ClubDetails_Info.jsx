@@ -4,7 +4,7 @@ import ClubOverView from "../components/club/club_details/club_info/ClubOverview
 import ClubKit from "../components/club/club_details/club_info/ClubKit";
 import ClubLastNext3 from "../components/club/club_details/club_info/ClubLastNext3";
 
-const ClubDeatails_Info = ({ club }) => {
+const ClubDeatails_Info = ({ clubData }) => {
   //console.log(club);
   return (
     <ScrollView
@@ -14,10 +14,10 @@ const ClubDeatails_Info = ({ club }) => {
       scrollIndicatorInsets={{ right: 3 }}
     >
       <View style={styles.container}>
-        <ClubOverView club={club} />
-        <ClubKit club={club} />
-        <ClubLastNext3 club={club} last={true} />
-        <ClubLastNext3 club={club} last={false} />
+        <ClubOverView club={clubData.club} />
+        <ClubKit club={clubData.club} />
+        <ClubLastNext3 matches={clubData.lastNext3} color={clubData.club.name_code} last={true} />
+        <ClubLastNext3 matches={clubData.lastNext3} color={clubData.club.name_code} last={false} />
       </View>
     </ScrollView>
   );

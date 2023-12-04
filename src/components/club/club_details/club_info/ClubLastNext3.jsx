@@ -10,21 +10,21 @@ const Match = ({lastMatch, nextMatch, last}) => {
         <View style={styles.game}>
             <Text style={styles.date}>{last? lastMatch.date : nextMatch.date}</Text>
             <View style={styles.row}>
-                <Text style={styles.teamLeft}>{last? lastMatch.home : nextMatch.home}</Text>
-                <Image source={clubLogo[`${last? `${lastMatch.homeShortName}` : `${nextMatch.homeShortName}`}`]} 
+                <Text style={styles.teamLeft}>{last? lastMatch.home.name_short : nextMatch.home.name_short}</Text>
+                <Image source={clubLogo[`${last? `${lastMatch.home.name_code}` : `${nextMatch.home.name_code}`}`]} 
                 style={styles.image}/>
                 {
                     last?
                     <View style={[styles.score, 
-                        {backgroundColor: lastMatch.result === "win" ? 
+                        {backgroundColor: lastMatch.result === "Win" ? 
                         "#1a7c2a"
                         :
-                        lastMatch.result === "draw" ? "#3a3a3a" : "#7c1a1a"}
+                        lastMatch.result === "Draw" ? "#9e8e33" : "#7c1a1a"}
                     ]}>
     
-                        <Text style={styles.scoreText}>{lastMatch.homeGoal}</Text>
+                        <Text style={styles.scoreText}>{lastMatch.home.goal}</Text>
                         <Text style={[styles.scoreText, {width:10}]}>-</Text>
-                        <Text style={styles.scoreText}>{lastMatch.awayGoal}</Text>
+                        <Text style={styles.scoreText}>{lastMatch.away.goal}</Text>
                     </View>
                     :
                     <View style={[styles.score, 
@@ -34,9 +34,9 @@ const Match = ({lastMatch, nextMatch, last}) => {
                         <Text style={styles.timeText}>{nextMatch.time}</Text>
                     </View>
                 }
-                <Image source={clubLogo[`${last? `${lastMatch.awayShortName}` : `${nextMatch.awayShortName}`}`]} 
+                <Image source={clubLogo[`${last? `${lastMatch.away.name_code}` : `${nextMatch.away.name_code}`}`]} 
                 style={styles.image}/>
-                <Text style={styles.teamRight}>{last? lastMatch.away : nextMatch.away}</Text>
+                <Text style={styles.teamRight}>{last? lastMatch.away.name_short : nextMatch.away.name_short}</Text>
             </View>
         </View>
     )
@@ -48,17 +48,17 @@ const MatchSeparator = () => {
     )
 }
 
-const ClubLast3 = ({club, last}) => {
-    //console.log(club);
+const ClubLast3 = ({matches, color, last}) => {
+    console.log(matches);
     return (
-        <View style={[styles.container, {borderColor: `${clubColor[club.shortName]}66`}]}>
-            <DetailBoxHeader text={ last?"Last 3 Games" : "Next 3 Games" } color={clubColor[club.shortName]}/>
+        <View style={[styles.container, {borderColor: `${clubColor[color]}66`}]}>
+            <DetailBoxHeader text={ last?"Last 3 Games" : "Next 3 Games" } color={clubColor[color]}/>
             <View style={styles.lastNext}>
-                <Match lastMatch={club.lastMatch_3} nextMatch={club.nextMatch_1} last={last}/>
+                <Match lastMatch={matches.last3[2]} nextMatch={matches.next3[0]} last={last}/>
                 <MatchSeparator/>
-                <Match lastMatch={club.lastMatch_2} nextMatch={club.nextMatch_2} last={last}/>
+                <Match lastMatch={matches.last3[1]} nextMatch={matches.next3[1]} last={last}/>
                 <MatchSeparator/>
-                <Match lastMatch={club.lastMatch_1} nextMatch={club.nextMatch_3} last={last}/>
+                <Match lastMatch={matches.last3[0]} nextMatch={matches.next3[2]} last={last}/>
             </View>
         </View>
     );
