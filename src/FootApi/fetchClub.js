@@ -32,6 +32,7 @@ const fetchClub = async (team_id, kit_id, index) => {
         // general
         name_code: team.nameCode,
         id: index,
+        footApi_id: team.id,
         // for club pane
         name_full: team.name,
         stadium: team.venue.stadium.name,

@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 import { fetchAllTables, fetchHomeTables, fetchAwayTables } from "../FootApi/fetchTable.js";
 import { fetchClubs } from "../FootApi/fetchClub.js";
+import { fetchLastNext3 } from "../FootApi/fetchLastNext3.js";
 
 const TempScreen = () => {
 
@@ -33,6 +34,18 @@ const TempScreen = () => {
                 }}
             >
                 <Text>fetch & save club details to firestore (20)</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+                onPress={() => {
+                    fetchLastNext3();
+                }}
+                style={{
+                    backgroundColor: "white",
+                    padding: 10,
+                    borderRadius: 10,
+                }}
+            >
+                <Text>fetch & save lastNext 3 to firestore (20)</Text>
             </TouchableOpacity>
         </View>
     );
