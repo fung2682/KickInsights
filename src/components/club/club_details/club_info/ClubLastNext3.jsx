@@ -49,7 +49,6 @@ const MatchSeparator = () => {
 }
 
 const ClubLast3 = ({matches, color, last}) => {
-    console.log(matches);
     return (
         <View style={[styles.container, {borderColor: `${clubColor[color]}66`}]}>
             <DetailBoxHeader text={ last?"Last 3 Games" : "Next 3 Games" } color={clubColor[color]}/>
