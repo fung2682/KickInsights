@@ -1,10 +1,8 @@
 import React from "react";
 import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity } from "react-native";
-import { dataClubs, logoImage } from "../../fetchCloud";
-import { tempData_ClubDetail } from "../../tempData_ClubDetail";
+import { dataClubs } from "../../fetchCloud";
 import { clubColor } from "../../clubColor";
 import { clubLogo } from "../../clubLogo";
-const temp_club_index = 1;
 
 const Item = ({club, nav}) => {
     // custom transform attributes for front-end design
@@ -16,7 +14,7 @@ const Item = ({club, nav}) => {
         <TouchableOpacity 
             style={[styles.clubPane, {backgroundColor: clubColor[club.name_code]}]}
             activeOpacity={0.8}
-            onPress={() => nav.navigate("ClubDetails", {clubData: tempData_ClubDetail[temp_club_index]})}
+            onPress={() => nav.navigate("ClubDetails", {clubData: dataClubs[club.id].club})}
         >
             <Text style={styles.name}>{club.name_full}</Text>
             <Text style={[styles.description, {marginTop: 17}]}>{club.stadium}, {club.city}</Text>

@@ -24,11 +24,11 @@ const fetchTables = async (url) => {
     const inputTable = result.standings[0].rows;    
 
     // keep only the needed data
-    const tempTable = inputTable.map((club) => {
+    const initialTable = inputTable.map((club) => {
         return {
             name_full: club.team.name,
             name_code: club.team.nameCode,
-            id: club.team.id,
+            club_id: 0,
             position: club.position,
             played: club.matches,
             win: club.wins,
@@ -41,12 +41,61 @@ const fetchTables = async (url) => {
     });
 
     // add the goal difference to the table
-    const table = tempTable.map((club) => {
+    const table = initialTable.map((club) => {
         return {
             ...club,
             goal_difference: club.goal_for - club.goal_against
         }
     });
+
+    // add club_id according to alphabetical order
+    for (club of table) {
+        switch (club.name_full) {
+            case 'Arsenal':
+                club.club_id = 0; break;
+            case 'Aston Villa':
+                club.club_id = 1; break;
+            case 'Bournemouth':
+                club.club_id = 2; break;
+            case 'Brentford':
+                club.club_id = 3; break;
+            case 'Brighton & Hove Albion':
+                club.club_id = 4; break;
+            case 'Burnley':
+                club.club_id = 5; break;
+            case 'Chelsea':
+                club.club_id = 6; break;
+            case 'Crystal Palace':
+                club.club_id = 7; break;
+            case 'Everton':
+                club.club_id = 8; break;
+            case 'Fulham':
+                club.club_id = 9; break;
+            case 'Liverpool':
+                club.club_id = 10; break;
+            case 'Luton Town':
+                club.club_id = 11; break;
+            case 'Manchester City':
+                club.club_id = 12; break;
+            case 'Manchester United':
+                club.club_id = 13; break;
+            case 'Newcastle United':
+                club.club_id = 14; break;
+            case 'Nottingham Forest':
+                club.club_id = 15; break;
+            case 'Sheffield United':
+                club.club_id = 16; break;
+            case 'Tottenham Hotspur':
+                club.club_id = 17; break;
+            case 'West Ham United':
+                club.club_id = 18; break;
+            case 'Wolverhampton':
+                club.club_id = 19; break;
+            default:
+                club.club_id = 0; break;
+        }
+    }
+    
 
     return table;
 }

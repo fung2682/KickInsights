@@ -6,12 +6,12 @@ import { clubColor } from "../../../../clubColor";
 const ClubKit = ({club}) => {
     //console.log(club);
     return (
-        <View style={[styles.container, {borderColor: `${clubColor[club.shortName]}66`}]}>
-            <DetailBoxHeader text="Kits" color={clubColor[club.shortName]}/>
+        <View style={[styles.container, {borderColor: `${clubColor[club.name_code]}66`}]}>
+            <DetailBoxHeader text="Kits" color={clubColor[club.name_code]}/>
             <View style={styles.Kit}>
-                <Image source={{uri: `${club.firstKit}`}} style={styles.image}/>
-                <Image source={{uri: `${club.secondKit}`}} style={styles.image}/>
-                <Image source={{uri: `${club.thirdKit}`}} style={styles.image}/>
+                <Image source={{uri: `${club.kit[0]}`}} style={styles.image}/>
+                <Image source={{uri: `${club.kit[1]}`}} style={styles.image}/>
+                <Image source={{uri: `${club.kit[2]}`}} style={styles.image}/>
             </View>
         </View>
     );

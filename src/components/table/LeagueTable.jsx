@@ -1,16 +1,14 @@
 import React from "react";
 import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity } from "react-native";
 import TableTopBar from "./TableTopBar";
-import { tempData_ClubDetail } from "../../tempData_ClubDetail";
-const temp_club_index = 0;
 import { clubLogo } from "../../clubLogo";
-import { logoImage } from "../../fetchCloud";
+import { dataClubs } from "../../fetchCloud";
 
 const Item = ({club, nav, lastItem}) => (
     <TouchableOpacity 
         style={lastItem? styles.row: [styles.row, {borderBottomWidth: 2, borderBottomLeftRadius: 5, borderBottomRightRadius: 5}]}
         activeOpacity={0.8}
-        onPress={() => nav.navigate("ClubDetails", {clubData: tempData_ClubDetail[temp_club_index]})}
+        onPress={() => nav.navigate("ClubDetails", {clubData: dataClubs[club.club_id].club})}
     >
         <Text style={[styles.num, {marginLeft:5}]}>{club.position}</Text>
         <Image source={clubLogo[club.name_code]} style={styles.image}/>
@@ -41,7 +39,7 @@ const LeagueTable = ({Data, nav}) => {
                         <Item club={item} nav={nav} lastItem={true}/>
                     )
                 }
-                keyExtractor={item => item.id}
+                keyExtractor={item => item.club_id}
                 ListHeaderComponent={<TableTopBar/>}
                 stickyHeaderIndices={[0]}
                 indicatorStyle="white"

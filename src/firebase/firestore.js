@@ -1,8 +1,9 @@
 import { app } from './base';
-import { getFirestore, collection, addDoc, getDoc, getDocs, doc, setDoc, query } from "firebase/firestore";
+import { getFirestore, collection, addDoc, getDoc, getDocs, doc, setDoc, query, updateDoc } from "firebase/firestore";
 
 const db = getFirestore(app);
 
+// add a new document
 const addData = async (collectionName, data) => {
     try {
         const docRef = await addDoc(collection(db, collectionName), data);
@@ -12,11 +13,21 @@ const addData = async (collectionName, data) => {
     }
 }
 
+// set a new document, overwriting any existing data
 const setData = async (collectionName, docName, data) => {
     try {
         await setDoc(doc(db, collectionName, docName), data);
     } catch (e) {
-        console.error("Error adding document: ", e);
+        console.error("Error setting document: ", e);
+    }
+}
+
+// update a document, keeping the existing data
+const updateData = async (collectionName, docName, data) => {
+    try {
+        await updateDoc(doc(db, collectionName, docName), data);
+    } catch (e) {
+        console.error("Error updating document: ", e);
     }
 }
 
@@ -45,4 +56,4 @@ const getClubs = async () => {
 }
 
 
-export { addData, setData, getData, getClubs };
+export { addData, setData, getData, getClubs, updateData };

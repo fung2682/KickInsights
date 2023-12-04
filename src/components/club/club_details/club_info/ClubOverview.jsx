@@ -6,8 +6,8 @@ import { clubColor } from "../../../../clubColor";
 const ClubOverView = ({club}) => {
     //console.log(club);
     return (
-        <View style={[styles.container, {borderColor: `${clubColor[club.shortName]}66`}]}>
-            <DetailBoxHeader text="Overview" color={clubColor[club.shortName]}/>
+        <View style={[styles.container, {borderColor: `${clubColor[club.name_code]}66`}]}>
+            <DetailBoxHeader text="Overview" color={clubColor[club.name_code]}/>
             <View style={styles.Overview}>
                 <View style={styles.leftOverview}>
                     <Text style={styles.leftText}>
@@ -16,15 +16,22 @@ const ClubOverView = ({club}) => {
                     </Text>
                 </View>
                 <View style={styles.rightOverview}>
-                    <Text style={styles.rightText}>
-                        {`${club.ground}\n${club.city}\n${club.capacity}\n${club.founded}\
-                        \n${club.pl_titles}\n\n${club.current_rank}\n${club.manager}`}
-                    </Text>
+                    <Text numberOfLines={1} style={styles.rightText}>{club.stadium}</Text>
+                    <Text numberOfLines={1} style={styles.rightText}>{club.city}</Text>
+                    <Text numberOfLines={1} style={styles.rightText}>{club.capacity}</Text>
+                    <Text numberOfLines={1} style={styles.rightText}>{club.founded}</Text>
+                    <Text numberOfLines={1} style={styles.rightText}>{club.PL_titles}</Text>
+                    <Text numberOfLines={1} style={styles.rightText}></Text>
+                    <Text numberOfLines={1} style={styles.rightText}>-----to be filled-----</Text>
+                    <Text numberOfLines={1} style={styles.rightText}>{club.manager}</Text>
                 </View>
             </View>
         </View>
     );
 }
+
+                        {/* {`${club.ground}\n${club.city}\n${club.capacity}\n${club.founded}\
+                        \n${club.pl_titles}\n\n${club.current_rank}\n${club.manager}`} */}
 
 const styles = StyleSheet.create({
     container: {
@@ -58,7 +65,6 @@ const styles = StyleSheet.create({
     rightText: {
         color: "white",
         fontSize: 16,
-
         textAlign: "center",
     },
 });

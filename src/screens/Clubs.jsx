@@ -33,7 +33,7 @@ const Clubs = () => {
         >
             <Stack.Screen name="ClubMain" component={ClubMain} options={{ title: 'Clubs'}}/>
             <Stack.Screen name="ClubDetails" 
-                options={({route}) => ({ headerTitle: route.params.clubData.name })}
+                options={({route}) => ({ headerTitle: route.params.clubData.name_full })}
             >
                 {(clubData) => <ClubDetails club={clubData}/>}
             </Stack.Screen>
