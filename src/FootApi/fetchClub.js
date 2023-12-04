@@ -2,10 +2,8 @@
 // scrape the kits from the Premier League website,
 // transforms it and adds it to Firestore
 import axios from 'axios';
-import { setData, updateData } from "../firebase/firestore";
+import { updateData } from "../firebase/firestore";
 import { X_RapidAPI_Key, X_RapidAPI_Host } from "@env"
-
-
 
 const fetchClub = async (team_id, kit_id, index) => {
     const url = `https://footapi7.p.rapidapi.com/api/team/${team_id}`;
