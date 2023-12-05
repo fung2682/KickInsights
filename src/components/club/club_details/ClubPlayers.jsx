@@ -18,7 +18,7 @@ const ClubPlayers = ({player, color}) => {
             duration: 300,
             update: {
                 type: "spring",
-                springDamping: 0.8
+                springDamping: 0.9
             },
         });
         setExpanded(!expanded);

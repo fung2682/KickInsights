@@ -1,31 +1,73 @@
-import React from "react";
-import { View, Text, StyleSheet, FlatList } from "react-native";
+import React, {useState} from "react";
+import { View, Text, StyleSheet, TouchableOpacity, LayoutAnimation } from "react-native";
 import DetailBoxHeader from "./DetailBoxHeader";
+import { MaterialIcons } from '@expo/vector-icons'; 
 
 const ClubStats = ({color, area, title}) => {
-    //console.log(area);
 
-    return (
-        <View style={[styles.container, {borderColor: `${color}66`}]}>
-            <DetailBoxHeader text={`${title}`} color={color}/>
-            <View style={styles.Overview}>
-                <View style={styles.leftOverview}>
-                    {area.map((object, i) => 
-                        <Text style={styles.text} numberOfLines={1} ellipsizeMode="clip" key={i}>
-                            {Object.keys(object)}
-                        </Text>
-                    )}
+    const statsBoxHeader = ({expanded}) => {
+        return (
+                <View style={[styles.header, {backgroundColor: `${color}AA`}]}>
+                    <Text style={styles.headerText}>{`${title}`}</Text>
+                    <MaterialIcons name="keyboard-arrow-down" size={36} color="white" 
+                        style={[   
+                            styles.icon,
+                            {transform: [{ rotate: expanded? "180deg":"0deg" }]}
+                        ]}/>
                 </View>
-                <View style={styles.rightOverview}>
-                    {area.map((object, i) => 
-                        <Text style={styles.text} numberOfLines={1} ellipsizeMode="clip" key={i}>
-                            {Object.values(object)}
-                        </Text>
-                    )}
+        )
+    }
+    
+    const [expanded, setExpanded] = useState(false);
+
+    const infoPopup = () => {
+        LayoutAnimation.configureNext({
+            duration: 300,
+            update: {
+                type: "spring",
+                springDamping: 0.9
+            },
+        });
+        setExpanded(!expanded);
+    }
+
+    if (expanded) {
+        return (
+            <TouchableOpacity 
+                style={[styles.container, {borderColor: `${color}66`}]}
+                activeOpacity={0.8}
+                onPress={infoPopup}
+            >
+                {statsBoxHeader({expanded})}
+                <View style={styles.Overview}>
+                    <View style={styles.leftOverview}>
+                        {area.map((object, i) => 
+                            <Text style={styles.text} numberOfLines={1} ellipsizeMode="clip" key={i}>
+                                {Object.keys(object)}
+                            </Text>
+                        )}
+                    </View>
+                    <View style={styles.rightOverview}>
+                        {area.map((object, i) => 
+                            <Text style={styles.text} numberOfLines={1} ellipsizeMode="clip" key={i}>
+                                {Object.values(object)}
+                            </Text>
+                        )}
+                    </View>
                 </View>
-            </View>
-        </View>
-    );
+            </TouchableOpacity>
+        );
+    } else {
+        return (
+            <TouchableOpacity 
+                style={[styles.container, {borderColor: `${color}66`}]}
+                activeOpacity={0.8}
+                onPress={infoPopup}
+            >
+                {statsBoxHeader({expanded})}
+            </TouchableOpacity>
+        )
+    }
 }
 
 const styles = StyleSheet.create({
@@ -35,7 +77,7 @@ const styles = StyleSheet.create({
         borderWidth: 3,
         borderRadius: 5,
         backgroundColor: "#272727",
-        marginTop: 10,
+        marginTop: 2,
     },
     Overview: {
         flex: 1,
@@ -60,6 +102,26 @@ const styles = StyleSheet.create({
         fontSize: 16,
         lineHeight: 22,
     },
+    header: {
+        alignItems: "center",
+        flexDirection: "row",
+        width: 356,
+        height: 30,
+        top: 0,
+        borderTopLeftRadius: 2.5,
+        borderTopRightRadius: 2.5
+    },
+    headerText: {
+        fontSize: 16,
+        fontWeight: "bold",
+        color: "white",
+        width: 356,
+        textAlign: "center",
+    },
+    icon: {
+        height:36, 
+        marginLeft: -40,
+    }
 });
 
 export default ClubStats;

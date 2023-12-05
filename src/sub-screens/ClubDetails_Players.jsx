@@ -35,8 +35,8 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: "#000000",
         alignItems: "center",
-        marginTop: 8,   // temporary
-        marginBottom: 10,
+        marginTop: 8,
+        marginBottom: 8,
     },
 });
 
