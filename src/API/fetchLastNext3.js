@@ -138,6 +138,7 @@ const fetchLastNext3 = async () => {
         const next3 = await fetchNext3(club_id_by_name[i], i);
         const lastNext3 = {"last3": last3, "next3": next3};
         updateData('clubs', dataClubs[i].club.name_full, {lastNext3: lastNext3});
+        console.log(`updated lastNext3 matches for ${dataClubs[i].club.name_code}`);
     }
 }
 

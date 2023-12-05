@@ -89,7 +89,6 @@ export const tempData_ClubDetail = [
             {'Record (W-D-L)': '2-0-2'},
             {'Goals For': '5'},
             {'Goals Against': '7'},
-            {'Clean Sheets': '1'},
         ],
         shooting: [
             {'Shots': '5'},

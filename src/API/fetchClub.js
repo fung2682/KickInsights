@@ -96,6 +96,7 @@ const fetchClubs = async () => {
     for (let i = 0; i < club_id_by_name.length; i++) {
         const club = await fetchClub(club_id_by_name[i], kit_id_by_name[i], i);
         updateData('clubs', club.name_full, {club});
+        console.log(`Updated club info for ${club.name_code}`);
     }
 }
 

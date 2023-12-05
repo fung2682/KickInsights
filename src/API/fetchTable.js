@@ -3,7 +3,7 @@
 import { setData } from "../firebase/firestore";
 import { X_RapidAPI_Key, X_RapidAPI_Host } from "@env"
 
-const fetchTables = async (url) => {
+const fetchTable = async (url) => {
     const options = {
         method: 'GET',
         headers: {
@@ -101,18 +101,27 @@ const fetchTables = async (url) => {
 }
 
 const fetchAllTables = async () => {
-    const table = await fetchTables('https://footapi7.p.rapidapi.com/api/tournament/17/season/52186/standings/total');
+    const table = await fetchTable('https://footapi7.p.rapidapi.com/api/tournament/17/season/52186/standings/total');
     setData('league_tables', 'all', {table});
+    console.log('Fetched table (all)');
 }
 
 const fetchHomeTables = async () => {
-    const table = await fetchTables('https://footapi7.p.rapidapi.com/api/tournament/17/season/52186/standings/home');
+    const table = await fetchTable('https://footapi7.p.rapidapi.com/api/tournament/17/season/52186/standings/home');
     setData('league_tables', 'home', {table});
+    console.log('Fetched table (home)');
 }
 
 const fetchAwayTables = async () => {
-    const table = await fetchTables('https://footapi7.p.rapidapi.com/api/tournament/17/season/52186/standings/away');
+    const table = await fetchTable('https://footapi7.p.rapidapi.com/api/tournament/17/season/52186/standings/away');
     setData('league_tables', 'away', {table});
+    console.log('Fetched table (away)');
 }
 
-export { fetchAllTables, fetchHomeTables, fetchAwayTables };
+const fetchTables = async () => {
+    fetchAllTables();
+    fetchHomeTables();
+    fetchAwayTables();
+}
+
+export { fetchTables };
