@@ -7,14 +7,18 @@ const ClubStats = ({color, area, title}) => {
 
     const statsBoxHeader = ({expanded}) => {
         return (
-                <View style={[styles.header, {backgroundColor: `${color}AA`}]}>
+                <TouchableOpacity 
+                    style={[styles.header, {backgroundColor: `${color}AA`}, {borderColor: `${color}66`}]}
+                    activeOpacity={0.8}
+                    onPress={infoPopup}
+                >
                     <Text style={styles.headerText}>{`${title}`}</Text>
                     <MaterialIcons name="keyboard-arrow-down" size={36} color="white" 
                         style={[   
                             styles.icon,
                             {transform: [{ rotate: expanded? "180deg":"0deg" }]}
                         ]}/>
-                </View>
+                </TouchableOpacity>
         )
     }
     
@@ -33,29 +37,33 @@ const ClubStats = ({color, area, title}) => {
 
     if (expanded) {
         return (
-            <TouchableOpacity 
-                style={[styles.container, {borderColor: `${color}66`}]}
-                activeOpacity={0.8}
-                onPress={infoPopup}
-            >
+            <View style={[styles.container, {borderColor: `${color}66`}]}>
                 {statsBoxHeader({expanded})}
                 <View style={styles.Overview}>
                     <View style={styles.leftOverview}>
                         {area.map((object, i) => 
                             <Text style={styles.text} numberOfLines={1} ellipsizeMode="clip" key={i}>
-                                {Object.keys(object)}
+                                {Object.keys(object) == "---" ?
+                                    <View style={{height:16}}></View>
+                                    :
+                                    Object.keys(object)
+                                }
                             </Text>
                         )}
                     </View>
                     <View style={styles.rightOverview}>
                         {area.map((object, i) => 
                             <Text style={styles.text} numberOfLines={1} ellipsizeMode="clip" key={i}>
-                                {Object.values(object)}
+                                {Object.values(object) == "---" ?
+                                    <View style={{height:16}}></View>
+                                    :
+                                    Object.values(object)
+                                }
                             </Text>
                         )}
                     </View>
                 </View>
-            </TouchableOpacity>
+            </View>
         );
     } else {
         return (

@@ -2,14 +2,15 @@ import React from "react";
 import { View, Text, StyleSheet, ScrollView, ImageBackground } from "react-native";
 import ClubStats from "../components/club/club_details/ClubStats";
 import { clubColor } from "../clubColor";
+import { clubLogo } from "../clubLogo";
 
 const ClubDetails_Stats = ({ club }) => {
   //console.log(club.general);
-  const statColor = clubColor[club.shortName]
+  const statColor = clubColor[club.club.name_code]
   return (
     <ImageBackground 
       style={styles.container} 
-      source={require("../../assets/club_logos/MUN.png")}
+      source={clubLogo[club.club.name_code]}
       imageStyle={styles.image}
       opacity={0.2}
     >
@@ -20,15 +21,15 @@ const ClubDetails_Stats = ({ club }) => {
         scrollIndicatorInsets={{ right: 3 }}
       >
         <View style={styles.statsContainer}>
-          <ClubStats color={statColor} area={club.general} title="General"/>
-          <ClubStats color={statColor} area={club.shooting} title="Shooting"/>
-          <ClubStats color={statColor} area={club.passing} title="Passing"/>
-          <ClubStats color={statColor} area={club.pass_types} title="Pass Types"/>
-          <ClubStats color={statColor} area={club.goal_and_shot_creation} title="Goal and Shot Creation"/>
-          <ClubStats color={statColor} area={club.defensive_actions} title="Defensive Actions"/>
-          <ClubStats color={statColor} area={club.possession} title="Possession"/>
-          <ClubStats color={statColor} area={club.goalkeeping} title="Goalkeeping"/>
-          <ClubStats color={statColor} area={club.miscellaneous} title="Miscellaneous"/>
+          <ClubStats color={statColor} area={club.stats.general} title="General"/>
+          <ClubStats color={statColor} area={club.stats.shooting} title="Shooting"/>
+          <ClubStats color={statColor} area={club.stats.passing} title="Passing"/>
+          <ClubStats color={statColor} area={club.stats.pass_types} title="Pass Types"/>
+          <ClubStats color={statColor} area={club.stats.goal_and_shot_creation} title="Goal and Shot Creation"/>
+          <ClubStats color={statColor} area={club.stats.defensive_actions} title="Defensive Actions"/>
+          <ClubStats color={statColor} area={club.stats.possession} title="Possession"/>
+          <ClubStats color={statColor} area={club.stats.goalkeeping} title="Goalkeeping"/>
+          <ClubStats color={statColor} area={club.stats.miscellaneous} title="Miscellaneous"/>
         </View>
       </ScrollView>
     </ImageBackground>
