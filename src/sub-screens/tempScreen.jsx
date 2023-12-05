@@ -1,9 +1,10 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
-import { fetchAllTables, fetchHomeTables, fetchAwayTables } from "../FootApi/fetchTable.js";
-import { fetchClubs } from "../FootApi/fetchClub.js";
-import { fetchLastNext3 } from "../FootApi/fetchLastNext3.js";
+import { fetchTables } from "../API/fetchTable.js";
+import { fetchClubs } from "../API/fetchClub.js";
+import { fetchLastNext3 } from "../API/fetchLastNext3.js";
+import { fetchClubStats } from "../API/fetchClubStats.js";
 
 const TempScreen = () => {
 
@@ -11,9 +12,7 @@ const TempScreen = () => {
         <View style={styles.container}>
             <TouchableOpacity
                 onPress={() => {
-                    fetchAllTables();
-                    fetchHomeTables();
-                    fetchAwayTables();
+                    fetchTables();
                 }}
                 style={{
                     backgroundColor: "white",
@@ -45,7 +44,19 @@ const TempScreen = () => {
                     borderRadius: 10,
                 }}
             >
-                <Text>fetch & save lastNext 3 to firestore (20)</Text>
+                <Text>fetch & save lastNext 3 to firestore (40)</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+                onPress={() => {
+                    fetchClubStats();
+                }}
+                style={{
+                    backgroundColor: "white",
+                    padding: 10,
+                    borderRadius: 10,
+                }}
+            >
+                <Text>fetch & save club stats to firestore (0)</Text>
             </TouchableOpacity>
         </View>
     );
