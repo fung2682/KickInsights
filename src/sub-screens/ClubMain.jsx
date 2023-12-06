@@ -15,7 +15,7 @@ const ClubMain = ({navigation}) => {
                     tabBarActiveTintColor: "white",
                     tabBarInactiveTintColor: "gray",
                     tabBarStyle: {
-                        backgroundColor: "#272727",
+                        backgroundColor: "#141414",
                         height: 38,
                     },
                     tabBarIndicatorStyle: {

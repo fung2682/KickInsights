@@ -11,7 +11,7 @@ const Matches = () => {
             screenOptions={{
                 headerShown: true,
                 headerStyle: {
-                    backgroundColor: "#272727",
+                    backgroundColor: "#141414",
                     borderStyle: "solid",
                     shadowColor: "transparent",
                     height: 25,

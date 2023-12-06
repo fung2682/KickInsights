@@ -15,13 +15,13 @@ const Tab = createBottomTabNavigator();
 const Tabs = () => {
 
     return (
-        <SafeAreaView style={{flex: 1, backgroundColor: "#272727"}}>
+        <SafeAreaView style={{flex: 1, backgroundColor: "#141414"}}>
             <Tab.Navigator
                 screenOptions={{
                     tabBarActiveTintColor: "#54a761",
                     tabBarInactiveTintColor: "gray",
                     tabBarStyle: {
-                        backgroundColor: "#272727",
+                        backgroundColor: "#141414",
                         height:55,
                         paddingBottom: 2,
                         borderTopWidth: 0,
@@ -31,7 +31,7 @@ const Tabs = () => {
                         marginTop: 0
                     },
                     headerStyle: {
-                        backgroundColor: "#272727",
+                        backgroundColor: "#141414",
                         borderStyle: "solid",
                         shadowColor: "transparent",
                         height: 43.5,
