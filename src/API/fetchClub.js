@@ -4,7 +4,7 @@
 import axios from 'axios';
 import { updateData } from "../firebase/firestore";
 import { X_RapidAPI_Key, X_RapidAPI_Host } from "@env"
-import { get_clubLogo_url } from "../firebase/storage";
+import { downloadPlayerImage } from '../firebase/storage';
 
 const fetchClub = async (team_id, kit_id, index) => {
     const url = `https://footapi7.p.rapidapi.com/api/team/${team_id}`;
@@ -16,17 +16,24 @@ const fetchClub = async (team_id, kit_id, index) => {
         }
     };
     let result;
+    let team;
 
     try {
         const response = await fetch(url, options);
         result = await response.json();
+        team = result.team;
     } catch (error) {
         console.error(error);
     }
 
-    const team = result.team;
     // get logo from firebase storage
     // const logo = await get_clubLogo_url(team.nameCode);
+
+    // timelock
+    while (team === undefined) {
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        console.log(`[FootApi] Timelocking for ${index}`);
+    }
 
     // keep only the needed data
     const club = {
@@ -128,6 +135,8 @@ const fetchClub = async (team_id, kit_id, index) => {
                 console.log(`Unknown position for ${player.name} of ${club.name_code}`);
                 break;
         }
+        // for player image
+        const player_image_url = await downloadPlayerImage(club.name_full, player.id);
 
         const player_obj = {
             Footapi_id: player.id,
@@ -140,6 +149,7 @@ const fetchClub = async (team_id, kit_id, index) => {
             age: age || '--',
             contractEnd: contractEndYear || '--',
             marketValue: value_string,
+            image: player_image_url,
         }
         player_array.push(player_obj);
     }
