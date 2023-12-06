@@ -4,7 +4,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 
 const ClubPlayers = ({player, color}) => {
 
-    const {number, name, position, nationality, age, footed, appearances, goals, assists, photo} = player;
+    const {Footapi_name, age, contractEnd, country, foot, height, marketValue, number, position} = player;
     const renderImage = () => {
         return (
             <Image source={{uri: `${photo}`}} style={styles.image}/>
@@ -39,7 +39,7 @@ const ClubPlayers = ({player, color}) => {
                     <View style={styles.numberFrame}>
                         <Text style={styles.number}>{number}</Text>
                     </View>
-                    <Text style={styles.name}>{name}</Text>
+                    <Text style={styles.name}>{Footapi_name}</Text>
                     <Text style={styles.position}>{position}</Text>
                     <MaterialIcons name="keyboard-arrow-down" size={36} color="white" 
                       style={{height:36, transform: [{ rotate: "180deg" }]}}/>
@@ -50,25 +50,26 @@ const ClubPlayers = ({player, color}) => {
                         {borderColor: `${color}AA`}
                     ]}
                 >
-                    <View style={styles.attribute}>
+                    {/* for each, check if exist first */}
+                    <View style={styles.attribute}> 
                         <Text numberOfLines={1} ellipsizeMode="clip" style={styles.attributeText}>Nationality</Text>
                         <Text numberOfLines={1} ellipsizeMode="clip" style={styles.attributeText}>Age</Text>
                         <Text numberOfLines={1} ellipsizeMode="clip" style={styles.attributeText}>Footed</Text>
-                        <Text numberOfLines={1} ellipsizeMode="clip" style={styles.attributeText}>Appearances</Text>
-                        <Text numberOfLines={1} ellipsizeMode="clip" style={styles.attributeText}>Goals</Text>
-                        <Text numberOfLines={1} ellipsizeMode="clip" style={styles.attributeText}>Assists</Text>
+                        <Text numberOfLines={1} ellipsizeMode="clip" style={styles.attributeText}>Height (cm)</Text>
+                        <Text numberOfLines={1} ellipsizeMode="clip" style={styles.attributeText}>Contract End</Text>
+                        <Text numberOfLines={1} ellipsizeMode="clip" style={styles.attributeText}>Market Value</Text>
                     </View>
                     <View style={styles.data}>
-                        <Text numberOfLines={1} ellipsizeMode="clip" style={styles.dataText}>{nationality}</Text>
+                        <Text numberOfLines={1} ellipsizeMode="clip" style={styles.dataText}>{country}</Text>
                         <Text numberOfLines={1} ellipsizeMode="clip" style={styles.dataText}>{age}</Text>
-                        <Text numberOfLines={1} ellipsizeMode="clip" style={styles.dataText}>{footed}</Text>
-                        <Text numberOfLines={1} ellipsizeMode="clip" style={styles.dataText}>{appearances}</Text>
-                        <Text numberOfLines={1} ellipsizeMode="clip" style={styles.dataText}>{goals}</Text>
-                        <Text numberOfLines={1} ellipsizeMode="clip" style={styles.dataText}>{assists}</Text>
+                        <Text numberOfLines={1} ellipsizeMode="clip" style={styles.dataText}>{foot}</Text>
+                        <Text numberOfLines={1} ellipsizeMode="clip" style={styles.dataText}>{height}</Text>
+                        <Text numberOfLines={1} ellipsizeMode="clip" style={styles.dataText}>{contractEnd}</Text>
+                        <Text numberOfLines={1} ellipsizeMode="clip" style={styles.dataText}>{marketValue}</Text>
                     </View>
-                    <View style={styles.photo}>
+                    {/* <View style={styles.photo}>
                         {renderImage()}
-                    </View>
+                    </View> */}
                 </View>
             </View>
         );
@@ -86,7 +87,7 @@ const ClubPlayers = ({player, color}) => {
                 <View style={styles.numberFrame}>
                     <Text style={styles.number}>{number}</Text>
                 </View>
-                <Text style={styles.name}>{name}</Text>
+                <Text style={styles.name}>{Footapi_name}</Text>
                 <Text style={styles.position}>{position}</Text>
                 <MaterialIcons name="keyboard-arrow-down" size={36} color="white" 
                     style={{height:36, transform: [{ rotate: "0deg" }]}}/>

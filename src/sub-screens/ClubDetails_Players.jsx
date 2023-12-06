@@ -4,10 +4,10 @@ import ClubPlayers from "../components/club/club_details/ClubPlayers";
 import { clubColor } from "../clubColor";
 
 const ClubDetails_Players = ({ club }) => {
-    const playerColor = clubColor[club.shortName]
+    const playerColor = clubColor[club.club.name_code]
 
     const renderPlayers = () => {
-        return club.players.map((player, index) => {
+        return club.club.players.map((player, index) => {
             return <ClubPlayers key={index} player={player} color={`${playerColor}`}/>
         });
     }
