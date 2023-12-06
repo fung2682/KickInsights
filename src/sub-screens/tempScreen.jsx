@@ -10,52 +10,24 @@ const TempScreen = () => {
     return (
         <View style={styles.container}>
             <TouchableOpacity
-                onPress={() => {
-                    fetchTables();
-                }}
-                style={{
-                    backgroundColor: "white",
-                    padding: 10,
-                    borderRadius: 10,
-                }}
+                onPress={() => {fetchTables()}} style={styles.temp_button}
             >
-                <Text>fetch & save league tables to firestore (3)</Text>
+                <Text>{`[league tables] (hourly?)\n (3) fetches FootApi & save to firestore`}</Text>
             </TouchableOpacity>
             <TouchableOpacity
-                onPress={() => {
-                    fetchClubs();
-                }}
-                style={{
-                    backgroundColor: "white",
-                    padding: 10,
-                    borderRadius: 10,
-                }}
+                onPress={() => {fetchClubs()}} style={styles.temp_button}
             >
-                <Text>fetch & save club details to firestore (20)</Text>
+                <Text>{`[club details] (no need)\n (20) fetches FootApi & save to firestore`}</Text>
             </TouchableOpacity>
             <TouchableOpacity
-                onPress={() => {
-                    fetchLastNext3();
-                }}
-                style={{
-                    backgroundColor: "white",
-                    padding: 10,
-                    borderRadius: 10,
-                }}
+                onPress={() => {fetchLastNext3()}} style={styles.temp_button}
             >
-                <Text>fetch & save lastNext 3 to firestore (40)</Text>
+                <Text>{`[lastNext 3]\n (40) (hourly?) fetches FootApi & save to firestore`}</Text>
             </TouchableOpacity>
             <TouchableOpacity
-                onPress={() => {
-                    fetchClubStats();
-                }}
-                style={{
-                    backgroundColor: "white",
-                    padding: 10,
-                    borderRadius: 10,
-                }}
+                onPress={() => {fetchClubStats()}} style={styles.temp_button}
             >
-                <Text>fetch & save club stats to firestore (0)</Text>
+                <Text>{`[club stats] (hourly?)\n (10 mins) fetch FBREF & save to firestore`}</Text>
             </TouchableOpacity>
         </View>
     );
@@ -68,6 +40,13 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
     },
+    temp_button: {
+        backgroundColor: "white",
+        padding: 10,
+        borderRadius: 5,
+        width: "80%",
+        marginBottom: 10,
+    }
 });
 
 export default TempScreen;
