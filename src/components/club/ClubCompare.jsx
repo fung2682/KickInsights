@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { clubLogo } from "../../clubLogo";
 import ClubDetails_Stats from "../../sub-screens/ClubDetails_Stats";
 import { tempData_ClubDetail } from "../../tempData_ClubDetail";
+import { dataClubs } from "../../fetchCloud";
 
 const Clubs = ["ARS", "AVL", "BOU", "BRE", "BHA", "BUR", "CHE", "CRY", "EVE", "FUL", 
 "LIV", "LUT", "MCI", "MUN", "NEW", "NFO", "SHU", "TOT", "WHU", "WOL"];
@@ -13,10 +14,11 @@ const PickNote = () => (
     </View>
 );
 
-const setStats = ({setBox, row, pos}) => {
+const setStats = ({setBox, pos, i}) => {
+    // console.log(pos, i)
     setBox(
         <ClubDetails_Stats club={
-            tempData_ClubDetail[`${pos=='top'? 0: 1}`]  //temporary
+            dataClubs[`${pos=='top'? i: i+10}`]
         }/>
     )
 }
@@ -27,7 +29,7 @@ const ClubPaneRow = ({setBox, row, dim, dimDisplay, setDim, pos}) => {
         {row.map((club, i) => 
             <TouchableOpacity key={i} activeOpacity={0.8}
                 onPress={() => {
-                    setStats({setBox, row, pos}); 
+                    setStats({setBox, pos, i}); 
                     setDim(
                         dim.map((item, index) =>
                             pos=='top'? 
