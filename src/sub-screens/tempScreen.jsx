@@ -4,6 +4,7 @@ import { fetchTables } from "../API/fetchTable.js";
 import { fetchClubs } from "../API/fetchClub.js";
 import { fetchLastNext3 } from "../API/fetchLastNext3.js";
 import { fetchClubStats } from "../API/fetchClubStats.js";
+import { fetchPlayerImage } from "../API/fetchPlayerImages.js";
 
 const TempScreen = () => {
 
@@ -12,22 +13,27 @@ const TempScreen = () => {
             <TouchableOpacity
                 onPress={() => {fetchTables()}} style={styles.temp_button}
             >
-                <Text>{`[league tables] (hourly?)\n (3) fetches FootApi & save to firestore`}</Text>
+                <Text>{`[league tables] (hourly?)\n (3) FootApi -> Firestore`}</Text>
             </TouchableOpacity>
             <TouchableOpacity
                 onPress={() => {fetchClubs()}} style={styles.temp_button}
             >
-                <Text>{`[club details] (no need)\n (20) fetches FootApi & save to firestore`}</Text>
+                <Text>{`[club details] (no need)\n (10 mins, 20) FootApi -> Firestore`}</Text>
             </TouchableOpacity>
             <TouchableOpacity
                 onPress={() => {fetchLastNext3()}} style={styles.temp_button}
             >
-                <Text>{`[lastNext 3]\n (40) (hourly?) fetches FootApi & save to firestore`}</Text>
+                <Text>{`[lastNext 3] (hourly?)\n (40) (hourly?) FootApi -> Firestore`}</Text>
             </TouchableOpacity>
             <TouchableOpacity
                 onPress={() => {fetchClubStats()}} style={styles.temp_button}
             >
-                <Text>{`[club stats] (hourly?)\n (10 mins) fetch FBREF & save to firestore`}</Text>
+                <Text>{`[club stats] (hourly?)\n (10 mins) FBREF -> Firestore`}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+                onPress={() => {fetchPlayerImage()}} style={styles.temp_button}
+            >
+                <Text>{`[club players] (no need)\n (10 mins, 600) FootApi -> Firebase Storage`}</Text>
             </TouchableOpacity>
         </View>
     );
