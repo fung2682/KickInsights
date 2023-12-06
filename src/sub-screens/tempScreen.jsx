@@ -1,6 +1,5 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
-import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 import { fetchTables } from "../API/fetchTable.js";
 import { fetchClubs } from "../API/fetchClub.js";
 import { fetchLastNext3 } from "../API/fetchLastNext3.js";

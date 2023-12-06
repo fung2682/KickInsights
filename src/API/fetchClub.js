@@ -4,6 +4,7 @@
 import axios from 'axios';
 import { updateData } from "../firebase/firestore";
 import { X_RapidAPI_Key, X_RapidAPI_Host } from "@env"
+import { get_clubLogo_url } from "../firebase/storage";
 
 const fetchClub = async (team_id, kit_id, index) => {
     const url = `https://footapi7.p.rapidapi.com/api/team/${team_id}`;
@@ -24,6 +25,8 @@ const fetchClub = async (team_id, kit_id, index) => {
     }
 
     const team = result.team;
+    // get logo from firebase storage
+    // const logo = await get_clubLogo_url(team.nameCode);
 
     // keep only the needed data
     const club = {
@@ -31,6 +34,7 @@ const fetchClub = async (team_id, kit_id, index) => {
         name_code: team.nameCode,
         id: index,
         footApi_id: team.id,
+        // logo: logo,
         // for club pane
         name_full: team.name,
         stadium: team.venue.stadium.name,
