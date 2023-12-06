@@ -1,16 +1,14 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import { View, Text, StyleSheet, TouchableOpacity, LayoutAnimation, Image } from "react-native";
 import { MaterialIcons } from '@expo/vector-icons'; 
+import { downloadPlayerImage } from "../../../firebase/storage";
 
 const ClubPlayers = ({player, color}) => {
 
-    const {Footapi_name, age, contractEnd, country, foot, height, marketValue, number, position} = player;
-    const renderImage = () => {
-        return (
-            <Image source={{uri: `${photo}`}} style={styles.image}/>
-        )
-    }
+    const {Footapi_id, Footapi_name, age, contractEnd, country, foot, height, marketValue, number, position, image} = player;
     
+    const player_image = image || 'NA';
+
     const [expanded, setExpanded] = useState(false);
 
     const infoPopup = () => {
@@ -67,9 +65,14 @@ const ClubPlayers = ({player, color}) => {
                         <Text numberOfLines={1} ellipsizeMode="clip" style={styles.dataText}>{contractEnd}</Text>
                         <Text numberOfLines={1} ellipsizeMode="clip" style={styles.dataText}>{marketValue}</Text>
                     </View>
-                    {/* <View style={styles.photo}>
-                        {renderImage()}
-                    </View> */}
+                    <View style={styles.photo}>
+                        {
+                            player_image === 'NA' ?
+                            <Image source={require('../../../../assets/no_player_pic.png')} style={styles.image}/>
+                            :
+                            <Image source={{uri: player_image}} style={styles.image}/>
+                        }
+                    </View>
                 </View>
             </View>
         );
