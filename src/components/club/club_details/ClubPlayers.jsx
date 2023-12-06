@@ -27,11 +27,12 @@ const ClubPlayers = ({player, color}) => {
     if (expanded) {
         return (
             <View>
-                <TouchableOpacity style={[styles.barContainerExp, {borderColor: `#3a3a3a`}, {backgroundColor: `${color}AA`},
-                        {backgroundColor: position=='GK'||position=="MF"?
-                        `${color}88`:
-                        `${color}AA`
-                    }]}
+                <TouchableOpacity 
+                    style={[
+                        styles.barContainerExp, 
+                        {borderColor: `transparent`}, 
+                        {backgroundColor: `${color}AA`},
+                    ]}
                     activeOpacity={0.8}
                     onPress={infoPopup}
                 >
@@ -43,7 +44,12 @@ const ClubPlayers = ({player, color}) => {
                     <MaterialIcons name="keyboard-arrow-down" size={36} color="white" 
                       style={{height:36, transform: [{ rotate: "180deg" }]}}/>
                 </TouchableOpacity>
-                <View style={[styles.infoContainer, {borderColor: `#3a3a3a`}]}>
+                <View 
+                    style={[
+                        styles.infoContainer,
+                        {borderColor: `${color}AA`}
+                    ]}
+                >
                     <View style={styles.attribute}>
                         <Text numberOfLines={1} ellipsizeMode="clip" style={styles.attributeText}>Nationality</Text>
                         <Text numberOfLines={1} ellipsizeMode="clip" style={styles.attributeText}>Age</Text>
@@ -68,11 +74,12 @@ const ClubPlayers = ({player, color}) => {
         );
     } else {
         return (
-            <TouchableOpacity style={[styles.barContainer, {borderColor: `#3a3a3a`}, 
-                {backgroundColor: position=='GK'||position=="MF"?
-                    `${color}88`:
-                    `${color}AA`
-                }]}
+            <TouchableOpacity 
+                style={[
+                    styles.barContainer, 
+                    {borderColor: `transparent`}, 
+                    {backgroundColor: `${color}AA`}
+                ]}
                 activeOpacity={0.8}
                 onPress={infoPopup}
             >
@@ -98,7 +105,6 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-evenly",
-        
     },
     barContainerExp: {
         width: 362,
@@ -143,15 +149,15 @@ const styles = StyleSheet.create({
     infoContainer: {
         width: 362,
         height: 130,
-        borderLeftWidth: 2,
-        borderRightWidth: 2,
-        borderBottomWidth: 2,
+        borderLeftWidth: 3,
+        borderRightWidth: 3,
+        borderBottomWidth: 3,
         borderBottomLeftRadius: 5,
         borderBottomRightRadius: 5,
         backgroundColor: "#272727",
         flexDirection: "row",
         alignItems: "center",
-        marginBottom: 5,
+        marginBottom: 0,
     },
     attribute: {
         width: 106,
