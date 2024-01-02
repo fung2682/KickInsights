@@ -16,9 +16,14 @@ const TempScreen = () => {
                 <Text>{`[league tables] (hourly?)\n (3) FootApi -> Firestore`}</Text>
             </TouchableOpacity>
             <TouchableOpacity
+                onPress={() => {fetchPlayerImage()}} style={styles.temp_button}
+            >
+                <Text>{`[player images] (only fetch new ones)\n (~1 min) FootApi -> Firebase Storage`}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
                 onPress={() => {fetchClubs()}} style={styles.temp_button}
             >
-                <Text>{`[club details] (no need)\n (10 mins, 20) FootApi -> Firestore`}</Text>
+                <Text>{`[club details] (no need)\n (10 mins, 20) FootApi + Storage -> Firestore`}</Text>
             </TouchableOpacity>
             <TouchableOpacity
                 onPress={() => {fetchLastNext3()}} style={styles.temp_button}
@@ -28,12 +33,7 @@ const TempScreen = () => {
             <TouchableOpacity
                 onPress={() => {fetchClubStats()}} style={styles.temp_button}
             >
-                <Text>{`[club stats] (hourly?)\n (10 mins) FBREF -> Firestore`}</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-                onPress={() => {fetchPlayerImage()}} style={styles.temp_button}
-            >
-                <Text>{`[club players] (no need)\n (10 mins, 600) FootApi -> Firebase Storage`}</Text>
+                <Text>{`[club stats] (hourly?)\n (15 mins) FBREF -> Firestore`}</Text>
             </TouchableOpacity>
         </View>
     );

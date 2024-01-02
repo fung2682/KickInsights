@@ -8,6 +8,24 @@ import { useState } from 'react';
 
 const year = '2023-2024'
 
+function isNumeric(str) {
+    if (typeof str != "string") return false // process strings only
+    return !isNaN(str) && // use type corrcion to parse the _entirety_ of the string
+            !isNaN(parseFloat(str)) // ...and ensure strings of whitespace fail
+}
+
+function check_numeric_values(stats) {
+    for (const stat of stats) {
+        if (!isNumeric(Object.values(stat)[0])) {
+            if (Object.keys(stat)[0] === '---' || Object.keys(stat)[0] === 'Record (W-D-L)') {
+                continue;
+            }
+            console.log("Non-numeric value found")
+            console.log(stat);
+        }
+    }
+}
+
 const fetchGeneral = async (team_id) => {
     // General
     const res = await axios.get(`https://fbref.com/en/squads/${team_id}/${year}/matchlogs/c9/shooting`)
@@ -379,6 +397,7 @@ club_id_by_name = ['18bb7c10', '8602292d', '4ba7cbea', 'cd051869', 'd07537b9',
 
 const fetchClubStats = async () => {
     for (let i = 0; i < club_id_by_name.length; i++) {
+        console.log(`Started fetching ${dataClubs[i].club.name_code}...`);
         
         const statsGeneral = await fetchGeneral(club_id_by_name[i]);
         const statsShooting = await fetchShooting(club_id_by_name[i]);
@@ -389,7 +408,7 @@ const fetchClubStats = async () => {
         const statsPossession = await fetchPossession(club_id_by_name[i]);
         const statsGoalkeeping = await fetchGoalkeeping(club_id_by_name[i]);
         const statsMiscellaneous = await fetchMiscellaneous(club_id_by_name[i]);
-
+        
         const stats = {
             general: statsGeneral,
             shooting: statsShooting,
@@ -400,6 +419,10 @@ const fetchClubStats = async () => {
             possession: statsPossession,
             goalkeeping: statsGoalkeeping,
             miscellaneous: statsMiscellaneous
+        }
+
+        for (const attribute in stats) {
+            check_numeric_values(stats[attribute]);
         }
 
         updateData('clubs', dataClubs[i].club.name_full, {stats: stats});
