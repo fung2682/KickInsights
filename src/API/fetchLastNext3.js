@@ -21,11 +21,13 @@ const fetchLast3 = async (team_id, database_id) => {
     };
     let result;
 
-    try {
-        const response = await fetch(url, options);
-        result = await response.json();
-    } catch (error) {
-        console.error(error);
+    while (result === undefined) {
+        try {
+            const response = await fetch(url, options);
+            result = await response.json();
+        } catch (error) {
+            console.error(error);
+        }
     }
 
     const last3_array = [];
@@ -48,12 +50,14 @@ const fetchLast3 = async (team_id, database_id) => {
                 } else {
                     result = 'Loss';
                 }
-            } else {    // away team won
+            } else if (match.winnerCode === 2) {    // away team won
                 if (dataClubs[database_id].club.name_code === match.awayTeam.nameCode) {
                     result = 'Win';
                 } else {
                     result = 'Loss';
                 }
+            } else {
+                result = 'Postponed';
             }
 
             last3_array.push({
@@ -62,12 +66,12 @@ const fetchLast3 = async (team_id, database_id) => {
                 home: {
                     name_short: match.homeTeam.shortName,
                     name_code: match.homeTeam.nameCode,
-                    goal: match.homeScore.current,
+                    goal: match.homeScore.current !== undefined ? match.homeScore.current : 'postponed',
                 },
                 away: {
                     name_short: match.awayTeam.shortName,
                     name_code: match.awayTeam.nameCode,
-                    goal: match.awayScore.current,
+                    goal: match.awayScore.current !== undefined ? match.awayScore.current : 'postponed',
                 }, 
             });
         }

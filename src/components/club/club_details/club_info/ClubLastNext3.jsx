@@ -4,6 +4,30 @@ import DetailBoxHeader from "../DetailBoxHeader";
 import { clubColor } from "../../../../clubColor";
 import { clubLogo } from "../../../../clubLogo";
 
+const scoreBoard = (lastMatch) => {
+    if (lastMatch.result === "Postponed") {
+        return (
+            <View style={[styles.score, 
+                {backgroundColor: "#494d4d"}
+            ]}>
+                <Text style={[styles.postponeText]}>Post.</Text>
+            </View>
+        )
+        }
+    return (
+        <View style={[styles.score, 
+            {backgroundColor: lastMatch.result === "Win" ? 
+            "#1a7c2a"
+            :
+            lastMatch.result === "Draw" ? "#9e8e33" : "#7c1a1a"}
+        ]}>
+            <Text style={styles.scoreText}>{lastMatch.home.goal}</Text>
+            <Text style={[styles.scoreText, {width:10}]}>-</Text>
+            <Text style={styles.scoreText}>{lastMatch.away.goal}</Text>
+        </View>
+    )
+}
+
 const Match = ({lastMatch, nextMatch, last}) => {
     //console.log(lastMatch.result);
     return (
@@ -15,20 +39,10 @@ const Match = ({lastMatch, nextMatch, last}) => {
                 style={styles.image}/>
                 {
                     last?
-                    <View style={[styles.score, 
-                        {backgroundColor: lastMatch.result === "Win" ? 
-                        "#1a7c2a"
-                        :
-                        lastMatch.result === "Draw" ? "#9e8e33" : "#7c1a1a"}
-                    ]}>
-    
-                        <Text style={styles.scoreText}>{lastMatch.home.goal}</Text>
-                        <Text style={[styles.scoreText, {width:10}]}>-</Text>
-                        <Text style={styles.scoreText}>{lastMatch.away.goal}</Text>
-                    </View>
+                    scoreBoard(lastMatch)
                     :
                     <View style={[styles.score, 
-                        {backgroundColor: "#6A6868"}
+                        {backgroundColor: "#494d4d"}
                     ]}>
     
                         <Text style={styles.timeText}>{nextMatch.time}</Text>
@@ -115,6 +129,12 @@ const styles = StyleSheet.create({
     },
     scoreText: {
         width: 20,
+        color: "white",
+        fontSize: 16,
+        textAlign: "center",
+    },
+    postponeText: {
+        width: 60,
         color: "white",
         fontSize: 16,
         textAlign: "center",
