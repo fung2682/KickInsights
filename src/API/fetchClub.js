@@ -18,21 +18,17 @@ const fetchClub = async (team_id, kit_id, index) => {
     let result;
     let team;
 
-    try {
-        const response = await fetch(url, options);
-        result = await response.json();
-        team = result.team;
-    } catch (error) {
-        console.error(error);
-    }
-
-    // get logo from firebase storage
-    // const logo = await get_clubLogo_url(team.nameCode);
-
-    // timelock
     while (team === undefined) {
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        console.log(`[FootApi] Timelocking for ${index}`);
+        try {
+            const response = await fetch(url, options);
+            console.log("HTTP response status:", response.status); // 200: OK
+            result = await response.json();
+            team = result.team;
+        } catch (error) {
+            console.error(error);
+        }
+        console.log(`[FootApi] Fetching for club index ${index}`);
+        await new Promise(resolve => setTimeout(resolve, 500));
     }
 
     // keep only the needed data
@@ -169,7 +165,7 @@ const fetchClubs = async () => {
     for (let i = 0; i < club_id_by_name.length; i++) {
         const club = await fetchClub(club_id_by_name[i], kit_id_by_name[i], i);
         updateData('clubs', club.name_full, {club});
-        console.log(`Updated club info for ${club.name_code}`);
+        console.log(`Updated club info for ${club.name_code}\n`);
     }
 }
 
