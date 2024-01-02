@@ -25,6 +25,13 @@ const fetchPlayerImage = async () => {
         const players = dataClubs[i].club.players;
         for (let j = 0; j < players.length; j++) {
             const player_id = players[j].Footapi_id;
+
+            // check if player already has an image
+            if (players[j].image !== "") {
+                console.log("Player already has an image", club_name, player_id);
+                continue;
+            }
+
             let image;
             try {
                 image = await fetchImage(player_id);
@@ -36,6 +43,7 @@ const fetchPlayerImage = async () => {
             // FootApi allows 4 requests per second
             await new Promise(resolve => setTimeout(resolve, 500));
         }
+        console.log('\n');
     }
 }
 
