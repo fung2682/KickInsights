@@ -55,7 +55,7 @@ const getClubs = async () => {
     return club_array;
 }
 
-const getPlayers = async () => {
+const getPlayersList = async () => {
     const player_array = [];
     const q = query(collection(db, "players"));
     const querySnapshot = await getDocs(q);
@@ -65,5 +65,15 @@ const getPlayers = async () => {
     return player_array;
 }
 
+const getPlayersDict = async () => {
+    let player_dict = {};
+    const q = query(collection(db, "players"));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+        player_dict[doc.data().Footapi_id] = doc.data();
+    });
+    return player_dict;
+}
 
-export { addData, setData, getData, getClubs, getPlayers, updateData };
+
+export { addData, setData, getData, getClubs, getPlayersList, getPlayersDict, updateData };

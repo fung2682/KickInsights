@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, ScrollView } from "react-native";
 
-import { dataPlayers } from "../../fetchCloud";
+import { dataPlayersList } from "../../fetchCloud";
 import { clubColor } from "../../clubColor";
 import { clubLogo } from "../../clubLogo";
 
@@ -32,7 +32,7 @@ const Item = ({color, number, club_name_code, Footapi_name, Footapi_id, position
 
 const PlayerList = ({nav}) => {
     // trim down the dataPlayer list to only contain color, number, club_name_code, Footapi_name&id, position
-    const dataPlayers_trimmed = dataPlayers.map((player) => {
+    const dataPlayers_trimmed = dataPlayersList.map((player) => {
         return {
             color: clubColor[player.club_name_code],
             Footapi_name: player.Footapi_name,
@@ -59,7 +59,7 @@ const PlayerList = ({nav}) => {
                 indicatorStyle="white"
                 scrollIndicatorInsets={{right: -10}}
                 initialNumToRender={20}
-                windowSize={10}
+                windowSize={5}
                 decelerationRate={0.8}
             />
         </View>
