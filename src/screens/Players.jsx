@@ -1,15 +1,46 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import PlayerMain from "../sub-screens/PlayerMain";
 import TempScreen from "../sub-screens/tempScreen";
-import PlayerList from "../components/player/PlayerList";
+import PlayerDetails from "../sub-screens/PlayerDetails";
 
 
-const Tab = createMaterialTopTabNavigator();
+const Stack = createNativeStackNavigator();
 
 const Players = () => {
+
     return (
-        <Text>Players</Text>
+        <Stack.Navigator
+            screenOptions={{
+                headerShown: true,
+                headerStyle: {
+                    backgroundColor: "#141414",
+                    borderStyle: "solid",
+                    shadowColor: "transparent",
+                    height: 25,
+                },
+                headerTitleStyle: {
+                    fontWeight: "bold",
+                    fontSize: 20,
+                    color: "white",
+                },
+                headerTitleContainerStyle: {
+                    top: 0,
+                },
+                headerTintColor: "#54a761",
+                headerTitle: "Players",
+                headerBackTitle: "Players",
+            }}
+            initialRouteName="PlayerMain"
+        >
+            <Stack.Screen name="PlayerMain" component={PlayerMain} options={{ title: 'Players'}}/>
+            <Stack.Screen name="PlayerDetails" 
+                options={({route}) => ({ headerTitle: route.params.playerName })}
+            >
+                {(input) => <PlayerDetails playerID={input}/>}
+            </Stack.Screen>
+        </Stack.Navigator>
     );
 }
 

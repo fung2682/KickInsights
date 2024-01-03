@@ -103,7 +103,7 @@ const Tabs = () => {
                         tabBarIcon: ({focused}) => (
                             <Entypo name="man" size={26} color={focused ? "#54a761" : "gray"} />
                         ),
-                        headerShown: true,
+                        headerShown: false,
                     }}
                 >
                     {() => <Players/>}
