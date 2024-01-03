@@ -7,7 +7,6 @@ export let dataHome = [];
 export let dataAway = [];
 export let dataClubs = [];
 export let dataPlayersList = [];
-export let dataPlayersDict;
 
 const fetchCloud = async (progress) => {
 
@@ -15,25 +14,27 @@ const fetchCloud = async (progress) => {
     if (progress == 0) {
         const data_all = await getData("league_tables", "all");
         dataAll = data_all.table;
-    } else if (progress == 0.19) {
+        console.log("league table (all) loaded")
+    } else if (progress == 0.24) {
         const data_home = await getData("league_tables", "home");
         dataHome = data_home.table;
-    } else if (progress == 0.38) {
+        console.log("league table (home) loaded")
+    } else if (progress == 0.48) {
         const data_away = await getData("league_tables", "away");
         dataAway = data_away.table;
-    } else if (progress == 0.57) {
+        console.log("league table (away) loaded")
+    } else if (progress == 0.72) {
         const data_clubs = await getClubs();
         dataClubs = data_clubs;
-    } else if (progress == 0.76) {
-        const data_players_list = await getPlayersList();
-        dataPlayersList = data_players_list;
-    } else if (progress == 0.95) {
-        const data_players_dict = await getPlayersDict();
-        dataPlayersDict = data_players_dict;
-        console.log("all data loaded")
+        console.log("club data loaded")
+    } else if (progress == 0.96) {
+        const data_players_list = await getData("player_list", "full_player_list");
+        dataPlayersList = data_players_list.full_player_list;
+        console.log("player list loaded")
+        console.log("-- all data loaded --")
     }
 
-    return progress + 0.19;
+    return progress + 0.24;
 }
 
 export default fetchCloud;

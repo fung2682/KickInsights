@@ -108,6 +108,7 @@ const fetchClubPlayer = async (team_id, index) => {
             // club
             club_name_full: club.name_full,
             club_name_code: club.name_code,
+            stats: {},
         }
         player_array.push(player_obj);
     }
@@ -120,17 +121,32 @@ club_id_by_name =[42, 40, 60, 50, 30, 6, 38, 7, 48, 43,
                 44, 72, 17, 35, 39, 14, 15, 33, 37, 3]
 
 const fetchPlayers = async () => {
+    let full_player_list = [];
     for (let i = 0; i < club_id_by_name.length; i++) {
         const club_players = await fetchClubPlayer(club_id_by_name[i], i);
         for (let j = 0; j < club_players.length; j++) {
+            // for player dictionary
             const player = club_players[j];
             setData('players', player.Footapi_name, player);
             console.log(`Added ${player.club_name_code}: ${player.Footapi_name}`);
+            // for player list
+            const player_info = {
+                Footapi_id: player.Footapi_id,
+                number: player.number,
+                Footapi_name: player.Footapi_name,
+                position: player.position,
+                club_name_code: player.club_name_code,
+            }
+            full_player_list.push(player_info);
         }
         // wait 5 seconds per iteration, prevent Firebase network error
+        console.log("Full player list length:", full_player_list.length);
         console.log(`Finished club index ${i}, waiting 5 seconds\n`);
         await new Promise(resolve => setTimeout(resolve, 5*1000));
     }
+    // for player list
+    setData('player_list', 'full_player_list', {full_player_list});
+    console.log("Full player list length:", full_player_list.length);
 }
 
 export { fetchPlayers };

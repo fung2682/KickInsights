@@ -55,25 +55,5 @@ const getClubs = async () => {
     return club_array;
 }
 
-const getPlayersList = async () => {
-    const player_array = [];
-    const q = query(collection(db, "players"));
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach((doc) => {
-        player_array.push(doc.data());
-    });
-    return player_array;
-}
 
-const getPlayersDict = async () => {
-    let player_dict = {};
-    const q = query(collection(db, "players"));
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach((doc) => {
-        player_dict[doc.data().Footapi_id] = doc.data();
-    });
-    return player_dict;
-}
-
-
-export { addData, setData, getData, getClubs, getPlayersList, getPlayersDict, updateData };
+export { addData, setData, getData, getClubs, updateData };
