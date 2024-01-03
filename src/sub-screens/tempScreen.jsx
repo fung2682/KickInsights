@@ -5,6 +5,7 @@ import { fetchClubs } from "../API/fetchClub.js";
 import { fetchLastNext3 } from "../API/fetchLastNext3.js";
 import { fetchClubStats } from "../API/fetchClubStats.js";
 import { fetchPlayerImage } from "../API/fetchPlayerImages.js";
+import { fetchPlayers } from "../API/fetchPlayer.js";
 
 const TempScreen = () => {
 
@@ -23,7 +24,7 @@ const TempScreen = () => {
             <TouchableOpacity
                 onPress={() => {fetchClubs()}} style={styles.temp_button}
             >
-                <Text>{`[club details] (no need)\n (10 mins, 20) FootApi + Storage -> Firestore`}</Text>
+                <Text>{`[club details] (no need)\n (10 mins, 40) FootApi + Storage -> Firestore`}</Text>
             </TouchableOpacity>
             <TouchableOpacity
                 onPress={() => {fetchLastNext3()}} style={styles.temp_button}
@@ -34,6 +35,11 @@ const TempScreen = () => {
                 onPress={() => {fetchClubStats()}} style={styles.temp_button}
             >
                 <Text>{`[club stats] (hourly?)\n (15 mins) FBREF -> Firestore`}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+                onPress={() => {fetchPlayers()}} style={styles.temp_button}
+            >
+                <Text>{`[player stats] (hourly?)\n (10 mins, 40) FootApi + Storage -> Firestore`}</Text>
             </TouchableOpacity>
         </View>
     );
