@@ -130,14 +130,8 @@ const fetchPlayers = async () => {
             setData('players', player.Footapi_name, player);
             console.log(`Added ${player.club_name_code}: ${player.Footapi_name}`);
             // for player list
-            const player_info = {
-                Footapi_id: player.Footapi_id,
-                number: player.number,
-                Footapi_name: player.Footapi_name,
-                position: player.position,
-                club_name_code: player.club_name_code,
-            }
-            full_player_list.push(player_info);
+            delete player.stats;
+            full_player_list.push(player);
         }
         // wait 5 seconds per iteration, prevent Firebase network error
         console.log("Full player list length:", full_player_list.length);

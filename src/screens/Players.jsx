@@ -36,9 +36,9 @@ const Players = () => {
         >
             <Stack.Screen name="PlayerMain" component={PlayerMain} options={{ title: 'Players'}}/>
             <Stack.Screen name="PlayerDetails" 
-                options={({route}) => ({ headerTitle: route.params.playerName })}
+                options={({route}) => ({ headerTitle: route.params.player.Footapi_name })}
             >
-                {(input) => <PlayerDetails playerID={input}/>}
+                {(input) => <PlayerDetails playerData={input}/>}
             </Stack.Screen>
         </Stack.Navigator>
     );
