@@ -23,7 +23,27 @@ const player_name_translation = {
     'Jóhann Guðmundsson': 'Jóhann Berg Guðmundsson',// BUR
     'Arijanet Murić': 'Arijanet Muric',             // BUR
     'Mykhaylo Mudryk': 'Mykhailo Mudryk',           // CHE
-    
+    'Jesurun Rak-Sakyi': 'Jesuran Rak Sakyi',       // CRY
+    'Idrissa Gueye': 'Idrissa Gana Gueye',          // EVE
+    'Bobby Decordova-Reid': 'Bobby Reid',           // FUL
+    'Konstantinos Tsimikas': 'Kostas Tsimikas',     // LIV
+    'Caoimhin Kelleher': 'Caoimhín Kelleher',       // LIV
+    'Ryan Giles': 'Ryan John Giles',                // LUT
+    'Jérémy Doku': 'Jeremy Doku',                   // MCI
+    'Moussa Niakhaté': 'Moussa Niakhate',           // NFO
+    'Odysseas Vlachodimos': 'Odisseas Vlachodimos', // NFO
+    'Benie Traore': 'Bénie Adama Traore',           // SHU
+    'James McAtee': 'James Mcatee',                 // SHU
+    'Vinícius Souza': 'Vinicius Souza',             // SHU
+    'Wesley Foderingham': 'Wes Foderingham',        // SHU
+    'Heung-min Son': 'Son Heung-min',               // TOT
+    'Pierre-Emile Højbjerg': 'Pierre Højbjerg',     // TOT
+    'Emerson Royal': 'Emerson',                     // TOT
+    'Mohammed Kudus': 'Kudus Mohammed',             // WHU
+    'Alphonse Aréola': 'Alphonse Areola',           // WHU
+    'Hee-Chan Hwang':  'Hwang Hee-chan',            // WOL
+    'Saša Kalajdžić': 'Sasa Kalajdzic',             // WOL
+    'Jonny Otto': 'Jonny Castro',                   // WOL
 }
 
 const fetchClubPlayer = async (team_id, index) => {
@@ -184,10 +204,9 @@ const fetchPlayers = async () => {
                     missing_statistics_player_list.push(`${player.club_name_code} - ${player.Footapi_name}`);
                 }
             }
-
-
             setData('players', player.Footapi_name, player);
             console.log(`Added ${player.club_name_code}: ${player.Footapi_name}`);
+            await new Promise(resolve => setTimeout(resolve, 0.5*1000));
         }
         // wait 5 seconds per iteration, prevent Firebase network error
         console.log("Full player list length:", full_player_list.length);
@@ -196,6 +215,7 @@ const fetchPlayers = async () => {
         await new Promise(resolve => setTimeout(resolve, 5*1000));
     }
     // for player list
+    setData('player_list', 'missing_player_list', {missing_statistics_player_list});
     setData('player_list', 'full_player_list', {full_player_list});
     console.log("Full player list length:", full_player_list.length);
 }
