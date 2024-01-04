@@ -18,15 +18,24 @@ const TempScreen = () => {
                 <Text>{`[league tables] (hourly?)\n (3) FootApi -> Firestore`}</Text>
             </TouchableOpacity>
             <TouchableOpacity
+                onPress={ async () => {
+                    await fetchClubs();
+                    await fetchPlayerImage();
+                    await fetchClubs();
+                }} 
+                style={styles.temp_button}
+            >
+                <Text>{`[club details] (no need)`}</Text>
+                <Text>{`(10 mins, 40) FootApi + Storage -> Firestore`}</Text>
+                <Text>{`[player images] (only fetch new ones)\n (~1 min) FootApi -> Firebase Storage`}</Text>
+                <Text>{`1. get all players\n2.download all players' images to storage`}</Text>
+                <Text>{`3.update new players with images`}</Text>
+            </TouchableOpacity>
+            {/* <TouchableOpacity
                 onPress={() => {fetchPlayerImage()}} style={styles.temp_button}
             >
                 <Text>{`[player images] (only fetch new ones)\n (~1 min) FootApi -> Firebase Storage`}</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-                onPress={() => {fetchClubs()}} style={styles.temp_button}
-            >
-                <Text>{`[club details] (no need)\n (10 mins, 40) FootApi + Storage -> Firestore`}</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             <TouchableOpacity
                 onPress={() => {fetchLastNext3()}} style={styles.temp_button}
             >
@@ -42,11 +51,11 @@ const TempScreen = () => {
             >
                 <Text>{`[player list + info] (hourly?)\n (10 mins, 40) FootApi + Storage -> Firestore`}</Text>
             </TouchableOpacity>
-            <TouchableOpacity
+            {/* <TouchableOpacity
                 onPress={() => {fetchPlayerStats('18bb7c10')}} style={styles.temp_button}
             >
                 <Text>{`[player stats] (called by above)\n FBREF -> Firestore`}</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
         </View>
     );
 }

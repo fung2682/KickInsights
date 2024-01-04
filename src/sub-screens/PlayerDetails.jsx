@@ -13,10 +13,12 @@ const PlayerDetails = ({playerData}) => {
     const position = player_info.position;
 
     const [playerStats, setPlayerStats] = useState({});
+    const [playerImage, setPlayerImage] = useState("");
 
     const fetchData = async () => {
         const player = await getData("players", player_info.Footapi_name);
         setPlayerStats(player.stats);
+        setPlayerImage(player.image);
     }
 
     useEffect(() => {
@@ -39,7 +41,7 @@ const PlayerDetails = ({playerData}) => {
                 scrollIndicatorInsets={{ right: 3 }}
             >
                 <View style={styles.statsContainer}>
-                    <PlayerInfo player={player_info}/>
+                    <PlayerInfo player={player_info} image={playerImage}/>
                     <View style={{height: 3, width: "100%"}}/>
                     { position== 'GK' && <PlayerStats color={statColor} area={playerStats.goalkeeping} title="Goalkeeping"/> }
                     { position== 'GK' && <PlayerStats color={statColor} area={playerStats.goalkeeping_advanced} title="Advanced Goalkeeping"/> }

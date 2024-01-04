@@ -3,8 +3,8 @@ import { View, Text, StyleSheet, TouchableOpacity, LayoutAnimation, Image } from
 import { clubColor } from "../../clubColor";
 import { clubLogo } from "../../clubLogo";
 
-const PlayerInfo = ({player}) => {
-    const {Footapi_id, Footapi_name, age, contractEnd, country, foot, height, marketValue, image, number, position, club_name_code, club_name_full} = player;
+const PlayerInfo = ({player, image}) => {
+    const {Footapi_id, Footapi_name, age, contractEnd, country, foot, height, marketValue, number, position, club_name_code, club_name_full} = player;
     const color = clubColor[club_name_code];
     const player_image = image || 'NA';
 

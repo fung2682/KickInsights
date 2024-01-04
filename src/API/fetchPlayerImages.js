@@ -28,9 +28,10 @@ const fetchPlayerImage = async () => {
 
             // check if player already has an image
             if (players[j].image !== "") {
-                console.log("Player already has an image", club_name, player_id);
                 continue;
             }
+
+            console.log(`[FootApi] Fetching image for ${club_name} ${player_id}`);
 
             let image;
             try {
@@ -43,7 +44,7 @@ const fetchPlayerImage = async () => {
             // FootApi allows 4 requests per second
             await new Promise(resolve => setTimeout(resolve, 500));
         }
-        console.log('\n');
+        // console.log('\n');
     }
 }
 

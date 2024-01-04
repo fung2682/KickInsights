@@ -394,35 +394,35 @@ const fetchPlayerStats = async (fbref_id) => {
 
 
     // firstly get list of players
-    const table_for_name = res.data.match(/<table class=".*" id="stats_shooting_9".*<\/table>/)[0]
-    await fetchPlayerNames(table_for_name)
+    const table_for_name = await res.data.match(/<table class=".*" id="stats_shooting_9".*<\/table>/)
+    await fetchPlayerNames(table_for_name[0])
     // shooting
-    const shooting_table = res.data.match(/<table class=".*" id="stats_shooting_9".*<\/table>/)[0]
-    await fetchPlayerShooting(shooting_table)
+    const shooting_table = await res.data.match(/<table class=".*" id="stats_shooting_9".*<\/table>/)
+    await fetchPlayerShooting(shooting_table[0])
     // passing
-    const passing_table = res.data.match(/<table class=".*" id="stats_passing_9".*<\/table>/)[0]
-    await fetchPlayerPassing(passing_table)
+    const passing_table = await res.data.match(/<table class=".*" id="stats_passing_9".*<\/table>/)
+    await fetchPlayerPassing(passing_table[0])
     // pass types
-    const pass_types_table = res.data.match(/<table class=".*" id="stats_passing_types_9".*<\/table>/)[0]
-    await fetchPlayerPassTypes(pass_types_table)
+    const pass_types_table = await res.data.match(/<table class=".*" id="stats_passing_types_9".*<\/table>/)
+    await fetchPlayerPassTypes(pass_types_table[0])
     // goal and shot creation
-    const goal_shot_creation_table = res.data.match(/<table class=".*" id="stats_gca_9".*<\/table>/)[0]
-    await fetchPlayerGoalShotCreation(goal_shot_creation_table)
+    const goal_shot_creation_table = await res.data.match(/<table class=".*" id="stats_gca_9".*<\/table>/)
+    await fetchPlayerGoalShotCreation(goal_shot_creation_table[0])
     // defensive actions
-    const defensive_actions_table = res.data.match(/<table class=".*" id="stats_defense_9".*<\/table>/)[0]
-    await fetchPlayerDefensiveActions(defensive_actions_table)
+    const defensive_actions_table = await res.data.match(/<table class=".*" id="stats_defense_9".*<\/table>/)
+    await fetchPlayerDefensiveActions(defensive_actions_table[0])
     // possession
-    const possession_table = res.data.match(/<table class=".*" id="stats_possession_9".*<\/table>/)[0]
-    await fetchPlayerPossession(possession_table)
+    const possession_table = await res.data.match(/<table class=".*" id="stats_possession_9".*<\/table>/)
+    await fetchPlayerPossession(possession_table[0])
     // miscelleneous
-    const misc_table = res.data.match(/<table class=".*" id="stats_misc_9".*<\/table>/)[0]
-    await fetchPlayerMisc(misc_table)
+    const misc_table = await res.data.match(/<table class=".*" id="stats_misc_9".*<\/table>/)
+    await fetchPlayerMisc(misc_table[0])
     // goalkeeping
-    const goalkeeping_table = res.data.match(/<table class=".*" id="stats_keeper_9".*<\/table>/)[0]
-    await fetchPlayerGoalkeeping(goalkeeping_table)
+    const goalkeeping_table = await res.data.match(/<table class=".*" id="stats_keeper_9".*<\/table>/)
+    await fetchPlayerGoalkeeping(goalkeeping_table[0])
     // advanced goalkeeping
-    const goalkeeping_adv_table = res.data.match(/<table class=".*" id="stats_keeper_adv_9".*<\/table>/)[0]
-    await fetchPlayerGoalkeepingAdvanced(goalkeeping_adv_table)
+    const goalkeeping_adv_table = await res.data.match(/<table class=".*" id="stats_keeper_adv_9".*<\/table>/)
+    await fetchPlayerGoalkeepingAdvanced(goalkeeping_adv_table[0])
 
     // console.log(player_stats)
     return player_stats;

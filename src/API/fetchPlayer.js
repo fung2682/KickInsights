@@ -9,11 +9,21 @@ import { fetchPlayerStats } from './fetchPlayerStats';
 
 // manually translate different names in FBREF and FootApi
 const player_name_translation = {
-    'Edward Nketiah': 'Eddie Nketiah',
-    'Fábio Vieira': 'Fabio Vieira',
-    'Gabriel Magalhães': 'Gabriel Dos Santos',
-    'Benjamin White': 'Ben White',
-    'Karl Hein': 'Karl Jakob Hein',
+    'Edward Nketiah': 'Eddie Nketiah',              // ARS
+    'Fábio Vieira': 'Fabio Vieira',                 // ARS
+    'Gabriel Magalhães': 'Gabriel Dos Santos',      // ARS
+    'Benjamin White': 'Ben White',                  // ARS
+    'Karl Hein': 'Karl Jakob Hein',                 // ARS
+    'Miloš Kerkez': 'Milos Kerkez',                 // BOU
+    'Joshua Dasilva': 'Josh Dasilva',               // BRE
+    'Zanka': 'Mathias Jørgensen',                   // BRE
+    'Julio Enciso': 'Julio César Enciso',           // BHA
+    'Igor Júlio': 'Igor' ,                          // BHA
+    'Manuel Benson': 'Benson Manuel',               // BUR
+    'Jóhann Guðmundsson': 'Jóhann Berg Guðmundsson',// BUR
+    'Arijanet Murić': 'Arijanet Muric',             // BUR
+    'Mykhaylo Mudryk': 'Mykhailo Mudryk',           // CHE
+    
 }
 
 const fetchClubPlayer = async (team_id, index) => {
@@ -36,6 +46,9 @@ const fetchClubPlayer = async (team_id, index) => {
             team = result.team;
         } catch (error) {
             console.error(error);
+            console.log("Error fetching club player", team_id);
+            // to retry
+            continue;
         }
         console.log(`[FootApi] Fetching for club index ${index}`);
         await new Promise(resolve => setTimeout(resolve, 500));
@@ -99,8 +112,7 @@ const fetchClubPlayer = async (team_id, index) => {
                 console.log(`Unknown position for ${player.name} of ${club.name_code}`);
                 break;
         }
-        // for player image
-        const player_image_url = await downloadPlayerImage(club.name_full, player.id);
+
 
         const player_obj = {
             Footapi_id: player.id,
@@ -113,7 +125,7 @@ const fetchClubPlayer = async (team_id, index) => {
             age: age || '--',
             contractEnd: contractEndYear || '--',
             marketValue: value_string,
-            image: player_image_url,
+            image: '',
             // club
             club_name_full: club.name_full,
             club_name_code: club.name_code,
@@ -145,8 +157,13 @@ const fetchPlayers = async () => {
         for (let j = 0; j < club_players.length; j++) {
             const player = club_players[j];
             // for player list
-            full_player_list.push(player);
+            const player_copy = {...player};
+            full_player_list.push(player_copy);
             // for player dictionary
+
+            // for player image
+            const player_image_url = await downloadPlayerImage(player.club_name_full, player.Footapi_id);
+            player.image = player_image_url;
             // add the stats object if name matches
             player.stats = club_players_stats[player.Footapi_name];
 
@@ -158,8 +175,8 @@ const fetchPlayers = async () => {
                     console.log(`[Translated] ${player.Footapi_name} to ${player_name_translation[player.Footapi_name]}`);
                     if (player.stats === undefined) {
                         player.stats = {};
-                        console.log(`[Missing Statistics for player] ----------> ${player.Footapi_name}`);
-                        missing_statistics_player_list.push(`${player.club_name_code} - ${player.Footapi_name}`);
+                        console.log(`[Missing Statistics for player] ----------> ${player_name_translation[player.Footapi_name]}`);
+                        missing_statistics_player_list.push(`${player.club_name_code} - ${player_name_translation[player.Footapi_name]}`);
                     }
                 } else {
                     player.stats = {};
