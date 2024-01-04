@@ -38,6 +38,7 @@ const getData = async (collectionName, docName) => {
 
     if (docSnap.exists()) {
         // console.log("Document data:", docSnap.data());
+        // console.log(JSON.stringify(docSnap.data()).length);  // to get document size in bytes
         return docSnap.data();
     } else {
         // doc.data() will be undefined in this case
@@ -50,6 +51,7 @@ const getClubs = async () => {
     const q = query(collection(db, "clubs"));
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
+        // console.log(JSON.stringify(doc.data()).length);  // to get document size in bytes
         club_array.push(doc.data());
     });
     return club_array;

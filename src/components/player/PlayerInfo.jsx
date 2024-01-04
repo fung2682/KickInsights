@@ -14,7 +14,7 @@ const PlayerInfo = ({player}) => {
                 style={[
                     styles.barContainerExp, 
                     {borderColor: `transparent`}, 
-                    {backgroundColor: `${color}AA`},
+                    {backgroundColor: `${color}CC`},
                 ]}
             >
                 <Image source={clubLogo[club_name_code]} style={club_name_code === "NFO" ?
@@ -29,7 +29,7 @@ const PlayerInfo = ({player}) => {
             <View 
                 style={[
                     styles.infoContainer,
-                    {borderColor: `${color}AA`}
+                    {borderColor: `${color}CC`}
                 ]}
             >
                 {/* for each, check if exist first */}

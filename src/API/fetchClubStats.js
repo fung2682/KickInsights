@@ -29,8 +29,8 @@ function check_numeric_values(stats) {
 const fetchGeneral = async (team_id) => {
     // General
     const res = await axios.get(`https://fbref.com/en/squads/${team_id}/${year}/matchlogs/c9/shooting`)
-    const table = res.data.match(/matchlogs_for.*<\/table>/)[0]
-    const row = table.match(/<tfoot.*?<\/tfoot>/)[0]
+    const table = await res.data.match(/matchlogs_for.*<\/table>/)[0]
+    const row = await table.match(/<tfoot.*?<\/tfoot>/)[0]
 
     const result = row.match(/data-stat="result".*?<\/td>/)[0].slice(20, -5)
     const goals_for = row.match(/data-stat="goals_for".*?<\/td>/)[0].slice(23, -5)
@@ -46,8 +46,8 @@ const fetchGeneral = async (team_id) => {
 const fetchShooting = async (team_id) => {
     // Shooting
     const res = await axios.get(`https://fbref.com/en/squads/${team_id}/${year}/matchlogs/c9/shooting`)
-    const table = res.data.match(/matchlogs_for.*<\/table>/)[0]
-    const row = table.match(/<tfoot.*?<\/tfoot>/)[0]
+    const table = await res.data.match(/matchlogs_for.*<\/table>/)[0]
+    const row = await table.match(/<tfoot.*?<\/tfoot>/)[0]
 
     const shots = row.match(/data-stat="shots" >.*?<\/td>/)[0].slice(19, -5)
     const goals = row.match(/data-stat="goals" >.*?<\/td>/)[0].slice(19, -5)
@@ -78,8 +78,8 @@ const fetchShooting = async (team_id) => {
 const fetchPassing = async (team_id) => {
     // Passing
     const res = await axios.get(`https://fbref.com/en/squads/${team_id}/${year}/matchlogs/c9/passing`)
-    const table = res.data.match(/matchlogs_for.*<\/table>/)[0]
-    const row = table.match(/<tfoot.*?<\/tfoot>/)[0]
+    const table = await res.data.match(/matchlogs_for.*<\/table>/)[0]
+    const row = await table.match(/<tfoot.*?<\/tfoot>/)[0]
 
     const assists = row.match(/data-stat="assists".*?<\/td>/)[0].slice(21, -5)
     const passes_completed = row.match(/data-stat="passes_completed".*?<\/td>/)[0].slice(30, -5)
@@ -119,8 +119,8 @@ const fetchPassing = async (team_id) => {
 const fetchPassTypes = async (team_id) => {
     // Pass Types
     const res = await axios.get(`https://fbref.com/en/squads/${team_id}/${year}/matchlogs/c9/passing_types`)
-    const table = res.data.match(/matchlogs_for.*<\/table>/)[0]
-    const row = table.match(/<tfoot.*?<\/tfoot>/)[0]
+    const table = await res.data.match(/matchlogs_for.*<\/table>/)[0]
+    const row = await table.match(/<tfoot.*?<\/tfoot>/)[0]
 
     const passes_live = row.match(/data-stat="passes_live".*?<\/td>/)[0].slice(25, -5)
     const passes_dead = row.match(/data-stat="passes_dead".*?<\/td>/)[0].slice(25, -5)
@@ -150,8 +150,8 @@ const fetchPassTypes = async (team_id) => {
 const fetchGoalAndShotCreation = async (team_id) => {
     // Goal and Shot Creation
     const res = await axios.get(`https://fbref.com/en/squads/${team_id}/${year}/matchlogs/c9/gca`)
-    const table = res.data.match(/matchlogs_for.*<\/table>/)[0]
-    const row = table.match(/<tfoot.*?<\/tfoot>/)[0]
+    const table = await res.data.match(/matchlogs_for.*<\/table>/)[0]
+    const row = await table.match(/<tfoot.*?<\/tfoot>/)[0]
 
     const sca = row.match(/data-stat="sca".*?<\/td>/)[0].slice(17, -5)
     const sca_passes_live = row.match(/data-stat="sca_passes_live".*?<\/td>/)[0].slice(29, -5)
@@ -190,8 +190,8 @@ const fetchGoalAndShotCreation = async (team_id) => {
 const fetchDefensiveActions = async (team_id) => {
     // Defensive Actions
     const res = await axios.get(`https://fbref.com/en/squads/${team_id}/${year}/matchlogs/c9/defense`)
-    const table = res.data.match(/matchlogs_for.*<\/table>/)[0]
-    const row = table.match(/<tfoot.*?<\/tfoot>/)[0]
+    const table = await res.data.match(/matchlogs_for.*<\/table>/)[0]
+    const row = await table.match(/<tfoot.*?<\/tfoot>/)[0]
     
     const tackles = row.match(/data-stat="tackles".*?<\/td>/)[0].slice(21, -5)
     const tackles_won = row.match(/data-stat="tackles_won".*?<\/td>/)[0].slice(25, -5)
@@ -219,7 +219,7 @@ const fetchDefensiveActions = async (team_id) => {
         {'[Challenges] Won': challenge_tackles},
         {'[Challenges] Won %': challenge_tackles_pct},
         {'---': '---'},
-        {'[Blocks] Attempted': blocks},
+        {'[Blocks] Balls': blocks},
         {'[Blocks] Shots': blocked_shots},
         {'[Blocks] Passes': blocked_passes},
         {'---': '---'},
@@ -232,8 +232,8 @@ const fetchDefensiveActions = async (team_id) => {
 const fetchPossession = async (team_id) => {
     // Possession
     const res = await axios.get(`https://fbref.com/en/squads/${team_id}/${year}/matchlogs/c9/possession`)
-    const table = res.data.match(/matchlogs_for.*<\/table>/)[0]
-    const row = table.match(/<tfoot.*?<\/tfoot>/)[0]
+    const table = await res.data.match(/matchlogs_for.*<\/table>/)[0]
+    const row = await table.match(/<tfoot.*?<\/tfoot>/)[0]
 
     const possession = row.match(/data-stat="possession".*?<\/td>/)[0].slice(24, -5)
     const touches = row.match(/data-stat="touches".*?<\/td>/)[0].slice(21, -5)
@@ -287,8 +287,8 @@ const fetchPossession = async (team_id) => {
 const fetchGoalkeeping = async (team_id) => {
     // Goalkeeping
     const res = await axios.get(`https://fbref.com/en/squads/${team_id}/${year}/matchlogs/c9/keeper`)
-    const table = res.data.match(/matchlogs_for.*<\/table>/)[0]
-    const row = table.match(/<tfoot.*?<\/tfoot>/)[0]
+    const table = await res.data.match(/matchlogs_for.*<\/table>/)[0]
+    const row = await table.match(/<tfoot.*?<\/tfoot>/)[0]
 
     const gk_shots_on_target_against = row.match(/data-stat="gk_shots_on_target_against".*?<\/td>/)[0].slice(40, -5)
     const gk_goals_against = row.match(/data-stat="gk_goals_against".*?<\/td>/)[0].slice(30, -5)
@@ -351,8 +351,8 @@ const fetchGoalkeeping = async (team_id) => {
 const fetchMiscellaneous = async (team_id) => {
     // Miscellaneous
     const res = await axios.get(`https://fbref.com/en/squads/${team_id}/${year}/matchlogs/c9/misc`)
-    const table = res.data.match(/matchlogs_for.*<\/table>/)[0]
-    const row = table.match(/<tfoot.*?<\/tfoot>/)[0]
+    const table = await res.data.match(/matchlogs_for.*<\/table>/)[0]
+    const row = await table.match(/<tfoot.*?<\/tfoot>/)[0]
 
     const cards_yellow = row.match(/data-stat="cards_yellow".*?<\/td>/)[0].slice(26, -5)
     const cards_red = row.match(/data-stat="cards_red".*?<\/td>/)[0].slice(23, -5)
