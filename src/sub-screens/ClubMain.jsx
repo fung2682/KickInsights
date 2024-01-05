@@ -28,12 +28,12 @@ const ClubMain = ({navigation}) => {
                     },
                 }
             }
-            initialRouteName="PLAYER_LIST"
+            initialRouteName="CLUB_LIST"
         >
-            <Tab.Screen name="PLAYER_LIST" options={{title: "LIST"}}>
+            <Tab.Screen name="CLUB_LIST" options={{title: "LIST"}}>
                 {() => <ClubList nav={navigation}/>}
             </Tab.Screen>
-            <Tab.Screen name="PLAYER_COMPARE" options={{title: "COMPARE"}}>
+            <Tab.Screen name="CLUB_COMPARE" options={{title: "COMPARE"}}>
                 {() => <ClubCompare/>}           
             </Tab.Screen>
         </Tab.Navigator>
