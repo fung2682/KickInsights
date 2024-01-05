@@ -1,10 +1,10 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, ScrollView } from "react-native";
 import { dataPlayersList } from "../../fetchCloud";
 import { clubColor } from "../../clubColor";
 import { clubLogo } from "../../clubLogo";
 
-const Item = ({player, nav}) => {
+const Item = ({player, nav, setTemp}) => {
 
     const {color, number, club_name_code, position, Footapi_name} = player;
 
@@ -15,6 +15,10 @@ const Item = ({player, nav}) => {
             ]}
             activeOpacity={0.8}
             onPress={() => nav.navigate("PlayerDetails", {player: player})}
+            // on long press pass parameters to parent component
+            onLongPress={() => {
+                setTemp(Footapi_name);
+            }}
         >
             <Image source={clubLogo[club_name_code]} style={club_name_code === "NFO" ?
                 [styles.image, {backgroundColor: "pink", borderRadius: 4, width: 17}] :
@@ -28,10 +32,10 @@ const Item = ({player, nav}) => {
     );
 };
 
-const PlayerList = ({nav}) => {
+const PlayerList = ({nav, setTemp}) => {
 
     // define outside to avoid redefining every time
-    const renderItem = ({item}) => <Item player={item} nav={nav}/>;
+    const renderItem = ({item}) => <Item player={item} nav={nav} setTemp={setTemp}/>
     const keyExtractor = item => item.Footapi_id;
 
     return (
