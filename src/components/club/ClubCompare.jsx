@@ -10,7 +10,7 @@ const Clubs = ["ARS", "AVL", "BOU", "BRE", "BHA", "BUR", "CHE", "CRY", "EVE", "F
 
 const PickNote = () => (
     <View style={styles.pickNote}>
-        <Text style={styles.pickText}>pick a club to compare</Text>
+        <Text style={styles.pickText}>Select a club to compare.</Text>
     </View>
 );
 
@@ -126,8 +126,8 @@ const styles = StyleSheet.create({
     Box:{
         width: 373,
         position: "absolute",
-        top: 90,
-        bottom: 90,
+        top: 88,
+        bottom: 88,
         flexDirection: "column",
         flex: 1,
     },
@@ -145,8 +145,8 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     pickText: {
-        color: "#3a3a3a",
-        fontSize: 20,
+        color: "grey",
+        fontSize: 16,
     },
 });
 
