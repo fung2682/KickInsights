@@ -36,7 +36,7 @@ const ClubList = ({nav}) => {
                 keyExtractor={item => item.club.id}
                 ItemSeparatorComponent={<View style={{height: 10}}/>}
                 indicatorStyle="white"
-                scrollIndicatorInsets={{right: -10}}
+                scrollIndicatorInsets={{right: -15}}
                 initialNumToRender={8}
             />
         </View>

@@ -11,7 +11,7 @@ const ClubDeatails_Info = ({ clubData }) => {
       style={styles.scrollContainer}
       showsVerticalScrollIndicator={true}
       indicatorStyle="white"
-      scrollIndicatorInsets={{ right: 3 }}
+      scrollIndicatorInsets={{ right: 1 }}
     >
       <View style={styles.container}>
         <ClubOverView club={clubData.club} />

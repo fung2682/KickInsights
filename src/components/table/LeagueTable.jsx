@@ -43,7 +43,7 @@ const LeagueTable = ({Data, nav}) => {
                 ListHeaderComponent={<TableTopBar/>}
                 stickyHeaderIndices={[0]}
                 indicatorStyle="white"
-                scrollIndicatorInsets={{right: -10}}
+                scrollIndicatorInsets={{right: -15}}
                 initialNumToRender={18}
             />
         </View>

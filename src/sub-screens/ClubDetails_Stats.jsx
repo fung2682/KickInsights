@@ -18,7 +18,7 @@ const ClubDetails_Stats = ({ club }) => {
         style={styles.scrollContainer}
         showsVerticalScrollIndicator={true}
         indicatorStyle="white"
-        scrollIndicatorInsets={{ right: 3 }}
+        scrollIndicatorInsets={{ right: 1 }}
       >
         <View style={styles.statsContainer}>
           <ClubStats color={statColor} area={club.stats.general} title="General"/>
