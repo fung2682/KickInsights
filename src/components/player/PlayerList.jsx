@@ -44,7 +44,7 @@ const PlayerList = ({nav}) => {
                 ItemSeparatorComponent={<View style={{height: 3}}/>}
                 indicatorStyle="white"
                 scrollIndicatorInsets={{right: -10}}
-                initialNumToRender={25}
+                initialNumToRender={20}
                 windowSize={5}
                 decelerationRate={0.8}
             />

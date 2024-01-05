@@ -37,7 +37,7 @@ const ClubList = ({nav}) => {
                 ItemSeparatorComponent={<View style={{height: 10}}/>}
                 indicatorStyle="white"
                 scrollIndicatorInsets={{right: -10}}
-                initialNumToRender={7}
+                initialNumToRender={8}
             />
         </View>
     );
