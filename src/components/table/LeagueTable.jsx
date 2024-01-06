@@ -60,8 +60,9 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     },
     table: {
+        marginTop: 10,
         marginBottom: 10,
-        overflow: "visible",
+        overflow: "hidden",
         zIndex: -1,
         width: "97%",
     },
@@ -99,7 +100,7 @@ const styles = StyleSheet.create({
     num: {
         color: "white",
         fontSize: 15,
-        width: 25,
+        width: 30,
         textAlign: "center",
     },
 });

@@ -22,7 +22,6 @@ const styles = StyleSheet.create({
     row: {
         width: "100%",
         height: 40,
-        marginTop: 10,
         flexDirection: "row",
         justifyContent: "space-around",
         alignItems: "center",
@@ -37,7 +36,7 @@ const styles = StyleSheet.create({
     text: {
         color: "#54a761",
         fontSize: 15,
-        width: 25,
+        width: 30,
         height: 16,
         textAlign: "center",
         fontWeight: "bold",
@@ -53,7 +52,7 @@ const styles = StyleSheet.create({
     background: {
         backgroundColor: "black",
         width: "100%",
-        height: 50,
+        height: 40,
     }
 })
 
