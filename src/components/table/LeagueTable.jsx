@@ -60,10 +60,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     },
     table: {
-        borderColor: "red",
         marginBottom: 10,
-        //borderLeftWidth: 1,
-        //borderRightWidth: 1,
         overflow: "visible",
         zIndex: -1,
         width: "97%",
