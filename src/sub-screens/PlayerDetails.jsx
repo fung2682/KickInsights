@@ -62,12 +62,15 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: "#000000",
+        alignItems: "center",
       },
     scrollContainer: {
         flex: 1,
+        width: "97%",
     },
     statsContainer: {
         flex: 1,
+        width: "100%",
         alignItems: "center",
         marginTop: 8,
         marginBottom: 8,

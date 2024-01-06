@@ -1,15 +1,15 @@
 import React, {useState, useEffect} from "react";
 import { View, Text, StyleSheet, TouchableOpacity, LayoutAnimation, Image } from "react-native";
 import { MaterialIcons } from '@expo/vector-icons'; 
-import { downloadPlayerImage } from "../../../firebase/storage";
 
 const ClubPlayers = ({player, color}) => {
 
     const {Footapi_id, Footapi_name, age, contractEnd, country, foot, height, marketValue, number, position, image} = player;
-    
     const player_image = image || 'NA';
-
     const [expanded, setExpanded] = useState(false);
+
+    const arrow_up_icon = <MaterialIcons name="keyboard-arrow-down" size={36} color="white" style={{height:36, transform: [{ rotate: "180deg" }]}}/>
+    const arrow_down_icon = <MaterialIcons name="keyboard-arrow-down" size={36} color="white" style={{height:36, transform: [{ rotate: "0deg" }]}}/>
 
     const infoPopup = () => {
         LayoutAnimation.configureNext({
@@ -29,7 +29,7 @@ const ClubPlayers = ({player, color}) => {
                     style={[
                         styles.barContainerExp, 
                         {borderColor: `transparent`}, 
-                        {backgroundColor: `${color}AA`},
+                        {backgroundColor: `${color}CC`},
                     ]}
                     activeOpacity={0.8}
                     onPress={infoPopup}
@@ -39,13 +39,12 @@ const ClubPlayers = ({player, color}) => {
                     </View>
                     <Text style={styles.name}>{Footapi_name}</Text>
                     <Text style={styles.position}>{position}</Text>
-                    <MaterialIcons name="keyboard-arrow-down" size={36} color="white" 
-                      style={{height:36, transform: [{ rotate: "180deg" }]}}/>
+                    {arrow_up_icon}
                 </TouchableOpacity>
                 <View 
                     style={[
                         styles.infoContainer,
-                        {borderColor: `${color}AA`}
+                        {borderColor: `${color}CC`}
                     ]}
                 >
                     {/* for each, check if exist first */}
@@ -82,7 +81,7 @@ const ClubPlayers = ({player, color}) => {
                 style={[
                     styles.barContainer, 
                     {borderColor: `transparent`}, 
-                    {backgroundColor: `${color}AA`}
+                    {backgroundColor: `${color}CC`}
                 ]}
                 activeOpacity={0.8}
                 onPress={infoPopup}
@@ -92,8 +91,7 @@ const ClubPlayers = ({player, color}) => {
                 </View>
                 <Text style={styles.name}>{Footapi_name}</Text>
                 <Text style={styles.position}>{position}</Text>
-                <MaterialIcons name="keyboard-arrow-down" size={36} color="white" 
-                    style={{height:36, transform: [{ rotate: "0deg" }]}}/>
+                {arrow_down_icon}
             </TouchableOpacity>
         );
     }
@@ -101,7 +99,7 @@ const ClubPlayers = ({player, color}) => {
 
 const styles = StyleSheet.create({
     barContainer: {
-        width: 362,
+        width: "97%",
         height: 34,
         borderWidth: 2,
         borderRadius: 5,
@@ -111,7 +109,7 @@ const styles = StyleSheet.create({
         justifyContent: "space-evenly",
     },
     barContainerExp: {
-        width: 362,
+        width: "97%",
         height: 34,
         borderWidth: 2,
         borderTopLeftRadius: 5,
@@ -141,7 +139,8 @@ const styles = StyleSheet.create({
         color: "white",
         fontSize: 16,
         fontWeight: "bold",
-        width: 218,
+        width: "65%",
+        paddingLeft: 10,
     },
     position: {
         color: "white",
@@ -151,37 +150,35 @@ const styles = StyleSheet.create({
         textAlign: "center",
     },
     infoContainer: {
-        width: 362,
+        width: "97%",
         height: 130,
         borderLeftWidth: 3,
         borderRightWidth: 3,
         borderBottomWidth: 3,
         borderBottomLeftRadius: 5,
         borderBottomRightRadius: 5,
-        backgroundColor: "#272727",
+        backgroundColor: "#1f1f1f",
         flexDirection: "row",
         alignItems: "center",
         marginBottom: 0,
     },
     attribute: {
-        width: 106,
+        width: "30%",
         height: 128,
-        //backgroundColor: "green",
         paddingLeft: 10,
         paddingTop: 5,
         paddingBottom: 5,
         justifyContent: "space-evenly",
         },
     data: {
-        width: 132,
+        width: "40%",
         height: 128,
-        //backgroundColor: "blue",
         paddingTop: 5,
         paddingBottom: 5,
         justifyContent: "space-evenly"
     },
     photo: {
-        width: 120,
+        width: "30%",
         height: 128,
         alignItems: "center",
         justifyContent: "center",

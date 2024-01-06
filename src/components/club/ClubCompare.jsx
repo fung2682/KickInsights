@@ -104,8 +104,8 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     clubPane: {
-        backgroundColor: "#272727",
-        width: 373,
+        backgroundColor: "#1f1f1f",
+        width: "97%",
         height: 80,
         borderRadius: 5,
         justifyContent: "space-evenly",
@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
     clubRow: {
         flexDirection: "row",
         justifyContent: "space-evenly",
-        width: 373,
+        width: "100%",
         height: 32,
     },
     image: {
@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
         height: 32,
     },
     Box:{
-        width: 373,
+        width: "97%",
         position: "absolute",
         top: 88,
         bottom: 88,
@@ -132,11 +132,11 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     Frame: {
-        width: 373,
+        width: "100%",
         flex: 0.5,
         position: "relative",
         borderColor: "#3a3a3a",
-        backgroundColor: "#272727",
+        backgroundColor: "#1f1f1f",
         borderWidth: 2,
     },
     pickNote: {

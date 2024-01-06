@@ -68,12 +68,11 @@ const styles = StyleSheet.create({
         marginTop: 10,
         overflow: "visible",
         marginBottom: 10,
-        // borderColor: "red",
-        // borderWidth: 1,
+        width: "97%",
     },
 
     barContainer: {
-        width: 362,
+        width: "100%",
         height: 34,
         borderRadius: 5,
         marginTop: 0,

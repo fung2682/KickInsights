@@ -15,7 +15,7 @@ const ClubOverView = ({club}) => {
     }
 
     return (
-        <View style={[styles.container, {borderColor: `${clubColor[club.name_code]}66`}]}>
+        <View style={[styles.container, {borderColor: `${clubColor[club.name_code]}CC`}]}>
             <DetailBoxHeader text="Overview" color={clubColor[club.name_code]}/>
             <View style={styles.Overview}>
                 <View style={styles.leftOverview}>
@@ -39,16 +39,13 @@ const ClubOverView = ({club}) => {
     );
 }
 
-                        {/* {`${club.ground}\n${club.city}\n${club.capacity}\n${club.founded}\
-                        \n${club.pl_titles}\n\n${club.current_rank}\n${club.manager}`} */}
-
 const styles = StyleSheet.create({
     container: {
-        width: 362,
+        width: "97%",
         height: 200,
         borderWidth: 3,
         borderRadius: 5,
-        backgroundColor: "#272727",
+        backgroundColor: "#1f1f1f",
         marginTop: 10,
     },
     Overview: {

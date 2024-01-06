@@ -6,7 +6,7 @@ import { clubColor } from "../../../../clubColor";
 const ClubKit = ({club}) => {
     //console.log(club);
     return (
-        <View style={[styles.container, {borderColor: `${clubColor[club.name_code]}66`}]}>
+        <View style={[styles.container, {borderColor: `${clubColor[club.name_code]}CC`}]}>
             <DetailBoxHeader text="Kits" color={clubColor[club.name_code]}/>
             <View style={styles.Kit}>
                 <Image source={{uri: `${club.kit[0]}`}} style={styles.image}/>
@@ -19,12 +19,12 @@ const ClubKit = ({club}) => {
 
 const styles = StyleSheet.create({
     container: {
-        width: 362,
+        width: "97%",
         height: 180,
-        marginTop: 10,
+        marginTop: 5,
         borderWidth: 3,
         borderRadius: 5,
-        backgroundColor: "#272727",
+        backgroundColor: "#1f1f1f",
     },
     Kit: {
         flex: 1,

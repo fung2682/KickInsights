@@ -64,7 +64,7 @@ const MatchSeparator = () => {
 
 const ClubLast3 = ({matches, color, last}) => {
     return (
-        <View style={[styles.container, {borderColor: `${clubColor[color]}66`}]}>
+        <View style={[styles.container, {borderColor: `${clubColor[color]}CC`}]}>
             <DetailBoxHeader text={ last?"Last 3 Games" : "Next 3 Games" } color={clubColor[color]}/>
             <View style={styles.lastNext}>
                 <Match lastMatch={matches.last3[2]} nextMatch={matches.next3[0]} last={last}/>
@@ -79,12 +79,12 @@ const ClubLast3 = ({matches, color, last}) => {
 
 const styles = StyleSheet.create({
     container: {
-        width: 362,
+        width: "97%",
         height: 200,
-        marginTop: 10,
+        marginTop: 5,
         borderWidth: 3,
         borderRadius: 5,
-        backgroundColor: "#272727",
+        backgroundColor: "#1f1f1f",
     },
     lastNext: {
         flex: 1,
@@ -103,14 +103,12 @@ const styles = StyleSheet.create({
     teamLeft: {
         color: "white",
         width: 110,
-        //backgroundColor: "green",
         fontSize: 16,
         textAlign: "right",
     },
     teamRight: {
         color: "white",
         width: 110,
-        //backgroundColor: "green",
         fontSize: 16,
         textAlign: "left",
     },

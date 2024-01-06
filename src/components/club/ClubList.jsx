@@ -12,7 +12,7 @@ const Item = ({club, nav}) => {
 
     return (
         <TouchableOpacity 
-            style={[styles.clubPane, {backgroundColor: clubColor[club.name_code]}]}
+            style={[styles.clubPane, {backgroundColor: `${clubColor[club.name_code]}CC`}]}
             activeOpacity={0.8}
             onPress={() => nav.navigate("ClubDetails", {clubData: dataClubs[club.id]})}
         >
@@ -57,9 +57,10 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         // borderColor: "red",
         // borderWidth: 1,
+        width: "97%",
     },
     clubPane: {
-        width: 362,
+        width: "100%",
         height: 90,
         borderRadius: 10,
     },

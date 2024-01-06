@@ -137,8 +137,8 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     nametag: {
-        backgroundColor: "#272727",
-        width: 373,
+        backgroundColor: "#1f1f1f",
+        width: "97%",
         height: 38,
         borderRadius: 5,
         justifyContent: "space-evenly",
@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
         borderWidth: 2,
     },
     Box:{
-        width: 373,
+        width: "97%",
         position: "absolute",
         top: 46,
         bottom: 46,
@@ -155,11 +155,11 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     Frame: {
-        width: 373,
+        width: "100%",
         flex: 0.5,
         position: "relative",
         borderColor: "#3a3a3a",
-        backgroundColor: "#272727",
+        backgroundColor: "#1f1f1f",
         borderWidth: 2,
         alignItems: "center",
     },
@@ -174,7 +174,7 @@ const styles = StyleSheet.create({
         textAlign: "center",
     },
     barContainer: {
-        width: 369,
+        width: "100%",
         height: 34,
         borderRadius: 3,
         marginTop: 0,

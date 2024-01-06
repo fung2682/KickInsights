@@ -5,14 +5,14 @@ const TableTopBar = () => {
     return (
     <View style={styles.background}>
         <View style={styles.row}>
-            <Text style={[styles.text, {marginLeft:11}]}>#</Text>
-            <Text style={[styles.text, {marginLeft:10}]}>CLUB</Text>
-            <Text style={[styles.text, {marginLeft:82}]}>PL</Text>
-            <Text style={[styles.text, {marginLeft:17}]}>W</Text>
-            <Text style={[styles.text, {marginLeft:22}]}>D</Text>
-            <Text style={[styles.text, {marginLeft:24}]}>L</Text>
-            <Text style={[styles.text, {marginLeft:20}]}>GD</Text>
-            <Text style={[styles.text, {marginLeft:12}, {fontWeight: "bold"}]}>Pts</Text>
+            <Text style={[styles.text, ]}>#</Text>
+            <Text style={[styles.club, ]}>CLUB</Text>
+            <Text style={[styles.text, ]}>PL</Text>
+            <Text style={[styles.text, ]}>W</Text>
+            <Text style={[styles.text, ]}>D</Text>
+            <Text style={[styles.text, ]}>L</Text>
+            <Text style={[styles.text, ]}>GD</Text>
+            <Text style={[styles.text, , {fontWeight: "bold"}]}>Pts</Text>
         </View>
     </View>
     )
@@ -20,10 +20,11 @@ const TableTopBar = () => {
 
 const styles = StyleSheet.create({
     row: {
-        width: 362,
+        width: "100%",
         height: 40,
+        marginTop: 10,
         flexDirection: "row",
-        justifyContent: "flex-start",
+        justifyContent: "space-around",
         alignItems: "center",
         borderWidth: 2,
         //borderLeftWidth: 1,
@@ -36,14 +37,23 @@ const styles = StyleSheet.create({
     text: {
         color: "#54a761",
         fontSize: 15,
+        width: 25,
+        height: 16,
+        textAlign: "center",
+        fontWeight: "bold",
+    },
+    club: {
+        color: "#54a761",
+        fontSize: 15,
+        width: "40%",
         height: 16,
         textAlign: "left",
         fontWeight: "bold",
     },
     background: {
         backgroundColor: "black",
-        width: 362,
-        height: 40,
+        width: "100%",
+        height: 50,
     }
 })
 

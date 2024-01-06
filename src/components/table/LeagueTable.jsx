@@ -10,15 +10,17 @@ const Item = ({club, nav, lastItem}) => (
         activeOpacity={0.8}
         onPress={() => nav.navigate("ClubDetails", {clubData: dataClubs[club.club_id]})}
     >
-        <Text style={[styles.num, {marginLeft:5}]}>{club.position}</Text>
-        <Image source={clubLogo[club.name_code]} style={styles.image}/>
-        <Text style={[styles.clubName, {marginLeft:10}]}>{club.name_code}</Text>
-        <Text style={[styles.num, {marginLeft:18}]}>{club.played}</Text>
-        <Text style={[styles.num, {marginLeft:14.6}]}>{club.win}</Text>
-        <Text style={[styles.num, {marginLeft:14.6}]}>{club.draw}</Text>
-        <Text style={[styles.num, {marginLeft:14.6}]}>{club.loss}</Text>
-        <Text style={[styles.longnum, {marginLeft:10}]}>{club.goal_difference}</Text>
-        <Text style={[styles.longnum, {marginLeft:5.5}, {fontWeight: "bold"}]}>{club.points}</Text>
+        <Text style={[styles.num, ]}>{club.position}</Text>
+        <View style={styles.club}>
+            <Image source={clubLogo[club.name_code]} style={styles.image}/>
+            <Text style={[styles.clubName, ]}>{club.name_short}</Text>
+        </View>
+        <Text style={[styles.num, ]}>{club.played}</Text>
+        <Text style={[styles.num, ]}>{club.win}</Text>
+        <Text style={[styles.num, ]}>{club.draw}</Text>
+        <Text style={[styles.num, ]}>{club.loss}</Text>
+        <Text style={[styles.num, ]}>{club.goal_difference}</Text>
+        <Text style={[styles.num, , {fontWeight: "bold"}]}>{club.points}</Text>
     </TouchableOpacity>
 );
 
@@ -27,7 +29,6 @@ const LeagueTable = ({Data, nav}) => {
 
     return (
         <View style={styles.container}>
-            <View style={styles.topcover}></View>
             <FlatList 
                 style={styles.table}
                 data={Data}
@@ -43,7 +44,7 @@ const LeagueTable = ({Data, nav}) => {
                 ListHeaderComponent={<TableTopBar/>}
                 stickyHeaderIndices={[0]}
                 indicatorStyle="white"
-                scrollIndicatorInsets={{right: -15}}
+                scrollIndicatorInsets={{right: -8}}
                 initialNumToRender={18}
             />
         </View>
@@ -58,61 +59,50 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
     },
-    topcover: {
-        width: 362,
-        height: 10,
-        backgroundColor: "black",
-        zIndex: 0,
-        position: "absolute",
-        top: 0,
-    },
     table: {
         borderColor: "red",
-        marginTop: 10,    // to hide the top cover of the table
         marginBottom: 10,
         //borderLeftWidth: 1,
         //borderRightWidth: 1,
         overflow: "visible",
         zIndex: -1,
+        width: "97%",
     },
     row: {
-        width: 362,
+        width: "100%",
         height: 40,
         flexDirection: "row",
-        justifyContent: "flex-start",
+        justifyContent: "space-around",
         alignItems: "center",
         borderBottomWidth: 1,
         borderLeftWidth: 2,
         borderRightWidth: 2,
         borderColor: "#3a3a3a",
-        backgroundColor: "#272727",
+        backgroundColor: "#1f1f1f",
         zIndex: -2,
     },
     image: {
         width: 23,
         height: 23,
-        marginLeft: 5,
     },
     clubName: {
         color: "white",
         fontSize: 15,
-        width: 72,
-        height: 16,
+        width: "75%",
         textAlign: "left",
-        fontWeight: "bold",
+        fontWeight: "600",
+        marginLeft: 10,
+    },
+    club: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "flex-start",
+        width: "40%",
     },
     num: {
         color: "white",
         fontSize: 15,
-        width: 20,
-        height: 16,
-        textAlign: "center",
-    },
-    longnum: {
-        color: "white",
-        fontSize: 15,
-        width: 30,
-        height: 16,
+        width: 25,
         textAlign: "center",
     },
 });

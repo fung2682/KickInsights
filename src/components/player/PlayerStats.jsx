@@ -7,7 +7,7 @@ const PlayerStats = ({color, area, title}) => {
     const statsBoxHeader = ({expanded}) => {
         return (
                 <TouchableOpacity 
-                    style={[styles.header, {backgroundColor: `${color}AA`}, {borderColor: `${color}66`}]}
+                    style={[styles.header, {backgroundColor: `${color}CC`}, {borderColor: `${color}CC`}]}
                     activeOpacity={0.8}
                     onPress={infoPopup}
                 >
@@ -38,7 +38,7 @@ const PlayerStats = ({color, area, title}) => {
         if (area == undefined) {
             const message = "Statistics are unavailable.\nPlayer has 0 appearances this season.";
             return (    // for player with no appearances
-                <View style={[styles.container, {borderColor: `${color}66`}]}>
+                <View style={[styles.container, {borderColor: `${color}CC`}]}>
                     {statsBoxHeader({expanded})}
                     <View style={styles.Overview}>
                         <Text style={styles.text}>{message}</Text>
@@ -47,7 +47,7 @@ const PlayerStats = ({color, area, title}) => {
             )
         } else {    // for normal player with appearances
             return (
-                <View style={[styles.container, {borderColor: `${color}66`}]}>
+                <View style={[styles.container, {borderColor: `${color}CC`}]}>
                     {statsBoxHeader({expanded})}
                     <View style={styles.Overview}>
                         <View style={styles.leftOverview}>
@@ -79,7 +79,7 @@ const PlayerStats = ({color, area, title}) => {
     } else {
         return (
             <TouchableOpacity 
-                style={[styles.container, {borderColor: `${color}66`}]}
+                style={[styles.container, {borderColor: `${color}CC`}]}
                 activeOpacity={0.8}
                 onPress={infoPopup}
             >
@@ -91,30 +91,31 @@ const PlayerStats = ({color, area, title}) => {
 
 const styles = StyleSheet.create({
     container: {
-        width: 362,
+        width: "100%",
         //height: 200,
         borderWidth: 3,
         borderRadius: 5,
-        backgroundColor: "#272727",
+        backgroundColor: "#1f1f1f",
         marginTop: 2,
     },
     Overview: {
         flex: 1,
         flexDirection: "row",
-        paddingLeft: 10,
-        paddingRight: 10,
-        paddingBottom: 5,
-        paddingTop: 5,
     },
     leftOverview: {
         alignItems: "flex-start",
         flex: 0.7,
         justifyContent: "center",
+        paddingTop: 5,
+        paddingBottom: 5,
+        paddingLeft: 10,
     },
     rightOverview: {
         alignItems: "center",
         flex: 0.3,
         justifyContent: "center",
+        paddingTop: 5,
+        paddingBottom: 5,
     },
     text: {
         color: "white",
@@ -124,22 +125,21 @@ const styles = StyleSheet.create({
     header: {
         alignItems: "center",
         flexDirection: "row",
-        width: 356,
+        width: "100%",
         height: 30,
         top: 0,
-        borderTopLeftRadius: 2.5,
-        borderTopRightRadius: 2.5
     },
     headerText: {
         fontSize: 16,
         fontWeight: "bold",
         color: "white",
-        width: 356,
+        width: "100%",
         textAlign: "center",
     },
     icon: {
+        width:36,
         height:36, 
-        marginLeft: -40,
+        marginLeft: -36,
     }
 });
 
