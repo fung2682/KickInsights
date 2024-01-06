@@ -1,3 +1,6 @@
+// The function is copied from https://stackoverflow.com/questions/18123501/replacing-accented-characters-with-plain-ascii-ones
+// Author: Jeroen Ooms (https://stackoverflow.com/users/318752/jeroen-ooms)
+
 const removeDiacritics = (str) => {
 
     var defaultDiacriticsRemovalMap = [

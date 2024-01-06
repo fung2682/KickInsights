@@ -5,6 +5,7 @@ import { clubColor } from "../../clubColor";
 import { clubLogo } from "../../clubLogo";
 import { FontAwesome } from '@expo/vector-icons'; 
 import { MaterialIcons } from '@expo/vector-icons'; 
+import removeDiacritics from "../../removeDiacritics";
 
 const Item = ({player, nav, setTemp}) => {
 
@@ -45,7 +46,9 @@ const PlayerList = ({nav, setTemp}) => {
     const searchBar = () => {
         return (
             <View style={styles.search_bar}>
-                <FontAwesome name="search" size={20} color="grey" style={{marginLeft: 5, marginRight: 5}}/>
+                <FontAwesome name="search" size={20} color="#3a3a3a" 
+                    style={{marginLeft: 5, marginRight: 5, paddingBottom: 2}}
+                />
                 <TextInput
                     style={styles.searchInput}
                     placeholder="Search..." 
@@ -56,6 +59,7 @@ const PlayerList = ({nav, setTemp}) => {
                     autoComplete="off"
                     autoCorrect={false}
                     onChangeText={(text) => {handleSearch(text)}}
+                    clearButtonMode="while-editing"
                 >
                 </TextInput>
             </View>
@@ -63,7 +67,8 @@ const PlayerList = ({nav, setTemp}) => {
     }
 
     const handleSearch = (text) => {
-        const filtered_list = dataPlayersList.filter(player => player.Footapi_name.toLowerCase().includes(text.toLowerCase()));
+        text = text.toLowerCase();
+        const filtered_list = dataPlayersList.filter(player => removeDiacritics(player.Footapi_name.toLowerCase()).includes(text));
         setDisplayList(filtered_list);
     }
 
@@ -118,9 +123,7 @@ const styles = StyleSheet.create({
     search_bar: {
         width: "70%", 
         height: 34, 
-        borderColor:"grey", 
-        borderWidth:2, 
-        backgroundColor:"transparent",
+        backgroundColor:"grey",
         borderRadius: 5,
         flexDirection: "row",
         alignItems: "center",
@@ -128,9 +131,10 @@ const styles = StyleSheet.create({
     },
     searchInput: {
         width: "85%",
-        color: "white",
+        color: "#3a3a3a",
         fontSize: 16,
         fontWeight: "bold",
+        height: 34,
     },
     barContainer: {
         width: "100%",
