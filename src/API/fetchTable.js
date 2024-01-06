@@ -29,6 +29,7 @@ const fetchTable = async (url) => {
         return {
             name_full: club.team.name,
             name_code: club.team.nameCode,
+            name_short: club.team.shortName,
             club_id: 0,
             position: club.position,
             played: club.matches,
