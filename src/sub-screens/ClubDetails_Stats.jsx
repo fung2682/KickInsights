@@ -51,9 +51,9 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   image: {
-    top: 390,
+    top: "70%",
     resizeMode: "contain",
-    height: "30%",
+    height: "20%",
   },
 });
 
