@@ -1,9 +1,9 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
-import { createStackNavigator } from "@react-navigation/stack";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import TempScreen from "../sub-screens/tempScreen";
 
-const Stack = createStackNavigator();
+const Stack = createNativeStackNavigator();
 
 const Matches = () => {
     return (
@@ -24,8 +24,9 @@ const Matches = () => {
                 headerTitleContainerStyle: {
                     top: 0,
                 },
-                headerTitle: "Matches",
                 headerTintColor: "#54a761",
+                headerTitle: "Matches",
+                headerBackTitle: "Matches",
             }}
         >
             <Stack.Screen name="tempScreen" component={TempScreen}/>
