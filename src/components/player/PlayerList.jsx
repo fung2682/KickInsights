@@ -6,6 +6,7 @@ import { clubLogo } from "../../clubLogo";
 import { FontAwesome } from '@expo/vector-icons'; 
 import { MaterialIcons } from '@expo/vector-icons'; 
 import removeDiacritics from "../../removeDiacritics";
+import DropDownPicker from 'react-native-dropdown-picker';
 
 const Item = ({player, nav, setTemp}) => {
 
@@ -42,6 +43,76 @@ const PlayerList = ({nav, setTemp}) => {
     const keyExtractor = item => item.Footapi_id;
 
     const [displayList, setDisplayList] = useState(dataPlayersList);
+    const [clubFilterOpen, setClubFilterOpen] = useState(false);
+    const [clubFilterValues, setClubFilterValues] = useState("ALL");     // default value "ALL
+    const [clubFilterItems, setClubFilterItems] = useState([
+        {label: "ALL", value: "ALL"},
+        {label: "ARS", value: "ARS"},
+        {label: "AVL", value: "AVL"},
+        {label: "BOU", value: "BOU"},
+        {label: "BRE", value: "BRE"},
+        {label: "BHA", value: "BHA"},
+        {label: "BUR", value: "BUR"},
+        {label: "CHE", value: "CHE"},
+        {label: "CRY", value: "CRY"},
+        {label: "EVE", value: "EVE"},
+        {label: "FUL", value: "FUL"},
+        {label: "LIV", value: "LIV"},
+        {label: "LUT", value: "LUT"},
+        {label: "MCI", value: "MCI"},
+        {label: "MUN", value: "MUN"},
+        {label: "NEW", value: "NEW"},
+        {label: "NFO", value: "NFO"},
+        {label: "SHU", value: "SHU"},
+        {label: "TOT", value: "TOT"},
+        {label: "WHU", value: "WHU"},
+        {label: "WOL", value: "WOL"},
+    ]);
+
+    const [posFilterOpen, setPosFilterOpen] = useState(false);
+    const [posFilterValues, setPosFilterValues] = useState("ALL");     // default value "ALL
+    const [posFilterItems, setPosFilterItems] = useState([
+        {label: "ALL", value: "ALL"},
+        {label: "FW", value: "FW"}, 
+        {label: "MF", value: "MF"}, 
+        {label: "DF", value: "DF"}, 
+        {label: "GK", value: "GK"}
+    ]);
+
+    const [clubFilterBorderLeftRadius, setClubFilterBorderLeftRadius] = useState(5);
+    const [posFilterBorderRightRadius, setPosFilterBorderRightRadius] = useState(5);
+    const [clubFilterOpacity, setClubFilterOpacity] = useState(1.0);
+    const [posFilterOpacity, setPosFilterOpacity] = useState(1.0);
+
+    useEffect(() => {
+        if (clubFilterValues === "ALL" && posFilterValues === "ALL") {
+            setDisplayList(dataPlayersList);
+        } else if (clubFilterValues === "ALL") {
+            const filtered_list = dataPlayersList.filter(player => posFilterValues.includes(player.position));
+            setDisplayList(filtered_list);
+        } else if (posFilterValues === "ALL") {
+            const filtered_list = dataPlayersList.filter(player => clubFilterValues.includes(player.club_name_code));
+            setDisplayList(filtered_list);
+        } else {
+            const filtered_list = dataPlayersList.filter(player => clubFilterValues.includes(player.club_name_code) && posFilterValues.includes(player.position));
+            setDisplayList(filtered_list);
+        }
+    }, [clubFilterValues, posFilterValues]);
+
+    useEffect(() => {
+        if (clubFilterOpen) {
+            setPosFilterBorderRightRadius(0);
+            setPosFilterOpacity(0.5);
+        } else if (posFilterOpen) {
+            setClubFilterBorderLeftRadius(0);
+            setClubFilterOpacity(0.5);
+        } else {    // both closed
+            setClubFilterBorderLeftRadius(5);
+            setPosFilterBorderRightRadius(5);
+            setClubFilterOpacity(1.0);
+            setPosFilterOpacity(1.0);
+        }
+    }, [clubFilterOpen, posFilterOpen]);
 
     const searchBar = () => {
         return (
@@ -76,7 +147,59 @@ const PlayerList = ({nav, setTemp}) => {
         <View style={styles.container}>
             <View style={styles.search_filter}>
                 {searchBar()}
-                <View style={{width: "25%", height: 34, backgroundColor:"#1f1f1f"}}/>
+                <View style={styles.filter}>
+                <DropDownPicker
+                        open={clubFilterOpen}
+                        value={clubFilterValues}
+                        items={clubFilterItems}
+
+                        setOpen={setClubFilterOpen}
+                        setValue={setClubFilterValues}
+                        setItems={setClubFilterItems}
+
+                        containerStyle={styles.clubFilterContainerStyle}
+                        style={[styles.clubFilterStyle, {
+                            borderBottomLeftRadius: clubFilterBorderLeftRadius,
+                            opacity: clubFilterOpacity,
+                        }]}
+                        textStyle={styles.filterTextStyle}
+                        dropDownContainerStyle={styles.dropDownContainerStyle}
+                        listItemContainerStyle={styles.listItemContainerStyle}
+
+                        multiple={false}
+                        itemSeparator={true}
+                        theme="DARK"
+                        mode="SIMPLE"
+                        onPress={() => setPosFilterOpen(false)}
+                    />
+                    <DropDownPicker
+                        open={posFilterOpen}
+                        value={posFilterValues}
+                        items={posFilterItems}
+
+                        setOpen={setPosFilterOpen}
+                        setValue={setPosFilterValues}
+                        setItems={setPosFilterItems}
+
+                        containerStyle={styles.posFilterContainerStyle}
+                        style={[styles.posFilterStyle, {
+                            borderBottomRightRadius: posFilterBorderRightRadius,
+                            opacity: posFilterOpacity,
+                        }]}
+                        textStyle={styles.filterTextStyle}
+                        dropDownContainerStyle={styles.dropDownContainerStyle}
+                        listItemContainerStyle={styles.listItemContainerStyle}
+
+                        multiple={false}
+                        itemSeparator={true}
+                        theme="DARK"
+                        mode="SIMPLE"
+                        onPress={() => {setClubFilterOpen(false)}}
+                    />
+                </View>
+
+
+
             </View>
             <FlatList 
                 style={styles.list}
@@ -121,7 +244,7 @@ const styles = StyleSheet.create({
         zIndex: 1,
     },
     search_bar: {
-        width: "70%", 
+        width: "49%", 
         height: 34, 
         backgroundColor:"grey",
         borderRadius: 5,
@@ -134,6 +257,61 @@ const styles = StyleSheet.create({
         color: "#3a3a3a",
         fontSize: 16,
         fontWeight: "bold",
+        height: 34,
+    },
+    filter: {
+        width: "49%",
+        height: 34,
+        flexDirection: "row",
+    },
+    clubFilterContainerStyle: {
+        width: "100%", 
+        justifyContent: "center",
+        height: 34,
+        alignItems: "flex-start",
+        backgroundColor: "transparent",
+    },
+    posFilterContainerStyle: {
+        width: "100%", 
+        justifyContent: "center",
+        height: 34,
+        alignItems: "flex-end",
+        backgroundColor: "transparent",
+        pointerEvents: "box-none",       //  "box-none" to disable touch events for the element but not its children
+        marginLeft: "-100%",
+    },
+    clubFilterStyle : {
+        minHeight: "100%",
+        width: "50%",
+        borderWidth: 1,
+        borderColor: "grey",
+        borderTopLeftRadius: 5,
+        borderTopRightRadius: 0,
+        borderBottomRightRadius: 0,
+        borderRightWidth: 0.5,   
+        backgroundColor: 'rgba(39, 39, 39, 1.0)', 
+    },
+    posFilterStyle : {
+        minHeight: "100%",
+        width: "50%",
+        borderWidth: 1,
+        borderColor: "grey",
+        borderTopLeftRadius: 0,
+        borderBottomLeftRadius: 0,
+        borderTopRightRadius: 5,
+        borderLeftWidth: 0.5,    
+        backgroundColor: 'rgba(39, 39, 39, 1.0)',
+    },
+    filterTextStyle: {
+        fontSize: 16,
+        fontWeight: "bold",
+    },
+    dropDownContainerStyle: {
+        // height: 34,
+        backgroundColor: 'rgba(39, 39, 39, 1.0)',
+        borderColor: "grey",
+    },
+    listItemContainerStyle: {
         height: 34,
     },
     barContainer: {
