@@ -3,7 +3,7 @@ import React, {useState, useEffect} from 'react';
 import BottomTabs from "./src/components/BottomTabs";
 import LoadingScreen from "./src/screens/Loading";
 import { NavigationContainer } from "@react-navigation/native";
-import fetchCloud from './src/fetchCloud';
+import fetchCloud, {parts_to_load} from './src/fetchCloud';
 
 const App = () => {
 
@@ -12,7 +12,7 @@ const App = () => {
 
     useEffect(() => {
         const load_data = async () => {
-            if (progress < 1) {
+            if (progress < parts_to_load) {
                 const temp_progress = await fetchCloud(progress);
                 setProgress(temp_progress);
             } else {
@@ -24,7 +24,10 @@ const App = () => {
 
     return (
         <NavigationContainer>
-            {loading ? <LoadingScreen width={progress}/> : <BottomTabs/>}
+            {loading ? 
+            <LoadingScreen width={progress/(parts_to_load-0.9)}/>   // best visual effect
+            : 
+            <BottomTabs/>}
         </NavigationContainer>
     );
 }

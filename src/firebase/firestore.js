@@ -57,5 +57,16 @@ const getClubs = async () => {
     return club_array;
 }
 
+const getModels = async () => {
+    const models_array = [];
+    const q = query(collection(db, "ml_models"));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+        // console.log(JSON.stringify(doc.data()).length);  // to get document size in bytes
+        models_array.push(doc.data());
+    });
+    return models_array;
+}
 
-export { addData, setData, getData, getClubs, updateData };
+
+export { addData, setData, getData, getClubs, updateData, getModels };
