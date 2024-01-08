@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { clubLogo } from "../../clubLogo";
-import ClubDetails_Stats from "../../sub-screens/ClubDetails_Stats";
+import ClubDetails_Stats from "../../sub-screens/club/ClubDetails_Stats";
 import { tempData_ClubDetail } from "../../tempData_ClubDetail";
 import { dataClubs } from "../../fetchCloud";
 

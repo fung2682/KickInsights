@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Alert } from "react-native";
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import PlayerCompare from "../components/player/PlayerCompare";
-import PlayerList from "../components/player/PlayerList";
+import PlayerCompare from "../../components/player/PlayerCompare";
+import PlayerList from "../../components/player/PlayerList";
 import { Header } from "@react-navigation/stack";
 
 

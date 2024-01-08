@@ -1,8 +1,8 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import ClubDetails from "../sub-screens/ClubDetails";
-import ClubMain from "../sub-screens/ClubMain";
+import ClubDetails from "../sub-screens/club/ClubDetails";
+import ClubMain from "../sub-screens/club/ClubMain";
 
 const Stack = createNativeStackNavigator();
 

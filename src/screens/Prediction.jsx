@@ -1,9 +1,9 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
-import { createStackNavigator } from "@react-navigation/stack";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import TempScreen from "../sub-screens/tempScreen";
 
-const Stack = createStackNavigator();
+const Stack = createNativeStackNavigator();
 
 const Prediction = () => {
     return (
@@ -24,11 +24,14 @@ const Prediction = () => {
                 headerTitleContainerStyle: {
                     top: 0,
                 },
-                headerTitle: "Prediction",
                 headerTintColor: "#54a761",
+                headerTitle: "Prediction",
+                headerBackTitle: "Prediction",
             }}
+            initialRouteName="PredictionMain"
         >
-            <Stack.Screen name="tempScreen" component={TempScreen}/>
+            <Stack.Screen name="PredictionMain" component={TempScreen}/>
+            {/* <Stack.Screen name="CommunityModel" component={ClubMain}/> */}
         </Stack.Navigator>
     );
 }

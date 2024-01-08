@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet, ScrollView } from "react-native";
-import ClubPlayers from "../components/club/club_details/ClubPlayers";
-import { clubColor } from "../clubColor";
+import ClubPlayers from "../../components/club/club_details/ClubPlayers";
+import { clubColor } from "../../clubColor";
 
 const ClubDetails_Players = ({ club }) => {
     const playerColor = clubColor[club.club.name_code]

@@ -1,9 +1,9 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import PlayerMain from "../sub-screens/PlayerMain";
+import PlayerMain from "../sub-screens/player/PlayerMain";
 import TempScreen from "../sub-screens/tempScreen";
-import PlayerDetails from "../sub-screens/PlayerDetails";
+import PlayerDetails from "../sub-screens/player/PlayerDetails";
 
 
 const Stack = createNativeStackNavigator();

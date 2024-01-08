@@ -1,8 +1,8 @@
 import React from "react";
 import { View, Text, StyleSheet, ScrollView } from "react-native";
-import ClubOverView from "../components/club/club_details/club_info/ClubOverview";
-import ClubKit from "../components/club/club_details/club_info/ClubKit";
-import ClubLastNext3 from "../components/club/club_details/club_info/ClubLastNext3";
+import ClubOverView from "../../components/club/club_details/club_info/ClubOverview";
+import ClubKit from "../../components/club/club_details/club_info/ClubKit";
+import ClubLastNext3 from "../../components/club/club_details/club_info/ClubLastNext3";
 
 const ClubDeatails_Info = ({ clubData }) => {
   //console.log(club);

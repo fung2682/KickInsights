@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from "react";
 import { View, Text, StyleSheet, ScrollView, ImageBackground } from "react-native";
-import PlayerInfo from "../components/player/PlayerInfo";
-import { clubColor } from "../clubColor";
-import { getData } from "../firebase/firestore";
-import PlayerStats from "../components/player/PlayerStats";
-import { clubLogo } from "../clubLogo";
+import PlayerInfo from "../../components/player/PlayerInfo";
+import { clubColor } from "../../clubColor";
+import { getData } from "../../firebase/firestore";
+import PlayerStats from "../../components/player/PlayerStats";
+import { clubLogo } from "../../clubLogo";
 
 const PlayerDetails = ({playerData}) => {
 

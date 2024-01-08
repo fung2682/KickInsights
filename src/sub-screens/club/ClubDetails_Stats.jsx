@@ -1,8 +1,8 @@
 import React from "react";
 import { View, Text, StyleSheet, ScrollView, ImageBackground } from "react-native";
-import ClubStats from "../components/club/club_details/ClubStats";
-import { clubColor } from "../clubColor";
-import { clubLogo } from "../clubLogo";
+import ClubStats from "../../components/club/club_details/ClubStats";
+import { clubColor } from "../../clubColor";
+import { clubLogo } from "../../clubLogo";
 
 const ClubDetails_Stats = ({ club }) => {
   //console.log(club.general);

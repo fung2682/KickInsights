@@ -1,8 +1,8 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import ClubCompare from "../components/club/ClubCompare";
-import ClubList from "../components/club/ClubList";
+import ClubCompare from "../../components/club/ClubCompare";
+import ClubList from "../../components/club/ClubList";
 
 
 const Tab = createMaterialTopTabNavigator();
