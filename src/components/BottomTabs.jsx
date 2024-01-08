@@ -87,9 +87,6 @@ const Tabs = () => {
                         tabBarIcon: ({focused}) => (
                             <MaterialCommunityIcons name="brain" size={29} color={focused ? "#54a761" : "gray"} />
                         ),
-                        headerTitle: () => (
-                            <Text style={{color: "white", fontSize: 20, fontWeight: "bold"}}>ML Models</Text>
-                        ),
                         headerShown: false,
                     }}
                     
