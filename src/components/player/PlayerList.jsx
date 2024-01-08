@@ -43,6 +43,8 @@ const PlayerList = ({nav, setTemp}) => {
     const keyExtractor = item => item.Footapi_id;
 
     const [displayList, setDisplayList] = useState(dataPlayersList);
+    const [searchText, setSearchText] = useState("");
+
     const [clubFilterOpen, setClubFilterOpen] = useState(false);
     const [clubFilterValues, setClubFilterValues] = useState("ALL");     // default value "ALL
     const [clubFilterItems, setClubFilterItems] = useState([
@@ -79,41 +81,23 @@ const PlayerList = ({nav, setTemp}) => {
         {label: "GK", value: "GK"}
     ]);
 
-    const [clubFilterBorderLeftRadius, setClubFilterBorderLeftRadius] = useState(5);
-    const [posFilterBorderRightRadius, setPosFilterBorderRightRadius] = useState(5);
-    const [clubFilterOpacity, setClubFilterOpacity] = useState(1.0);
-    const [posFilterOpacity, setPosFilterOpacity] = useState(1.0);
-
+    // Club and Position filter and Searching
     useEffect(() => {
+        let filtered_list = [];
         if (clubFilterValues === "ALL" && posFilterValues === "ALL") {
-            setDisplayList(dataPlayersList);
+            filtered_list = dataPlayersList.filter(player => removeDiacritics(player.Footapi_name.toLowerCase()).includes(searchText));
         } else if (clubFilterValues === "ALL") {
-            const filtered_list = dataPlayersList.filter(player => posFilterValues.includes(player.position));
-            setDisplayList(filtered_list);
+            filtered_list = dataPlayersList.filter(player => posFilterValues.includes(player.position) && removeDiacritics(player.Footapi_name.toLowerCase()).includes(searchText));
         } else if (posFilterValues === "ALL") {
-            const filtered_list = dataPlayersList.filter(player => clubFilterValues.includes(player.club_name_code));
-            setDisplayList(filtered_list);
+            filtered_list = dataPlayersList.filter(player => clubFilterValues.includes(player.club_name_code) && removeDiacritics(player.Footapi_name.toLowerCase()).includes(searchText));
         } else {
-            const filtered_list = dataPlayersList.filter(player => clubFilterValues.includes(player.club_name_code) && posFilterValues.includes(player.position));
-            setDisplayList(filtered_list);
+            filtered_list = dataPlayersList.filter(player => clubFilterValues.includes(player.club_name_code) && posFilterValues.includes(player.position) && removeDiacritics(player.Footapi_name.toLowerCase()).includes(searchText));
         }
-    }, [clubFilterValues, posFilterValues]);
+        setDisplayList(filtered_list);
+    }, [clubFilterValues, posFilterValues, searchText]);
+        
 
-    useEffect(() => {
-        if (clubFilterOpen) {
-            setPosFilterBorderRightRadius(0);
-            setPosFilterOpacity(0.5);
-        } else if (posFilterOpen) {
-            setClubFilterBorderLeftRadius(0);
-            setClubFilterOpacity(0.5);
-        } else {    // both closed
-            setClubFilterBorderLeftRadius(5);
-            setPosFilterBorderRightRadius(5);
-            setClubFilterOpacity(1.0);
-            setPosFilterOpacity(1.0);
-        }
-    }, [clubFilterOpen, posFilterOpen]);
-
+    // Search bar component
     const searchBar = () => {
         return (
             <View style={styles.search_bar}>
@@ -129,7 +113,7 @@ const PlayerList = ({nav, setTemp}) => {
                     autoCapitalize="none"
                     autoComplete="off"
                     autoCorrect={false}
-                    onChangeText={(text) => {handleSearch(text)}}
+                    onChangeText={text => {setSearchText(text.toLowerCase())}}
                     clearButtonMode="while-editing"
                 >
                 </TextInput>
@@ -137,11 +121,26 @@ const PlayerList = ({nav, setTemp}) => {
         )
     }
 
-    const handleSearch = (text) => {
-        text = text.toLowerCase();
-        const filtered_list = dataPlayersList.filter(player => removeDiacritics(player.Footapi_name.toLowerCase()).includes(text));
-        setDisplayList(filtered_list);
-    }
+    // Styling
+    const [clubFilterBorderLeftRadius, setClubFilterBorderLeftRadius] = useState(5);
+    const [posFilterBorderRightRadius, setPosFilterBorderRightRadius] = useState(5);
+    const [clubFilterOpacity, setClubFilterOpacity] = useState(1.0);
+    const [posFilterOpacity, setPosFilterOpacity] = useState(1.0);
+
+    useEffect(() => {
+        if (clubFilterOpen) {
+            setPosFilterBorderRightRadius(0);
+            setPosFilterOpacity(0.5);
+        } else if (posFilterOpen) {
+            setClubFilterBorderLeftRadius(0);
+            setClubFilterOpacity(0.5);
+        } else {    // both closed
+            setClubFilterBorderLeftRadius(5);
+            setPosFilterBorderRightRadius(5);
+            setClubFilterOpacity(1.0);
+            setPosFilterOpacity(1.0);
+        }
+    }, [clubFilterOpen, posFilterOpen]);
 
     return (
         <View style={styles.container}>
@@ -263,6 +262,8 @@ const styles = StyleSheet.create({
         width: "49%",
         height: 34,
         flexDirection: "row",
+        backgroundColor: "#272727",
+        borderRadius: 5,
     },
     clubFilterContainerStyle: {
         width: "100%", 
