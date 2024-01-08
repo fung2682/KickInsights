@@ -60,9 +60,9 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     },
     table: {
-        marginTop: 10,
+        marginTop: 0,
         marginBottom: 10,
-        overflow: "hidden",
+        overflow: "visible",
         zIndex: -1,
         width: "97%",
     },

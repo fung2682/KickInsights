@@ -52,7 +52,8 @@ const styles = StyleSheet.create({
     background: {
         backgroundColor: "black",
         width: "100%",
-        height: 40,
+        height: 50,
+        paddingTop: 10,
     }
 })
 
