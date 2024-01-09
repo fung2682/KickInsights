@@ -1,38 +1,124 @@
-import React from "react";
-import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity } from "react-native";
+import React, {useState, useEffect} from "react";
+import { View, Text, StyleSheet, FlatList, RefreshControl, TouchableOpacity } from "react-native";
 import { dataModels } from "../../fetchCloud";
+import { AntDesign } from '@expo/vector-icons'; 
+import { updateData, getModels } from "../..//firebase/firestore";
 
-const Item = ({club, nav}) => {
+const Item = ({model, nav}) => {
+
+    const [likes, setLikes] = useState(model.likes);
+    const [dislikes, setDislikes] = useState(model.dislikes);
+    const [liked, setLiked] = useState(false);  // to be edited, fetch from firestore
+    const [disliked, setDisliked] = useState(false);    // to be edited, fetch from firestore
+
+    useEffect(() => {
+        updateData("ml_models", model.id, {likes: likes, dislikes: dislikes});
+    }, [likes, dislikes]);
 
     return (
         <TouchableOpacity 
-            style={[styles.clubPane, {backgroundColor: `red`}]}
+            style={[styles.modelPane, {backgroundColor: `#287334`}, {borderColor: `#369746`}]}
             activeOpacity={0.8}
             // onPress={() => nav.navigate("ClubDetails", {clubData: dataClubs[club.id]})}
-        >
-            <Text style={styles.name}>testing</Text>
-            {/* <Text style={[styles.description, {marginTop: 17}]}>{club.stadium}, {club.city}</Text>
-            <Text style={[styles.description, {marginTop: 2}]}>Est: {club.founded}</Text>
-            <View style={styles.square}></View>
-            <View style={styles.triangle}></View>
-            <Image source={clubLogo[club.name_code]} style={styles.image}/> */}
+            // , 
+        >   
+            <View style={[styles.modelDetails, {backgroundColor: `transparent`}]}>
+                <Text style={styles.modelName} numberOfLines={1}>{model.model_name}</Text>
+                <Text style={[styles.description, {marginTop: 17}]} numberOfLines={1}>{model.algorithms[0]}, {model.algorithms[1]}</Text>
+                <Text style={[styles.description, {marginTop: 2}]} numberOfLines={1}>{model.aspects[0]}, {model.aspects[1]}</Text>                
+            </View>
+            <View style={styles.modelResults}>
+                <View style={styles.triangle}></View>
+                <View style={styles.rectangle}>
+                    <Text style={styles.accuracyF1_text}>Accuracy</Text>
+                    <Text style={[styles.accuracyF1_num, {color: "green"}]}>{model.accuracy}%</Text>
+                </View>
+                <View style={styles.likeDislikeBox}>
+                    <TouchableOpacity style={styles.likeButton} activeOpacity={0.8}
+                        onPress={() => {
+                            if (!liked) {
+                                setLikes(likes + 1);
+                                setLiked(true);
+                                if (disliked) {
+                                    setDislikes(dislikes - 1);
+                                    setDisliked(false);
+                                }
+                            } else {
+                                setLikes(likes - 1);
+                                setLiked(false);
+                            }
+                        }}
+                    >
+                        {
+                            liked ? 
+                            <AntDesign name="like1" size={22} color="white" style={{marginTop: 3}}/> :
+                            <AntDesign name="like2" size={22} color="white" style={{marginTop: 3}}/>
+                        }
+                        <Text style={styles.likeDislikeNum}>{likes}</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.dislikeButton} activeOpacity={0.8}
+                        onPress={() => {
+                            if (!disliked) {
+                                setDislikes(dislikes + 1);
+                                setDisliked(true);
+                                if (liked) {
+                                    setLikes(likes - 1);
+                                    setLiked(false);
+                                }
+                            } else {
+                                setDislikes(dislikes - 1);
+                                setDisliked(false);
+                            }
+                        }}
+                    >
+                        {
+                            disliked ?
+                            <AntDesign name="dislike1" size={22} color="white" style={{marginTop: 3}}/> :
+                            <AntDesign name="dislike2" size={22} color="white" style={{marginTop: 3}}/>
+                        }
+                        <Text style={styles.likeDislikeNum}>{dislikes}</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
+
+
+
+            {/* <Image source={clubLogo[club.name_code]} style={styles.image}/> */}
         </TouchableOpacity>
     );
 };
 
 const CommunityList = ({nav}) => {
-    console.log(dataModels);
+    const [refreshing, setRefreshing] = useState(false);
+    const [models, setModels] = useState(dataModels);
+
+    const onRefresh = async() => {
+        setRefreshing(true);
+        setModels(await getModels());
+        setTimeout(() => {
+          setRefreshing(false);
+        }, 500);
+    }
+
     return (
         <View style={styles.container}>
             <FlatList 
                 style={styles.list}
-                data={dataModels}
-                renderItem={({item}) => <Item club={item} nav={nav}/>}
+                data={models}
+                // ensure child of the list is re-rendered when the state changes
+                renderItem={({item}) => !refreshing && <Item model={item} nav={nav}/>}
                 keyExtractor={item => item.id}
                 ItemSeparatorComponent={<View style={{height: 10}}/>}
                 indicatorStyle="white"
                 scrollIndicatorInsets={{right: -15}}
                 initialNumToRender={8}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={onRefresh}
+                        tintColor="lightgrey"
+                    />
+                }
             />
         </View>
     );
@@ -54,55 +140,110 @@ const styles = StyleSheet.create({
         // borderWidth: 1,
         width: "97%",
     },
-    clubPane: {
+    modelPane: {
         width: "100%",
         height: 90,
         borderRadius: 10,
+        borderWidth: 2,
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
     },
-    name: {
+    modelDetails: {
+        flex: 1,
+        height: "100%",
+    },
+    modelName: {
         color: "white",
         fontSize: 19.5,
         fontWeight: "bold",
-        marginLeft: 10,
-        marginTop: 11,
-        width: 262,
-        // borderColor: "white",
-        // borderWidth: 1,
-        
+        marginLeft: 8,
+        marginTop: 9,
+        width: "90%",
     },
     description: {
         color: "white",
         fontSize: 12,
         fontWeight: "bold",
-        marginLeft: 10,
-        width: 241,
-        // borderColor: "white",
-        // borderWidth: 1,
+        marginLeft: 8,
+        width: "82%",
     },
-    square: {
-        backgroundColor: "#ffffff",
-        width: 85,
-        height: 90,
-        borderTopRightRadius: 10,
-        borderBottomRightRadius: 10,
-        position: "absolute",
-        right: 0,
+    modelResults: {
+        flexBasis: 120, // fixed 100 px even in flexbox
+        height: "100%",
+        flexDirection: "row",
+        alignItems: "center",
     },
     triangle: {
         borderLeftWidth: 35,
-        borderBottomWidth: 90,
+        left: -35,
+        borderBottomWidth: 86,
         borderLeftColor: "transparent",
-        borderBottomColor: "#ffffff",
+        borderBottomColor: "#272727",
         position: "absolute",
-        right: 85,
     },
-    image: {
-        width: 60,
-        height: 60,
-        position: "absolute",
-        right: 17,
-        top: 15,
-        zIndex: 1,
+    rectangle: {
+        width: 90,
+        backgroundColor: "#272727",
+        height: "100%",
+        // alignItems: "center",
+        justifyContent: "center",
+    },
+    accuracyF1_text: {
+        color: "white",
+        fontSize: 12,
+        fontWeight: "500",
+        textAlign: "center",
+        width: 105,
+        marginLeft: -15,
+        textAlign: "center",
+    },
+    accuracyF1_num: {
+        fontSize: 28,
+        fontWeight: "bold",
+        textAlign: "center",
+        width: 105,
+        marginLeft: -15,
+        textAlign: "center",
+    },
+    likeDislikeBox: {
+        width: 30,
+        height: "100%",
+        borderLeftWidth: 2,
+        borderLeftColor: "#369746",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "black",
+        borderTopRightRadius: 10,
+        borderBottomRightRadius: 10,
+    },
+    likeButton: {
+        width: "100%",
+        flex: 1,
+        backgroundColor: "#3A5735",
+        borderBottomWidth: 1,
+        borderBottomColor: "#369746",
+        pointerEvents: "box-only",
+        borderTopRightRadius: 8,
+        alignItems: "center",
+        justifyContent: "center",
+    },
+    dislikeButton: {
+        width: "100%",
+        flex: 1,
+        backgroundColor: "#703030",
+        borderTopWidth: 1,
+        borderTopColor: "#369746",
+        pointerEvents: "box-only",
+        zIndex: -1,
+        borderBottomRightRadius: 8,
+        alignItems: "center",
+        justifyContent: "center",
+    },
+    likeDislikeNum: {
+        color: "white",
+        fontSize: 12,
     },
 });
 
