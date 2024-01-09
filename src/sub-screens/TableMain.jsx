@@ -33,13 +33,13 @@ const TableMain = ({navigation}) => {
             initialRouteName="ALL"
         >
             <Tab.Screen name="ALL">
-                {() => <LeagueTable Data={dataAll} nav={navigation}/>}
+                {() => <LeagueTable Data={dataAll} type="all" nav={navigation}/>}
             </Tab.Screen>
             <Tab.Screen name="HOME">
-                {() => <LeagueTable Data={dataHome} nav={navigation}/>}
+                {() => <LeagueTable Data={dataHome} type="home" nav={navigation}/>}
             </Tab.Screen>
             <Tab.Screen name="AWAY">
-                {() => <LeagueTable Data={dataAway} nav={navigation}/>}           
+                {() => <LeagueTable Data={dataAway} type="away" nav={navigation}/>}           
             </Tab.Screen>
         </Tab.Navigator>
     )

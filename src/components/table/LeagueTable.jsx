@@ -1,8 +1,9 @@
-import React from "react";
-import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity } from "react-native";
+import React, {useState} from "react";
+import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, RefreshControl } from "react-native";
 import TableTopBar from "./TableTopBar";
 import { clubLogo } from "../../clubLogo";
 import { dataClubs } from "../../fetchCloud";
+import { getData } from "../../firebase/firestore";
 
 const Item = ({club, nav, lastItem}) => (
     <TouchableOpacity 
@@ -24,14 +25,24 @@ const Item = ({club, nav, lastItem}) => (
     </TouchableOpacity>
 );
 
-const LeagueTable = ({Data, nav}) => {
-    // console.log(Data, "----------")
+const LeagueTable = ({Data, type, nav}) => {
+    const [refreshing, setRefreshing] = useState(false);
+    const [table, setTable] = useState(Data);
+
+    const onRefresh = async() => {
+        setRefreshing(true);
+        const tempTable = await getData("league_tables", type);
+        setTable(tempTable.table);
+        setTimeout(() => {
+          setRefreshing(false);
+        }, 500);
+    }
 
     return (
         <View style={styles.container}>
             <FlatList 
                 style={styles.table}
-                data={Data}
+                data={table}
                 renderItem={
                     ({item, index}) => (
                         index == 19? 
@@ -46,6 +57,13 @@ const LeagueTable = ({Data, nav}) => {
                 indicatorStyle="white"
                 scrollIndicatorInsets={{right: -8}}
                 initialNumToRender={18}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={onRefresh}
+                        tintColor="lightgrey"
+                    />
+                }
             />
         </View>
     );
