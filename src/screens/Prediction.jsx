@@ -1,8 +1,8 @@
-import React from "react";
+import React, {useState} from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import TempScreen from "../sub-screens/tempScreen";
 import PredictionMain from "../sub-screens/prediction/PredictionMain";
+import Account from "../screens/Account";
 
 const Stack = createNativeStackNavigator();
 
@@ -31,8 +31,12 @@ const Prediction = () => {
             }}
             initialRouteName="PredictionMain"
         >
-            <Stack.Screen name="PredictionMain" component={PredictionMain} options={{ title: 'ML Models'}}/>
+            <Stack.Screen name="PredictionMain" component={PredictionMain} options={{ title: 'ML Models'}}>
+            </Stack.Screen>
             {/* <Stack.Screen name="CommunityModel" component={ClubMain}/> */}
+            <Stack.Screen name="ACCOUNT" options={{headerTitle: "Account"}}>
+                {(user) => <Account userState={user} />}
+            </Stack.Screen>
         </Stack.Navigator>
     );
 }
