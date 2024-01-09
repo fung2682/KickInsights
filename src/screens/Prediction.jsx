@@ -27,7 +27,7 @@ const Prediction = () => {
                 },
                 headerTintColor: "#54a761",
                 headerTitle: "ML Models",
-                headerBackTitle: "Prediction",
+                headerBackTitle: "ML Models",
             }}
             initialRouteName="PredictionMain"
         >

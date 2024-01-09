@@ -40,15 +40,15 @@ const Tabs = () => {
                         fontWeight: "bold",
                         fontSize: 20,
                         color: "white",
-                        top: -1,
                     },
                     headerTintColor: "#54a761",
                     unmountOnBlur: false,
                 }}
                 initialRouteName="Prediction"
                 headershadowVisible={false}
+                headerShown={false}
                 sceneContainerStyle={{
-                    backgroundColor: "#272727",
+                    backgroundColor: "black",
                 }}
             >
                 <Tab.Screen 
@@ -56,9 +56,6 @@ const Tabs = () => {
                     options={{
                         tabBarIcon: ({focused}) => (
                             <MaterialCommunityIcons name="trophy-outline" size={28} color={focused ? "#54a761" : "gray"} />
-                        ),
-                        headerTitle: () => (
-                            <Text style={{color: "white", fontSize: 20, fontWeight: "bold"}}>Premier League 2023/24</Text>
                         ),
                         headerShown: false,
                     }}
@@ -89,7 +86,6 @@ const Tabs = () => {
                         ),
                         headerShown: false,
                     }}
-                    
                 >
                     {() => <Prediction/>}
                 </Tab.Screen>
