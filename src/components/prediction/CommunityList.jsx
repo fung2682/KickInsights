@@ -2,18 +2,33 @@ import React, {useState, useEffect} from "react";
 import { View, Text, StyleSheet, FlatList, RefreshControl, TouchableOpacity } from "react-native";
 import { dataModels } from "../../fetchCloud";
 import { AntDesign } from '@expo/vector-icons'; 
-import { updateData, getModels } from "../..//firebase/firestore";
+import { updateData, getModels, getData } from "../..//firebase/firestore";
 
-const Item = ({model, nav}) => {
+const Item = ({model, nav, user}) => {
 
     const [likes, setLikes] = useState(model.likes);
     const [dislikes, setDislikes] = useState(model.dislikes);
-    const [liked, setLiked] = useState(false);  // to be edited, fetch from firestore
+    const [liked, setLiked] = useState(false);          // to be edited, fetch from firestore
     const [disliked, setDisliked] = useState(false);    // to be edited, fetch from firestore
 
     useEffect(() => {
         updateData("ml_models", model.id, {likes: likes, dislikes: dislikes});
     }, [likes, dislikes]);
+
+    useEffect(() => {
+        if (user !== null) {
+            if (user.liked.includes(model.id)) {
+                setLiked(true);
+            } else {
+                setLiked(false);
+            }
+            if (user.disliked.includes(model.id)) {
+                setDisliked(true);
+            } else {
+                setDisliked(false);
+            }
+        }
+    }, [user]);
 
     return (
         <TouchableOpacity 
@@ -33,52 +48,82 @@ const Item = ({model, nav}) => {
                     <Text style={styles.accuracyF1_text}>Accuracy</Text>
                     <Text style={[styles.accuracyF1_num, {color: "green"}]}>{model.accuracy}%</Text>
                 </View>
-                <View style={styles.likeDislikeBox}>
-                    <TouchableOpacity style={styles.likeButton} activeOpacity={0.8}
-                        onPress={() => {
-                            if (!liked) {
-                                setLikes(likes + 1);
-                                setLiked(true);
-                                if (disliked) {
-                                    setDislikes(dislikes - 1);
-                                    setDisliked(false);
-                                }
-                            } else {
-                                setLikes(likes - 1);
-                                setLiked(false);
-                            }
-                        }}
-                    >
-                        {
-                            liked ? 
-                            <AntDesign name="like1" size={22} color="white" style={{marginTop: 3}}/> :
-                            <AntDesign name="like2" size={22} color="white" style={{marginTop: 3}}/>
-                        }
-                        <Text style={styles.likeDislikeNum}>{likes}</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.dislikeButton} activeOpacity={0.8}
-                        onPress={() => {
-                            if (!disliked) {
-                                setDislikes(dislikes + 1);
-                                setDisliked(true);
-                                if (liked) {
+                {
+                    user !== null &&
+                    <View style={styles.likeDislikeBox}>
+                        <TouchableOpacity style={styles.likeButton} activeOpacity={0.8}
+                            onPress={() => {
+                                if (!liked) {
+                                    setLikes(likes + 1);
+                                    updateData("users", user.email, {liked: [...user.liked, model.id]});
+                                    setLiked(true);
+                                    if (disliked) {
+                                        setDislikes(dislikes - 1);
+                                        updateData("users", user.email, {disliked: user.disliked.filter(id => id !== model.id)});
+                                        setDisliked(false);
+                                    }
+                                } else {
                                     setLikes(likes - 1);
+                                    updateData("users", user.email, {liked: user.liked.filter(id => id !== model.id)});
                                     setLiked(false);
                                 }
-                            } else {
-                                setDislikes(dislikes - 1);
-                                setDisliked(false);
+                            }}
+                        >
+                            {
+                                liked ? 
+                                <AntDesign name="like1" size={22} color="white" style={{marginTop: 3}}/> :
+                                <AntDesign name="like2" size={22} color="white" style={{marginTop: 3}}/>
                             }
-                        }}
-                    >
-                        {
-                            disliked ?
-                            <AntDesign name="dislike1" size={22} color="white" style={{marginTop: 3}}/> :
+                            <Text style={styles.likeDislikeNum}>{likes}</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.dislikeButton} activeOpacity={0.8}
+                            onPress={() => {
+                                if (!disliked) {
+                                    setDislikes(dislikes + 1);
+                                    updateData("users", user.email, {disliked: [...user.disliked, model.id]});
+                                    setDisliked(true);
+                                    if (liked) {
+                                        setLikes(likes - 1);
+                                        updateData("users", user.email, {liked: user.liked.filter(id => id !== model.id)});
+                                        setLiked(false);
+                                    }
+                                } else {
+                                    setDislikes(dislikes - 1);
+                                    updateData("users", user.email, {disliked: user.disliked.filter(id => id !== model.id)});
+                                    setDisliked(false);
+                                }
+                            }}
+                        >
+                            {
+                                disliked ?
+                                <AntDesign name="dislike1" size={22} color="white" style={{marginTop: 3}}/> :
+                                <AntDesign name="dislike2" size={22} color="white" style={{marginTop: 3}}/>
+                            }
+                            <Text style={styles.likeDislikeNum}>{dislikes}</Text>
+                        </TouchableOpacity>
+                    </View>
+                }
+                {
+                    user === null &&
+                    <View style={styles.likeDislikeBox}>
+                        <TouchableOpacity style={styles.likeButton} activeOpacity={1}
+                            onPress={() => {
+                                alert("Please sign in to rate a model.");
+                            }}
+                        >
+                            <AntDesign name="like2" size={22} color="white" style={{marginTop: 3}}/>
+                            <Text style={styles.likeDislikeNum}>{likes}</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.dislikeButton} activeOpacity={1}
+                            onPress={() => {
+                                alert("Please sign in to rate a model.");
+                            }}
+                        >
                             <AntDesign name="dislike2" size={22} color="white" style={{marginTop: 3}}/>
-                        }
-                        <Text style={styles.likeDislikeNum}>{dislikes}</Text>
-                    </TouchableOpacity>
-                </View>
+                            <Text style={styles.likeDislikeNum}>{dislikes}</Text>
+                        </TouchableOpacity>
+                    </View>
+                }
             </View>
 
 
@@ -88,16 +133,25 @@ const Item = ({model, nav}) => {
     );
 };
 
-const CommunityList = ({nav}) => {
+const CommunityList = ({nav, user}) => {
+
+    const [modalUser, setModalUser] = useState(null);
     const [refreshing, setRefreshing] = useState(false);
     const [models, setModels] = useState(dataModels);
+
+    useEffect(() => {
+        setModalUser(user);
+    }, [user]);
 
     const onRefresh = async() => {
         setRefreshing(true);
         setModels(await getModels());
+        if (user !== null) {
+            setModalUser(await getData("users", user.email));
+        }
         setTimeout(() => {
           setRefreshing(false);
-        }, 500);
+        }, 500);    // to smooth out the refresh animation
     }
 
     return (
@@ -106,7 +160,7 @@ const CommunityList = ({nav}) => {
                 style={styles.list}
                 data={models}
                 // ensure child of the list is re-rendered when the state changes
-                renderItem={({item}) => !refreshing && <Item model={item} nav={nav}/>}
+                renderItem={({item}) => !refreshing && <Item model={item} nav={nav} user={modalUser}/>}
                 keyExtractor={item => item.id}
                 ItemSeparatorComponent={<View style={{height: 10}}/>}
                 indicatorStyle="white"
