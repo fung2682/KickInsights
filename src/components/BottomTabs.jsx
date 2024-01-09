@@ -30,23 +30,12 @@ const Tabs = () => {
                         fontSize: 13,
                         marginTop: 0
                     },
-                    headerStyle: {
-                        backgroundColor: "#141414",
-                        borderStyle: "solid",
-                        shadowColor: "transparent",
-                        height: 43.5,
-                    },
-                    headerTitleStyle: {
-                        fontWeight: "bold",
-                        fontSize: 20,
-                        color: "white",
-                    },
-                    headerTintColor: "#54a761",
+                    headerShown: false,
                     unmountOnBlur: false,
+                    
                 }}
-                initialRouteName="Prediction"
-                headershadowVisible={false}
                 headerShown={false}
+                initialRouteName="Prediction"
                 sceneContainerStyle={{
                     backgroundColor: "black",
                 }}
