@@ -39,6 +39,7 @@ const getData = async (collectionName, docName) => {
     if (docSnap.exists()) {
         // console.log("Document data:", docSnap.data());
         // console.log(JSON.stringify(docSnap.data()).length);  // to get document size in bytes
+        console.log(`Loaded: ${collectionName} (${docName})`)
         return docSnap.data();
     } else {
         // doc.data() will be undefined in this case
@@ -54,6 +55,7 @@ const getClubs = async () => {
         // console.log(JSON.stringify(doc.data()).length);  // to get document size in bytes
         club_array.push(doc.data());
     });
+    console.log("Loaded: clubs")
     return club_array;
 }
 
@@ -65,6 +67,7 @@ const getModels = async () => {
         // console.log(JSON.stringify(doc.data()).length);  // to get document size in bytes
         models_array.push(doc.data());
     });
+    console.log("Loaded: models")
     return models_array;
 }
 
