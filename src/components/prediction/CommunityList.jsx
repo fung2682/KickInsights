@@ -2,7 +2,7 @@ import React, {useState, useEffect} from "react";
 import { View, Text, StyleSheet, FlatList, RefreshControl, TouchableOpacity } from "react-native";
 import { dataModels } from "../../fetchCloud";
 import { AntDesign } from '@expo/vector-icons'; 
-import { updateData, getModels, getData } from "../..//firebase/firestore";
+import { updateData, getModels, getData } from "../..//firebase/firestore"; // for refreshing the data
 
 const Item = ({model, nav, user}) => {
 
