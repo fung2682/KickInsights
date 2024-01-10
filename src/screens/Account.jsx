@@ -37,13 +37,15 @@ const Account = ({userState}) => {
                 }, 1000);   // to smooth out the transition
             }).catch((error) => {
                 console.log(error);
+                setLoading(false);
+                alert("Sign out failed.")
             });
         }
 
         return (
             <View style={styles.container}>
                 <View style={[styles.userIcon, {backgroundColor: user.iconColor}]}>
-                    <Text style={styles.userIconInitial}>{user.username[0]}</Text>
+                    <Text style={styles.userIconInitial}>{user.username[0].toUpperCase()}</Text>
                 </View>
                 <Text style={styles.welcome_text} numberOfLines={1}>Welcome, {user.username} !</Text>
                 <View style={styles.loadingArea}>
@@ -97,6 +99,8 @@ const Account = ({userState}) => {
                     const errorCode = error.code;
                     const errorMessage = error.message;
                     console.log(errorCode, errorMessage);
+                    setLoading(false);
+                    alert("Incorrect email or password.");
                 });
         }
 
