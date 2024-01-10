@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image, ActivityIndicator, LogBox,} from "react-native";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { getAuth } from "../firebase/base";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { Fontisto, AntDesign } from '@expo/vector-icons';
 import { getData } from "../firebase/firestore";
 

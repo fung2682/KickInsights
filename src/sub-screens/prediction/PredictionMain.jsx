@@ -3,12 +3,17 @@ import { StyleSheet, TouchableOpacity, Image, View, Text } from "react-native";
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import ClubList from "../../components/club/ClubList";
 import CommunityList from "../../components/prediction/CommunityList";
+import { userData } from "../../fetchCloud";
 
 const Tab = createMaterialTopTabNavigator();
 
 const PredictionMain = ({navigation}) => {
 
     const [user, setUser] = useState(null);
+
+    useEffect(() => {
+        setUser(userData);
+    }, []);
 
     useEffect(() => {
         navigation.setOptions({
