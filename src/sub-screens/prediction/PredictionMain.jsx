@@ -32,7 +32,7 @@ const PredictionMain = ({navigation}) => {
                     {   // if user is signed in, show user icon
                         user !== null &&
                         <View style={[styles.signedInUserIcon, {backgroundColor: `${user.iconColor}`}]}>
-                            <Text style={styles.userIconInitial}>{user.username[0]}</Text>
+                            <Text style={styles.userIconInitial}>{user.username[0].toUpperCase()}</Text>
                         </View> 
                     }
                 </TouchableOpacity>
