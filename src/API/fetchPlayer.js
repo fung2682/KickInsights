@@ -169,6 +169,7 @@ FBREF_club_id_by_name = ['18bb7c10', '8602292d', '4ba7cbea', 'cd051869', 'd07537
 const fetchPlayers = async () => {
     let full_player_list = [];
     let missing_statistics_player_list = [];
+    let missing_statistics_or_name_translation_player_list = [];
     for (let i = 0; i < club_id_by_name.length; i++) {
         const club_players = await fetchClubPlayer(club_id_by_name[i], i);
         // fetchPlayerStats for that club
@@ -200,8 +201,8 @@ const fetchPlayers = async () => {
                     }
                 } else {
                     player.stats = {};
-                    console.log(`[Missing Statistics for player] ----------> ${player.Footapi_name}`);
-                    missing_statistics_player_list.push(`${player.club_name_code} - ${player.Footapi_name}`);
+                    console.log(`[Missing Statistics / Name Translation for player] ----------> ${player.Footapi_name}`);
+                    missing_statistics_or_name_translation_player_list.push(`${player.club_name_code} - ${player.Footapi_name}`);
                 }
             }
             setData('players', player.Footapi_name, player);
@@ -212,12 +213,16 @@ const fetchPlayers = async () => {
         console.log("Full player list length:", full_player_list.length);
         console.log(`Finished club index ${i}, waiting 5 seconds\n`);
         console.log("Missing statistics player list:", missing_statistics_player_list);
+        console.log("Missing statistics or name translation player list:", missing_statistics_or_name_translation_player_list);
         await new Promise(resolve => setTimeout(resolve, 5*1000));
     }
     // for player list
-    setData('player_list', 'missing_player_list', {missing_statistics_player_list});
     setData('player_list', 'full_player_list', {full_player_list});
+    setData('player_list', 'missing_statistics_player_list', {missing_statistics_player_list});
+    setData('player_list', 'missing_statistics_or_name_translation_player_list', {missing_statistics_or_name_translation_player_list});
     console.log("Full player list length:", full_player_list.length);
+    console.log("Missing statistics player list length:", missing_statistics_player_list.length);
+    console.log("Missing statistics or name translation player list length:", missing_statistics_or_name_translation_player_list.length);
 }
 
 export { fetchPlayers };
