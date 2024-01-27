@@ -6,6 +6,7 @@ import { updateData } from "../firebase/firestore";
 import { X_RapidAPI_Key, X_RapidAPI_Host } from "@env"
 import { downloadPlayerImage } from '../firebase/storage';
 
+
 const fetchClub = async (team_id, kit_id, index) => {
     const url = `https://footapi7.p.rapidapi.com/api/team/${team_id}`;
     const options = {
@@ -46,7 +47,7 @@ const fetchClub = async (team_id, kit_id, index) => {
         // for club info
         capacity: team.venue.stadium.capacity,
         manager: team.manager.name,
-        name_short: team.shortName,
+        // name_short: team.shortName,
         PL_titles: 0,
         kit: [],
         players: [],
