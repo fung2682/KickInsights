@@ -1,7 +1,8 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import TempScreen from "../sub-screens/tempScreen";
+import MatchMain from "../sub-screens/match/MatchMain";
+import tempScreen from "../sub-screens/tempScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -28,8 +29,15 @@ const Matches = () => {
                 headerTitle: "Matches",
                 headerBackTitle: "Matches",
             }}
+            initialRouteName="MatchMain"
         >
-            <Stack.Screen name="tempScreen" component={TempScreen}/>
+            <Stack.Screen name="MatchMain" component={MatchMain}/>
+            <Stack.Screen name="MatchDetails" component={tempScreen}/>
+            {/* <Stack.Screen name="ClubDetails" 
+                options={({route}) => ({ headerTitle: route.params.clubData.club.name_full })}
+            >
+                {(clubData) => <ClubDetails club={clubData}/>}
+            </Stack.Screen> */}
         </Stack.Navigator>
     );
 }
