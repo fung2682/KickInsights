@@ -11,5 +11,5 @@ export const clubShortName = {
     "Manchester City": "Man City",
     "Nott'ham Forest": "Nott'm Forest",
     "Luton Town": "Luton",
-    "Tottenham ": "Spurs",
+    "Tottenham": "Spurs",
 }
