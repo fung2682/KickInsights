@@ -4,6 +4,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import ClubList from "../../components/club/ClubList";
 import CommunityList from "../../components/prediction/CommunityList";
 import { userData } from "../../fetchCloud";
+import TempScreen from "../tempScreen";
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -66,7 +67,7 @@ const PredictionMain = ({navigation}) => {
                 {() => <CommunityList nav={navigation} user={user}/>}
             </Tab.Screen>
             <Tab.Screen name="SAVED" options={{title: "SAVED"}}>
-                {() => <ClubList nav={navigation}/>}           
+                {() => <TempScreen/>}       
             </Tab.Screen>
         </Tab.Navigator>
     );
