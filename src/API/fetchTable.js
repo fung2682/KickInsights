@@ -2,7 +2,7 @@
 // transforms it and adds it to Firestore
 import { setData } from "../firebase/firestore";
 import { X_RapidAPI_Key, X_RapidAPI_Host } from "@env"
-import { dataClubs } from "../fetchCloud";
+import { clubShortName } from "../clubShortName";
 
 const fetchTable = async (url) => {
     const options = {
@@ -41,6 +41,13 @@ const fetchTable = async (url) => {
             points: club.points,
         }
     });
+
+    // team short name translation
+    for (club of initialTable) {
+        if (clubShortName[club.name_short]) {
+            club.name_short = clubShortName[club.name_short];
+        }
+    }
 
     // add the goal difference to the table
     const table = initialTable.map((club) => {
