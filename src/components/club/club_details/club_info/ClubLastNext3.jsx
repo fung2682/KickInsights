@@ -13,7 +13,7 @@ const scoreBoard = (lastMatch) => {
                 <Text style={[styles.postponeText]}>Post.</Text>
             </View>
         )
-        }
+    }
     return (
         <View style={[styles.score, 
             {backgroundColor: lastMatch.result === "Win" ? 
