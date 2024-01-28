@@ -8,10 +8,11 @@ export let dataHome = [];
 export let dataAway = [];
 export let dataClubs = [];
 export let dataPlayersList = [];
+export let dataMatchesList = [];
 export let dataModels = [];
 export let userData = null;
 
-export var parts_to_load = 7;
+export var parts_to_load = 8;   // Increment when new data needs to be loaded
 
 const fetchCloud = async (progress) => {
     
@@ -45,6 +46,9 @@ const fetchCloud = async (progress) => {
         const data_players_list = await getData("player_list", "full_player_list");
         dataPlayersList = data_players_list.full_player_list;
     } else if (progress == 6) {
+        const data_matches_list = await getData("match_list", "full_match_list");
+        dataMatchesList = data_matches_list;
+    } else if (progress == 7) {
         const data_models_list = await getModels();
         dataModels = data_models_list;
         console.log("-- all data loaded --")
