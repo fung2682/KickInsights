@@ -8,7 +8,7 @@ const scoreBoard = (lastMatch) => {
     if (lastMatch.result === "Postponed") {
         return (
             <View style={[styles.score, 
-                {backgroundColor: "#494d4d"}
+                {backgroundColor: "#3a3a3a"}
             ]}>
                 <Text style={[styles.postponeText]}>Post.</Text>
             </View>
@@ -41,7 +41,7 @@ const Match = ({lastMatch, nextMatch, last}) => {
                     last?
                     scoreBoard(lastMatch)
                     :
-                    <View style={[styles.score, {backgroundColor: "#494d4d"}]}>
+                    <View style={[styles.score, {backgroundColor: "#3a3a3a"}]}>
                         <Text style={styles.timeText}>{nextMatch.time}</Text>
                     </View>
                 }
