@@ -41,10 +41,7 @@ const Match = ({lastMatch, nextMatch, last}) => {
                     last?
                     scoreBoard(lastMatch)
                     :
-                    <View style={[styles.score, 
-                        {backgroundColor: "#494d4d"}
-                    ]}>
-    
+                    <View style={[styles.score, {backgroundColor: "#494d4d"}]}>
                         <Text style={styles.timeText}>{nextMatch.time}</Text>
                     </View>
                 }
