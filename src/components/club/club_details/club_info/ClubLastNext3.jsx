@@ -118,7 +118,6 @@ const styles = StyleSheet.create({
     },
     score: {
         width: 60,
-        backgroundColor: "green",
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "center",
