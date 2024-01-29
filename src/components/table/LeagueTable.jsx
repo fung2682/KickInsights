@@ -7,7 +7,7 @@ import { getData } from "../../firebase/firestore";
 
 const Item = ({club, nav, lastItem}) => (
     <TouchableOpacity 
-        style={lastItem? styles.row: [styles.row, {borderBottomWidth: 2, borderBottomLeftRadius: 5, borderBottomRightRadius: 5}]}
+        style={lastItem? styles.row: [styles.row, {borderBottomWidth: 2, borderBottomLeftRadius: 10, borderBottomRightRadius: 10}]}
         activeOpacity={0.8}
         onPress={() => nav.navigate("ClubDetails", {clubData: dataClubs[club.club_id]})}
     >
