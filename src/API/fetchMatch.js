@@ -1,7 +1,7 @@
 // This function fetches all matches from FootApi,
 // transforms it and adds it to Firestore
 import axios from 'axios';
-import { setData, updateData } from "../firebase/firestore";
+import { getData, updateData } from "../firebase/firestore";
 import { clubShortName } from '../clubShortName';
 import { clubNameCode } from '../clubNameCode';
 
@@ -87,7 +87,8 @@ const fetchMatch = async (row) => {
         awayGoal: awayGoal,
         awayNameCode: awayTeamNameCode,
         awayTeam: awayTeam,
-        matchRef: matchRef  // match stats for past games, H2H for future games
+        matchRef: matchRef,  // match stats for past games, H2H for future games
+        rescheduled: false
     }
 }
 
@@ -99,7 +100,6 @@ const fetchMatches = async () => {
 
     let fetching_week = 1;
     let fetching_row = 0;
-    let rescheduled_matches = [];
 
     while (fetching_week < 39) {
         let matches = [];
@@ -116,8 +116,12 @@ const fetchMatches = async () => {
                     break;
                 } else {    // matches from previous week rescheduled
                     let match = await fetchMatch(row[i])
+                    match["rescheduled"] = true
+                    let cloud_match_list = await getData("match_list", "full_match_list")
+                    let original_matches = cloud_match_list["Week " + match.matchWeek]
+                    original_matches.push(match)
+                    updateData("match_list", "full_match_list", {["Week " + match.matchWeek] : original_matches})
                     console.log("a match in week", match.matchWeek, "was rescheduled")
-                    rescheduled_matches.push(match)
                     continue;
                 }
             }     
@@ -128,7 +132,6 @@ const fetchMatches = async () => {
         updateData("match_list", "full_match_list", {["Week " + fetching_week] : matches})
         fetching_week++;
     }
-    updateData("match_list", "full_match_list", {"Rescheduled": rescheduled_matches})
     console.log("Finished fetching matches")
 }
 
