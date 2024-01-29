@@ -10,7 +10,6 @@ const MatchMain = ({navigation}) => {
 
     const [currentWeek, setCurrentWeek] = useState(20);
 
-
     // useEffect to update currentWeek
 
     const arrow_left_icon = <MaterialIcons name="keyboard-arrow-down" size={28} color="white" style={{height:28, transform: [{ rotate: "90deg" }], opacity: currentWeek > 1 ? 1 : 0.3}}/>
