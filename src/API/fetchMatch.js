@@ -5,6 +5,9 @@ import { getData, updateData } from "../firebase/firestore";
 import { clubShortName } from '../clubShortName';
 import { clubNameCode } from '../clubNameCode';
 
+let prevDate = "";   // to check if a match is the first match of the day
+let prevRefDate = "";   // for "to be scheduled" matches
+
 const fetchMatch = async (row) => {
     const matchWeek = row.match(/<th.*>.*<\/th>/)[0].match(/>.*?</)[0].slice(1, -1)
     const columns = row.match(/<td.*?>.*?<\/td>/g)
@@ -36,6 +39,23 @@ const fetchMatch = async (row) => {
         day = dateTimeArray[2]
         time = dateTimeArray[4]
     }
+
+    // Reference date (future schedule)
+    let refDayOfWeek = columns[0].match(/>.*?</)[0].slice(1, -1).split(' ')[0]
+    let refDate = columns[1].match(/<a.*?>.*?<\/a>/)[0].match(/>.*?</)[0].slice(1, -1)
+
+    // First match of the day
+    let firstMatch = false;
+
+    if (day === "f") {   // "to be scheduled" matches
+        if (refDate != prevRefDate) {
+            prevRefDate = refDate
+            firstMatch = true;
+        }
+    } else if (month + " " + day != prevDate) {
+        prevDate = month + " " + day
+        firstMatch = true;
+    } 
 
     // Home and Away team short name, namecode
     let homeTeam, homeTeamNameCode, awayTeam, awayTeamNameCode;
@@ -88,7 +108,10 @@ const fetchMatch = async (row) => {
         awayNameCode: awayTeamNameCode,
         awayTeam: awayTeam,
         matchRef: matchRef,  // match stats for past games, H2H for future games
-        rescheduled: false
+        rescheduled: false,
+        firstMatch: firstMatch,
+        refDayOfWeek: refDayOfWeek,
+        refDate: refDate
     }
 }
 
