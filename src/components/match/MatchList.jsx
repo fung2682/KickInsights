@@ -1,47 +1,122 @@
-import React from "react";
+import React, {useState} from "react";
 import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity } from "react-native";
-import { dataClubs } from "../../fetchCloud";
-import { clubColor } from "../../clubColor";
+import { dataMatchesList } from "../../fetchCloud";
 import { clubLogo } from "../../clubLogo";
 
+const scoreBoard = (match) => {
+    // if (match.result === "Postponed") {
+    //     return (
+    //         <View style={[styles.score, 
+    //             {backgroundColor: "#494d4d"}
+    //         ]}>
+    //             <Text style={[styles.postponeText]}>Post.</Text>
+    //         </View>
+    //     )
+    // }
+    return (
+        <View style={styles.score}>
+            <Text style={styles.scoreText}>{match.homeGoal}</Text>
+            <Text style={[styles.scoreText, {width:10}]}>-</Text>
+            <Text style={styles.scoreText}>{match.awayGoal}</Text>
+        </View>
+    )
+}
 
-// const Item = ({club, nav}) => {
-//     // custom transform attributes for front-end design
-//     if (club.stadium === "American Express Community's Stadium") {club.stadium = "Amex Stadium"};
-//     if (club.stadium === "Brentford Community Stadium") {club.stadium = "Gtech Community Stadium"};
-//     if (club.city === "Newcastle upon Tyne") {club.city = "Newcastle"};
+const Item = ({match, nav, firstMatch, first, last}) => {
 
-//     return (
-//         <TouchableOpacity 
-//             style={[styles.clubPane, {backgroundColor: `${clubColor[club.name_code]}CC`}]}
-//             activeOpacity={0.8}
-//             onPress={() => nav.navigate("ClubDetails", {clubData: dataClubs[club.id]})}
-//         >
-//             <Text style={styles.name}>{club.name_full}</Text>
-//             <Text style={[styles.description, {marginTop: 17}]}>{club.stadium}, {club.city}</Text>
-//             <Text style={[styles.description, {marginTop: 2}]}>Est: {club.founded}</Text>
-//             <View style={styles.square}></View>
-//             <View style={styles.triangle}></View>
-//             <Image source={clubLogo[club.name_code]} style={styles.image}/>
-//         </TouchableOpacity>
-//     );
-// };
+    let rowDate = `${match.dayOfWeek}, ${match.day} ${match.month}`
+    
+    if (match.day == 'f') {
+        const refDate = new Date(match.refDate)
+        const ref_Date = refDate.getDate()
+        const ref_Month = refDate.toLocaleString('en-us', {month: 'short'})
+        rowDate = `${match.refDayOfWeek}, ${ref_Date} ${ref_Month}`
+    }
+
+    return (
+        <View 
+            style={[
+                styles.game, 
+                firstMatch? {height: first? 78 : 88}: null, // for first match of a day
+                first? styles.firstRow : null,
+                last? [styles.lastRow, {height: firstMatch? 98 : 53}] : null,
+            ]}
+        >
+            {
+                firstMatch && 
+                <View style={[styles.date, first? {height: 30} : null]}>
+                    <Text style={[styles.dateText, first? {marginTop: 8} : null]}>
+                        {rowDate}
+                    </Text>
+                </View>
+            }
+            {
+                match.homeGoal != 'f'?  // if match is in future
+                <View style={styles.time}>
+                    <Text style={styles.timeText}>FT</Text>
+                </View>
+                :
+                <View style={styles.time}>
+                    <Text style={styles.timeText}>{match.time}</Text>
+                </View>
+            }
+            <TouchableOpacity 
+                style={styles.row}
+                activeOpacity={0.8}
+            >
+                <Text style={styles.teamLeft}>{ match.homeTeam}</Text>
+                <Image 
+                    source={clubLogo[match.homeNameCode]}
+                    style={styles.image}
+                />
+                {
+                    match.homeGoal != 'f'?  // if match is in future, no score
+                    scoreBoard(match)
+                    :
+                    <View style={[styles.score, {backgroundColor: "#505050"}]}>
+                        <Text style={[styles.scoreText, {width:10}]}>-</Text>
+                    </View>
+                }
+                <Image 
+                    source={clubLogo[match.awayNameCode]}
+                    style={styles.image}
+                />
+                <Text style={styles.teamRight}>{match.awayTeam}</Text>
+            </TouchableOpacity>
+        </View>
+    );
+};
+
 
 const MatchList = ({nav, week}) => {
+
+    const currentWeekData = dataMatchesList[`Week ${week}`];
+    let first, last;   // boolean to see if the row is the last row, for styling
+
+
     return (
-        // <View style={styles.container}>
-        //     <FlatList 
-        //         style={styles.list}
-        //         data={dataClubs}
-        //         renderItem={({item}) => <Item club={item.club} nav={nav}/>}
-        //         keyExtractor={item => item.club.id}
-        //         ItemSeparatorComponent={<View style={{height: 10}}/>}
-        //         indicatorStyle="white"
-        //         scrollIndicatorInsets={{right: -15}}
-        //         initialNumToRender={8}
-        //     />
-        // </View>
-        <Text style={{color: "white"}}>{week}</Text>
+        // logosLoaded === 20 ?
+            <View style={styles.container}>
+                <FlatList 
+                    style={styles.list}
+                    data={currentWeekData}
+                    renderItem={({item, index}) => (
+                        index === 0 ? first = true : first = false,
+                        index === currentWeekData.length - 1 ? last = true : last = false,
+                        <Item 
+                            match={item} 
+                            nav={nav} 
+                            firstMatch={item.firstMatch} 
+                            first={first} 
+                            last={last} 
+                        />
+                    )}
+                    // keyExtractor={item => item.club.id}
+                    indicatorStyle="white"
+                    scrollIndicatorInsets={{right: -15}}
+                    initialNumToRender={8}
+                />
+            </View>
     );
 }
 
@@ -57,11 +132,88 @@ const styles = StyleSheet.create({
         marginTop: 10,
         overflow: "visible",
         marginBottom: 10,
-        // borderColor: "red",
-        // borderWidth: 1,
         width: "97%",
     },
-
+    game: {
+        height: 48,
+        backgroundColor: "#1f1f1f",
+        borderLeftWidth: 2,
+        borderRightWidth: 2,
+        borderColor: "#3a3a3a",
+    },
+    row: {
+        flexDirection: "row",
+        justifyContent: "space-evenly",
+        alignItems: "center",
+    },
+    teamLeft: {
+        color: "white",
+        width: 120,
+        fontSize: 16,
+        textAlign: "right",
+    },
+    teamRight: {
+        color: "white",
+        width: 120,
+        fontSize: 16,
+        textAlign: "left",
+    },
+    image: {
+        width: 23,
+        height: 23,
+    },
+    time: {
+        width: 45,
+        backgroundColor: "#272727",
+        alignItems: "center",
+        justifyContent: "center",
+        borderRadius: 5,
+        marginLeft: 5,
+    },
+    score: {
+        width: 60,
+        flexDirection: "row",
+        backgroundColor: "#3a3a3a",
+        alignItems: "center",
+        justifyContent: "center",
+        textAlign: "center",
+        borderRadius: 5,
+    },
+    scoreText: {
+        width: 20,
+        color: "white",
+        fontSize: 16,
+        textAlign: "center",
+    },
+    date :{
+        height: 40,
+    },
+    dateText: {
+        color: "white",
+        fontSize: 18,
+        fontWeight: "bold",
+        textAlign: "center",
+        marginTop: 15,
+    },
+    timeText: {
+        color: "white",
+    },
+    firstRow: {
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10,
+        borderTopWidth: 2,
+        borderLeftWidth: 2,
+        borderRightWidth: 2,
+        borderColor: "#3a3a3a",
+    },
+    lastRow: {
+        borderBottomLeftRadius: 10,
+        borderBottomRightRadius: 10,
+        borderBottomWidth: 2,
+        borderLeftWidth: 2,
+        borderRightWidth: 2,
+        borderColor: "#3a3a3a",
+    },
 });
 
 export default MatchList;
