@@ -207,7 +207,7 @@ const PlayerList = ({nav, setTemp}) => {
                 keyExtractor={keyExtractor}
                 ItemSeparatorComponent={<View style={{height: 3}}/>}
                 indicatorStyle="white"
-                scrollIndicatorInsets={{right: -15}}
+                scrollIndicatorInsets={{right: -8}}
                 initialNumToRender={20}
                 windowSize={5}
                 decelerationRate={0.8}

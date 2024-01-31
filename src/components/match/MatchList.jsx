@@ -113,8 +113,8 @@ const MatchList = ({nav, week}) => {
                     )}
                     // keyExtractor={item => item.club.id}
                     indicatorStyle="white"
-                    scrollIndicatorInsets={{right: -15}}
-                    initialNumToRender={8}
+                    scrollIndicatorInsets={{right: -8}}
+                    initialNumToRender={10}
                 />
             </View>
     );

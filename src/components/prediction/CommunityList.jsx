@@ -164,7 +164,7 @@ const CommunityList = ({nav, user}) => {
                 keyExtractor={item => item.id}
                 ItemSeparatorComponent={<View style={{height: 10}}/>}
                 indicatorStyle="white"
-                scrollIndicatorInsets={{right: -15}}
+                scrollIndicatorInsets={{right: -8}}
                 initialNumToRender={8}
                 refreshControl={
                     <RefreshControl

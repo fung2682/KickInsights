@@ -38,7 +38,7 @@ const PlayerDetails = ({playerData}) => {
                 style={styles.scrollContainer}
                 showsVerticalScrollIndicator={true}
                 indicatorStyle="white"
-                scrollIndicatorInsets={{ right: 1 }}
+                scrollIndicatorInsets={{ right: -1 }}
             >
                 <View style={styles.statsContainer}>
                     <PlayerInfo player={player_info} image={playerImage}/>
