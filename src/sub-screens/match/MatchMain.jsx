@@ -3,12 +3,19 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import MatchList from "../../components/match/MatchList";
 import { MaterialIcons } from '@expo/vector-icons'; 
+import { dataAll } from "../../fetchCloud";
 
+function getCurrentWeek() {
+    let week = 1;
+    dataAll.forEach((club) => {
+        club.played > week ? week = club.played : week;
+    });
+    return week;
+}
 
 const MatchMain = ({navigation}) => {
 
-
-    const [currentWeek, setCurrentWeek] = useState(20);
+    const [currentWeek, setCurrentWeek] = useState(getCurrentWeek());
 
     // useEffect to update currentWeek
 
