@@ -88,11 +88,16 @@ const fetchClub = async (team_id, kit_id, index) => {
 
     const url_player = `https://footapi7.p.rapidapi.com/api/team/${team_id}/players`;
     let result_player;
-    try {
-        const response = await fetch(url_player, options);
-        result_player = await response.json();
-    } catch (error) {
-        console.error(error);
+
+    while (result_player === undefined) {
+        try {
+            const response = await fetch(url_player, options);
+            result_player = await response.json();
+        } catch (error) {
+            console.error(error);
+        }
+        console.log(`[FootApi] Fetching for club index ${index} players`);
+        await new Promise(resolve => setTimeout(resolve, 500));
     }
 
     const result_array = result_player.players;

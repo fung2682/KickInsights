@@ -67,10 +67,8 @@ const fetchClubPlayer = async (team_id, index) => {
         } catch (error) {
             console.error(error);
             console.log("Error fetching club player", team_id);
-            // to retry
-            continue;
         }
-        console.log(`[FootApi] Fetching for club index ${index}`);
+        console.log(`[FootApi] Fetching player for club index ${index}`);
         await new Promise(resolve => setTimeout(resolve, 500));
     }
 

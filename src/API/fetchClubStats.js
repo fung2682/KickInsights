@@ -28,13 +28,23 @@ function check_numeric_values(stats) {
 
 const fetchGeneral = async (team_id) => {
     // General
-    const res = await axios.get(`https://fbref.com/en/squads/${team_id}/${year}/matchlogs/c9/shooting`)
-    const table = await res.data.match(/matchlogs_for.*<\/table>/)[0]
-    const row = await table.match(/<tfoot.*?<\/tfoot>/)[0]
-
-    const result = row.match(/data-stat="result".*?<\/td>/)[0].slice(20, -5)
-    const goals_for = row.match(/data-stat="goals_for".*?<\/td>/)[0].slice(23, -5)
-    const goals_against = row.match(/data-stat="goals_against".*?<\/td>/)[0].slice(27, -5)
+    let row;
+    let result, goals_for, goals_against;
+    while (true) {
+        try {
+            const res = await axios.get(`https://fbref.com/en/squads/${team_id}/${year}/matchlogs/c9/shooting`)
+            const table = await res.data.match(/matchlogs_for.*<\/table>/)[0]
+            row = await table.match(/<tfoot.*?<\/tfoot>/)[0]
+            await new Promise(resolve => setTimeout(resolve, 500));
+            result = row.match(/data-stat="result".*?<\/td>/)[0].slice(20, -5)
+            goals_for = row.match(/data-stat="goals_for".*?<\/td>/)[0].slice(23, -5)
+            goals_against = row.match(/data-stat="goals_against".*?<\/td>/)[0].slice(27, -5)
+            break;
+        } catch (error) {
+            console.log(error)
+        }
+        await new Promise(resolve => setTimeout(resolve, 500));
+    }
 
     return [
         {'Record (W-D-L)': result},
@@ -45,20 +55,29 @@ const fetchGeneral = async (team_id) => {
 
 const fetchShooting = async (team_id) => {
     // Shooting
-    const res = await axios.get(`https://fbref.com/en/squads/${team_id}/${year}/matchlogs/c9/shooting`)
-    const table = await res.data.match(/matchlogs_for.*<\/table>/)[0]
-    const row = await table.match(/<tfoot.*?<\/tfoot>/)[0]
-
-    const shots = row.match(/data-stat="shots" >.*?<\/td>/)[0].slice(19, -5)
-    const goals = row.match(/data-stat="goals" >.*?<\/td>/)[0].slice(19, -5)
-    const shots_on_target = row.match(/data-stat="shots_on_target".*?<\/td>/)[0].slice(29, -5)
-    const shots_on_target_pct = row.match(/data-stat="shots_on_target_pct".*?<\/td>/)[0].slice(33, -5)
-    const goals_per_shot = row.match(/data-stat="goals_per_shot".*?<\/td>/)[0].slice(28, -5)
-    const goals_per_shot_on_target = row.match(/data-stat="goals_per_shot_on_target".*?<\/td>/)[0].slice(38, -5)
-    const average_shot_distance = row.match(/data-stat="average_shot_distance".*?<\/td>/)[0].slice(35, -5)
-    const shots_free_kicks = row.match(/data-stat="shots_free_kicks".*?<\/td>/)[0].slice(30, -5)
-    const pens_made = row.match(/data-stat="pens_made".*?<\/td>/)[0].slice(23, -5)
-    const pens_att = row.match(/data-stat="pens_att".*?<\/td>/)[0].slice(22, -5)
+    let row;
+    let shots, goals, shots_on_target, shots_on_target_pct, goals_per_shot, goals_per_shot_on_target, average_shot_distance, shots_free_kicks, pens_made, pens_att;
+    while (true) {
+        try {
+            const res = await axios.get(`https://fbref.com/en/squads/${team_id}/${year}/matchlogs/c9/shooting`)
+            const table = await res.data.match(/matchlogs_for.*<\/table>/)[0]
+            row = await table.match(/<tfoot.*?<\/tfoot>/)[0]
+            shots = row.match(/data-stat="shots" >.*?<\/td>/)[0].slice(19, -5)
+            goals = row.match(/data-stat="goals" >.*?<\/td>/)[0].slice(19, -5)
+            shots_on_target = row.match(/data-stat="shots_on_target".*?<\/td>/)[0].slice(29, -5)
+            shots_on_target_pct = row.match(/data-stat="shots_on_target_pct".*?<\/td>/)[0].slice(33, -5)
+            goals_per_shot = row.match(/data-stat="goals_per_shot".*?<\/td>/)[0].slice(28, -5)
+            goals_per_shot_on_target = row.match(/data-stat="goals_per_shot_on_target".*?<\/td>/)[0].slice(38, -5)
+            average_shot_distance = row.match(/data-stat="average_shot_distance".*?<\/td>/)[0].slice(35, -5)
+            shots_free_kicks = row.match(/data-stat="shots_free_kicks".*?<\/td>/)[0].slice(30, -5)
+            pens_made = row.match(/data-stat="pens_made".*?<\/td>/)[0].slice(23, -5)
+            pens_att = row.match(/data-stat="pens_att".*?<\/td>/)[0].slice(22, -5)
+            break;
+        } catch (error) {
+            console.log(error)
+        }
+        await new Promise(resolve => setTimeout(resolve, 500));
+    }
 
     return [
         {'Shots': shots},
@@ -77,23 +96,32 @@ const fetchShooting = async (team_id) => {
 
 const fetchPassing = async (team_id) => {
     // Passing
-    const res = await axios.get(`https://fbref.com/en/squads/${team_id}/${year}/matchlogs/c9/passing`)
-    const table = await res.data.match(/matchlogs_for.*<\/table>/)[0]
-    const row = await table.match(/<tfoot.*?<\/tfoot>/)[0]
-
-    const assists = row.match(/data-stat="assists".*?<\/td>/)[0].slice(21, -5)
-    const passes_completed = row.match(/data-stat="passes_completed".*?<\/td>/)[0].slice(30, -5)
-    const passes = row.match(/data-stat="passes".*?<\/td>/)[0].slice(20, -5)
-    const passes_pct = row.match(/data-stat="passes_pct".*?<\/td>/)[0].slice(24, -5)
-    const passes_completed_short = row.match(/data-stat="passes_completed_short".*?<\/td>/)[0].slice(36, -5)
-    const passes_short = row.match(/data-stat="passes_short".*?<\/td>/)[0].slice(26, -5)
-    const passes_pct_short = row.match(/data-stat="passes_pct_short".*?<\/td>/)[0].slice(30, -5)
-    const passes_completed_medium = row.match(/data-stat="passes_completed_medium".*?<\/td>/)[0].slice(37, -5)
-    const passes_medium = row.match(/data-stat="passes_medium".*?<\/td>/)[0].slice(27, -5)
-    const passes_pct_medium = row.match(/data-stat="passes_pct_medium".*?<\/td>/)[0].slice(31, -5)
-    const passes_completed_long = row.match(/data-stat="passes_completed_long".*?<\/td>/)[0].slice(35, -5)
-    const passes_long = row.match(/data-stat="passes_long".*?<\/td>/)[0].slice(25, -5)
-    const passes_pct_long = row.match(/data-stat="passes_pct_long".*?<\/td>/)[0].slice(29, -5)
+    let row;
+    let assists, passes_completed, passes, passes_pct, passes_completed_short, passes_short, passes_pct_short, passes_completed_medium, passes_medium, passes_pct_medium, passes_completed_long, passes_long, passes_pct_long;
+    while (true) {
+        try {
+            const res = await axios.get(`https://fbref.com/en/squads/${team_id}/${year}/matchlogs/c9/passing`)
+            const table = await res.data.match(/matchlogs_for.*<\/table>/)[0]
+            row = await table.match(/<tfoot.*?<\/tfoot>/)[0]
+            assists = row.match(/data-stat="assists".*?<\/td>/)[0].slice(21, -5)
+            passes_completed = row.match(/data-stat="passes_completed".*?<\/td>/)[0].slice(30, -5)
+            passes = row.match(/data-stat="passes".*?<\/td>/)[0].slice(20, -5)
+            passes_pct = row.match(/data-stat="passes_pct".*?<\/td>/)[0].slice(24, -5)
+            passes_completed_short = row.match(/data-stat="passes_completed_short".*?<\/td>/)[0].slice(36, -5)
+            passes_short = row.match(/data-stat="passes_short".*?<\/td>/)[0].slice(26, -5)
+            passes_pct_short = row.match(/data-stat="passes_pct_short".*?<\/td>/)[0].slice(30, -5)
+            passes_completed_medium = row.match(/data-stat="passes_completed_medium".*?<\/td>/)[0].slice(37, -5)
+            passes_medium = row.match(/data-stat="passes_medium".*?<\/td>/)[0].slice(27, -5)
+            passes_pct_medium = row.match(/data-stat="passes_pct_medium".*?<\/td>/)[0].slice(31, -5)
+            passes_completed_long = row.match(/data-stat="passes_completed_long".*?<\/td>/)[0].slice(35, -5)
+            passes_long = row.match(/data-stat="passes_long".*?<\/td>/)[0].slice(25, -5)
+            passes_pct_long = row.match(/data-stat="passes_pct_long".*?<\/td>/)[0].slice(29, -5)
+            break;
+        } catch (error) {
+            console.log(error)
+        }
+        await new Promise(resolve => setTimeout(resolve, 500));
+    }
 
     return [
         {'Assists': assists},
@@ -118,20 +146,29 @@ const fetchPassing = async (team_id) => {
 
 const fetchPassTypes = async (team_id) => {
     // Pass Types
-    const res = await axios.get(`https://fbref.com/en/squads/${team_id}/${year}/matchlogs/c9/passing_types`)
-    const table = await res.data.match(/matchlogs_for.*<\/table>/)[0]
-    const row = await table.match(/<tfoot.*?<\/tfoot>/)[0]
-
-    const passes_live = row.match(/data-stat="passes_live".*?<\/td>/)[0].slice(25, -5)
-    const passes_dead = row.match(/data-stat="passes_dead".*?<\/td>/)[0].slice(25, -5)
-    const passes_free_kicks = row.match(/data-stat="passes_free_kicks".*?<\/td>/)[0].slice(31, -5)
-    const through_balls = row.match(/data-stat="through_balls".*?<\/td>/)[0].slice(27, -5)
-    const passes_switches = row.match(/data-stat="passes_switches".*?<\/td>/)[0].slice(29, -5)
-    const crosses = row.match(/data-stat="crosses".*?<\/td>/)[0].slice(21, -5)
-    const throw_ins = row.match(/data-stat="throw_ins".*?<\/td>/)[0].slice(23, -5)
-    const corner_kicks = row.match(/data-stat="corner_kicks".*?<\/td>/)[0].slice(26, -5)
-    const passes_offsides = row.match(/data-stat="passes_offsides".*?<\/td>/)[0].slice(29, -5)
-    const passes_blocked = row.match(/data-stat="passes_blocked".*?<\/td>/)[0].slice(28, -5)
+    let row;
+    let passes_live, passes_dead, passes_free_kicks, through_balls, passes_switches, crosses, throw_ins, corner_kicks, passes_offsides, passes_blocked;
+    while (true) {
+        try {
+            const res = await axios.get(`https://fbref.com/en/squads/${team_id}/${year}/matchlogs/c9/passing_types`)
+            const table = await res.data.match(/matchlogs_for.*<\/table>/)[0]
+            row = await table.match(/<tfoot.*?<\/tfoot>/)[0]
+            passes_live = row.match(/data-stat="passes_live".*?<\/td>/)[0].slice(25, -5)
+            passes_dead = row.match(/data-stat="passes_dead".*?<\/td>/)[0].slice(25, -5)
+            passes_free_kicks = row.match(/data-stat="passes_free_kicks".*?<\/td>/)[0].slice(31, -5)
+            through_balls = row.match(/data-stat="through_balls".*?<\/td>/)[0].slice(27, -5)
+            passes_switches = row.match(/data-stat="passes_switches".*?<\/td>/)[0].slice(29, -5)
+            crosses = row.match(/data-stat="crosses".*?<\/td>/)[0].slice(21, -5)
+            throw_ins = row.match(/data-stat="throw_ins".*?<\/td>/)[0].slice(23, -5)
+            corner_kicks = row.match(/data-stat="corner_kicks".*?<\/td>/)[0].slice(26, -5)
+            passes_offsides = row.match(/data-stat="passes_offsides".*?<\/td>/)[0].slice(29, -5)
+            passes_blocked = row.match(/data-stat="passes_blocked".*?<\/td>/)[0].slice(28, -5)
+            break;
+        } catch (error) {
+            console.log(error)
+        }
+        await new Promise(resolve => setTimeout(resolve, 500));
+    }
 
     return [
         {'Live-ball Passes': passes_live},
@@ -149,24 +186,33 @@ const fetchPassTypes = async (team_id) => {
 
 const fetchGoalAndShotCreation = async (team_id) => {
     // Goal and Shot Creation
-    const res = await axios.get(`https://fbref.com/en/squads/${team_id}/${year}/matchlogs/c9/gca`)
-    const table = await res.data.match(/matchlogs_for.*<\/table>/)[0]
-    const row = await table.match(/<tfoot.*?<\/tfoot>/)[0]
-
-    const sca = row.match(/data-stat="sca".*?<\/td>/)[0].slice(17, -5)
-    const sca_passes_live = row.match(/data-stat="sca_passes_live".*?<\/td>/)[0].slice(29, -5)
-    const sca_passes_dead  = row.match(/data-stat="sca_passes_dead".*?<\/td>/)[0].slice(29, -5)
-    const sca_take_ons = row.match(/data-stat="sca_take_ons".*?<\/td>/)[0].slice(26, -5)
-    const sca_shots = row.match(/data-stat="sca_shots".*?<\/td>/)[0].slice(23, -5)
-    const sca_fouled = row.match(/data-stat="sca_fouled".*?<\/td>/)[0].slice(24, -5)
-    const sca_defense = row.match(/data-stat="sca_defense".*?<\/td>/)[0].slice(25, -5)
-    const gca = row.match(/data-stat="gca".*?<\/td>/)[0].slice(17, -5)
-    const gca_passes_live = row.match(/data-stat="gca_passes_live".*?<\/td>/)[0].slice(29, -5)
-    const gca_passes_dead = row.match(/data-stat="gca_passes_dead".*?<\/td>/)[0].slice(29, -5)
-    const gca_take_ons = row.match(/data-stat="gca_take_ons".*?<\/td>/)[0].slice(26, -5)
-    const gca_shots = row.match(/data-stat="gca_shots".*?<\/td>/)[0].slice(23, -5)
-    const gca_fouled = row.match(/data-stat="gca_fouled".*?<\/td>/)[0].slice(24, -5)
-    const gca_defense = row.match(/data-stat="gca_defense".*?<\/td>/)[0].slice(25, -5)
+    let row;
+    let sca, sca_passes_live, sca_passes_dead, sca_take_ons, sca_shots, sca_fouled, sca_defense, gca, gca_passes_live, gca_passes_dead, gca_take_ons, gca_shots, gca_fouled, gca_defense;
+    while (true) {
+        try {
+            const res = await axios.get(`https://fbref.com/en/squads/${team_id}/${year}/matchlogs/c9/gca`)
+            const table = await res.data.match(/matchlogs_for.*<\/table>/)[0]
+            row = await table.match(/<tfoot.*?<\/tfoot>/)[0]
+            sca = row.match(/data-stat="sca".*?<\/td>/)[0].slice(17, -5)
+            sca_passes_live = row.match(/data-stat="sca_passes_live".*?<\/td>/)[0].slice(29, -5)
+            sca_passes_dead  = row.match(/data-stat="sca_passes_dead".*?<\/td>/)[0].slice(29, -5)
+            sca_take_ons = row.match(/data-stat="sca_take_ons".*?<\/td>/)[0].slice(26, -5)
+            sca_shots = row.match(/data-stat="sca_shots".*?<\/td>/)[0].slice(23, -5)
+            sca_fouled = row.match(/data-stat="sca_fouled".*?<\/td>/)[0].slice(24, -5)
+            sca_defense = row.match(/data-stat="sca_defense".*?<\/td>/)[0].slice(25, -5)
+            gca = row.match(/data-stat="gca".*?<\/td>/)[0].slice(17, -5)
+            gca_passes_live = row.match(/data-stat="gca_passes_live".*?<\/td>/)[0].slice(29, -5)
+            gca_passes_dead = row.match(/data-stat="gca_passes_dead".*?<\/td>/)[0].slice(29, -5)
+            gca_take_ons = row.match(/data-stat="gca_take_ons".*?<\/td>/)[0].slice(26, -5)
+            gca_shots = row.match(/data-stat="gca_shots".*?<\/td>/)[0].slice(23, -5)
+            gca_fouled = row.match(/data-stat="gca_fouled".*?<\/td>/)[0].slice(24, -5)
+            gca_defense = row.match(/data-stat="gca_defense".*?<\/td>/)[0].slice(25, -5)
+            break;
+        } catch (error) {
+            console.log(error)
+        }
+        await new Promise(resolve => setTimeout(resolve, 500));
+    }
 
     return [
         {'Shot Creating Actions': sca},
@@ -189,24 +235,33 @@ const fetchGoalAndShotCreation = async (team_id) => {
 
 const fetchDefensiveActions = async (team_id) => {
     // Defensive Actions
-    const res = await axios.get(`https://fbref.com/en/squads/${team_id}/${year}/matchlogs/c9/defense`)
-    const table = await res.data.match(/matchlogs_for.*<\/table>/)[0]
-    const row = await table.match(/<tfoot.*?<\/tfoot>/)[0]
-    
-    const tackles = row.match(/data-stat="tackles".*?<\/td>/)[0].slice(21, -5)
-    const tackles_won = row.match(/data-stat="tackles_won".*?<\/td>/)[0].slice(25, -5)
-    const tackles_def_3rd = row.match(/data-stat="tackles_def_3rd".*?<\/td>/)[0].slice(29, -5)
-    const tackles_mid_3rd = row.match(/data-stat="tackles_mid_3rd".*?<\/td>/)[0].slice(29, -5)
-    const tackles_att_3rd = row.match(/data-stat="tackles_att_3rd".*?<\/td>/)[0].slice(29, -5)
-    const challenges = row.match(/data-stat="challenges".*?<\/td>/)[0].slice(24, -5)
-    const challenge_tackles = row.match(/data-stat="challenge_tackles".*?<\/td>/)[0].slice(31, -5)
-    const challenge_tackles_pct = row.match(/data-stat="challenge_tackles_pct".*?<\/td>/)[0].slice(35, -5)
-    const blocks = row.match(/data-stat="blocks".*?<\/td>/)[0].slice(20, -5)
-    const blocked_shots = row.match(/data-stat="blocked_shots".*?<\/td>/)[0].slice(27, -5)
-    const blocked_passes = row.match(/data-stat="blocked_passes".*?<\/td>/)[0].slice(28, -5)
-    const interceptions = row.match(/data-stat="interceptions".*?<\/td>/)[0].slice(27, -5)
-    const clearances = row.match(/data-stat="clearances".*?<\/td>/)[0].slice(24, -5)
-    const errors = row.match(/data-stat="errors".*?<\/td>/)[0].slice(20, -5)
+    let row;
+    let tackles, tackles_won, tackles_def_3rd, tackles_mid_3rd, tackles_att_3rd, challenges, challenge_tackles, challenge_tackles_pct, blocks, blocked_shots, blocked_passes, interceptions, clearances, errors;
+    while (true) {
+        try {
+            const res = await axios.get(`https://fbref.com/en/squads/${team_id}/${year}/matchlogs/c9/defense`)
+            const table = await res.data.match(/matchlogs_for.*<\/table>/)[0]
+            row = await table.match(/<tfoot.*?<\/tfoot>/)[0]
+            tackles = row.match(/data-stat="tackles".*?<\/td>/)[0].slice(21, -5)
+            tackles_won = row.match(/data-stat="tackles_won".*?<\/td>/)[0].slice(25, -5)
+            tackles_def_3rd = row.match(/data-stat="tackles_def_3rd".*?<\/td>/)[0].slice(29, -5)
+            tackles_mid_3rd = row.match(/data-stat="tackles_mid_3rd".*?<\/td>/)[0].slice(29, -5)
+            tackles_att_3rd = row.match(/data-stat="tackles_att_3rd".*?<\/td>/)[0].slice(29, -5)
+            challenges = row.match(/data-stat="challenges".*?<\/td>/)[0].slice(24, -5)
+            challenge_tackles = row.match(/data-stat="challenge_tackles".*?<\/td>/)[0].slice(31, -5)
+            challenge_tackles_pct = row.match(/data-stat="challenge_tackles_pct".*?<\/td>/)[0].slice(35, -5)
+            blocks = row.match(/data-stat="blocks".*?<\/td>/)[0].slice(20, -5)
+            blocked_shots = row.match(/data-stat="blocked_shots".*?<\/td>/)[0].slice(27, -5)
+            blocked_passes = row.match(/data-stat="blocked_passes".*?<\/td>/)[0].slice(28, -5)
+            interceptions = row.match(/data-stat="interceptions".*?<\/td>/)[0].slice(27, -5)
+            clearances = row.match(/data-stat="clearances".*?<\/td>/)[0].slice(24, -5)
+            errors = row.match(/data-stat="errors".*?<\/td>/)[0].slice(20, -5)
+            break;
+        } catch (error) {
+            console.log(error)
+        }
+        await new Promise(resolve => setTimeout(resolve, 500));
+    }
 
     return [
         {'[Tackles] Attempted': tackles},
@@ -231,30 +286,39 @@ const fetchDefensiveActions = async (team_id) => {
 
 const fetchPossession = async (team_id) => {
     // Possession
-    const res = await axios.get(`https://fbref.com/en/squads/${team_id}/${year}/matchlogs/c9/possession`)
-    const table = await res.data.match(/matchlogs_for.*<\/table>/)[0]
-    const row = await table.match(/<tfoot.*?<\/tfoot>/)[0]
-
-    const possession = row.match(/data-stat="possession".*?<\/td>/)[0].slice(24, -5)
-    const touches = row.match(/data-stat="touches".*?<\/td>/)[0].slice(21, -5)
-    const touches_def_pen_area = row.match(/data-stat="touches_def_pen_area".*?<\/td>/)[0].slice(34, -5)
-    const touches_def_3rd = row.match(/data-stat="touches_def_3rd".*?<\/td>/)[0].slice(29, -5)
-    const touches_mid_3rd = row.match(/data-stat="touches_mid_3rd".*?<\/td>/)[0].slice(29, -5)
-    const touches_att_3rd = row.match(/data-stat="touches_att_3rd".*?<\/td>/)[0].slice(29, -5)
-    const touches_att_pen_area = row.match(/data-stat="touches_att_pen_area".*?<\/td>/)[0].slice(34, -5)
-    const take_ons = row.match(/data-stat="take_ons".*?<\/td>/)[0].slice(22, -5)
-    const take_ons_won = row.match(/data-stat="take_ons_won".*?<\/td>/)[0].slice(26, -5)
-    const take_ons_tackled = row.match(/data-stat="take_ons_tackled".*?<\/td>/)[0].slice(30, -5)
-    const carries = row.match(/data-stat="carries".*?<\/td>/)[0].slice(21, -5)
-    const carries_distance = row.match(/data-stat="carries_distance".*?<\/td>/)[0].slice(30, -5)
-    const carries_progressive_distance = row.match(/data-stat="carries_progressive_distance".*?<\/td>/)[0].slice(42, -5)
-    const progressive_carries = row.match(/data-stat="progressive_carries".*?<\/td>/)[0].slice(33, -5)
-    const carries_into_final_third = row.match(/data-stat="carries_into_final_third".*?<\/td>/)[0].slice(38, -5)
-    const carries_into_penalty_area = row.match(/data-stat="carries_into_penalty_area".*?<\/td>/)[0].slice(39, -5)
-    const miscontrols = row.match(/data-stat="miscontrols".*?<\/td>/)[0].slice(25, -5)
-    const dispossessed = row.match(/data-stat="dispossessed".*?<\/td>/)[0].slice(26, -5)
-    const passes_received = row.match(/data-stat="passes_received".*?<\/td>/)[0].slice(29, -5)
-    const progressive_passes_received = row.match(/data-stat="progressive_passes_received".*?<\/td>/)[0].slice(41, -5)
+    let row;
+    let possession, touches, touches_def_pen_area, touches_def_3rd, touches_mid_3rd, touches_att_3rd, touches_att_pen_area, take_ons, take_ons_won, take_ons_tackled, carries, carries_distance, carries_progressive_distance, progressive_carries, carries_into_final_third, carries_into_penalty_area, miscontrols, dispossessed, passes_received, progressive_passes_received;
+    while (true) {
+        try {
+            const res = await axios.get(`https://fbref.com/en/squads/${team_id}/${year}/matchlogs/c9/possession`)
+            const table = await res.data.match(/matchlogs_for.*<\/table>/)[0]
+            row = await table.match(/<tfoot.*?<\/tfoot>/)[0]
+            possession = row.match(/data-stat="possession".*?<\/td>/)[0].slice(24, -5)
+            touches = row.match(/data-stat="touches".*?<\/td>/)[0].slice(21, -5)
+            touches_def_pen_area = row.match(/data-stat="touches_def_pen_area".*?<\/td>/)[0].slice(34, -5)
+            touches_def_3rd = row.match(/data-stat="touches_def_3rd".*?<\/td>/)[0].slice(29, -5)
+            touches_mid_3rd = row.match(/data-stat="touches_mid_3rd".*?<\/td>/)[0].slice(29, -5)
+            touches_att_3rd = row.match(/data-stat="touches_att_3rd".*?<\/td>/)[0].slice(29, -5)
+            touches_att_pen_area = row.match(/data-stat="touches_att_pen_area".*?<\/td>/)[0].slice(34, -5)
+            take_ons = row.match(/data-stat="take_ons".*?<\/td>/)[0].slice(22, -5)
+            take_ons_won = row.match(/data-stat="take_ons_won".*?<\/td>/)[0].slice(26, -5)
+            take_ons_tackled = row.match(/data-stat="take_ons_tackled".*?<\/td>/)[0].slice(30, -5)
+            carries = row.match(/data-stat="carries".*?<\/td>/)[0].slice(21, -5)
+            carries_distance = row.match(/data-stat="carries_distance".*?<\/td>/)[0].slice(30, -5)
+            carries_progressive_distance = row.match(/data-stat="carries_progressive_distance".*?<\/td>/)[0].slice(42, -5)
+            progressive_carries = row.match(/data-stat="progressive_carries".*?<\/td>/)[0].slice(33, -5)
+            carries_into_final_third = row.match(/data-stat="carries_into_final_third".*?<\/td>/)[0].slice(38, -5)
+            carries_into_penalty_area = row.match(/data-stat="carries_into_penalty_area".*?<\/td>/)[0].slice(39, -5)
+            miscontrols = row.match(/data-stat="miscontrols".*?<\/td>/)[0].slice(25, -5)
+            dispossessed = row.match(/data-stat="dispossessed".*?<\/td>/)[0].slice(26, -5)
+            passes_received = row.match(/data-stat="passes_received".*?<\/td>/)[0].slice(29, -5)
+            progressive_passes_received = row.match(/data-stat="progressive_passes_received".*?<\/td>/)[0].slice(41, -5)
+            break;
+        } catch (error) {
+            console.log(error)
+        }
+        await new Promise(resolve => setTimeout(resolve, 500));
+    }
 
     return [
         {'Possession %': possession},
@@ -286,35 +350,44 @@ const fetchPossession = async (team_id) => {
 
 const fetchGoalkeeping = async (team_id) => {
     // Goalkeeping
-    const res = await axios.get(`https://fbref.com/en/squads/${team_id}/${year}/matchlogs/c9/keeper`)
-    const table = await res.data.match(/matchlogs_for.*<\/table>/)[0]
-    const row = await table.match(/<tfoot.*?<\/tfoot>/)[0]
-
-    const gk_shots_on_target_against = row.match(/data-stat="gk_shots_on_target_against".*?<\/td>/)[0].slice(40, -5)
-    const gk_goals_against = row.match(/data-stat="gk_goals_against".*?<\/td>/)[0].slice(30, -5)
-    const gk_saves = row.match(/data-stat="gk_saves".*?<\/td>/)[0].slice(22, -5)
-    const gk_save_pct = row.match(/data-stat="gk_save_pct".*?<\/td>/)[0].slice(25, -5)
-    const gk_clean_sheets = row.match(/data-stat="gk_clean_sheets".*?<\/td>/)[0].slice(29, -5)
-
-    const gk_passes_launched = row.match(/data-stat="gk_passes_launched".*?<\/td>/)[0].slice(32, -5)
-    const gk_passes_completed_launched = row.match(/data-stat="gk_passes_completed_launched".*?<\/td>/)[0].slice(42, -5)
-    const gk_passes_pct_launched = row.match(/data-stat="gk_passes_pct_launched".*?<\/td>/)[0].slice(36, -5)
-
-    const gk_passes = row.match(/data-stat="gk_passes".*?<\/td>/)[0].slice(23, -5)
-    const gk_passes_throws = row.match(/data-stat="gk_passes_throws".*?<\/td>/)[0].slice(30, -5)
-    const gk_pct_passes_launched = row.match(/data-stat="gk_pct_passes_launched".*?<\/td>/)[0].slice(36, -5)
-    const gk_passes_length_avg = row.match(/data-stat="gk_passes_length_avg".*?<\/td>/)[0].slice(34, -5)
-
-    const gk_goal_kicks = row.match(/data-stat="gk_goal_kicks".*?<\/td>/)[0].slice(27, -5)
-    const gk_pct_goal_kicks_launched = row.match(/data-stat="gk_pct_goal_kicks_launched".*?<\/td>/)[0].slice(40, -5)
-    const gk_goal_kick_length_avg = row.match(/data-stat="gk_goal_kick_length_avg".*?<\/td>/)[0].slice(37, -5)
-
-    const gk_crosses = row.match(/data-stat="gk_crosses".*?<\/td>/)[0].slice(24, -5)
-    const gk_crosses_stopped = row.match(/data-stat="gk_crosses_stopped".*?<\/td>/)[0].slice(32, -5)
-    const gk_crosses_stopped_pct = row.match(/data-stat="gk_crosses_stopped_pct".*?<\/td>/)[0].slice(36, -5)
-
-    const gk_def_actions_outside_pen_area = row.match(/data-stat="gk_def_actions_outside_pen_area".*?<\/td>/)[0].slice(45, -5)
-    const gk_avg_distance_def_actions = row.match(/data-stat="gk_avg_distance_def_actions".*?<\/td>/)[0].slice(41, -5)
+    let row;
+    let gk_shots_on_target_against, gk_goals_against, gk_saves, gk_save_pct, gk_clean_sheets, gk_passes_launched, gk_passes_completed_launched, gk_passes_pct_launched, gk_passes, gk_passes_throws, gk_pct_passes_launched, gk_passes_length_avg, gk_goal_kicks, gk_pct_goal_kicks_launched, gk_goal_kick_length_avg, gk_crosses, gk_crosses_stopped, gk_crosses_stopped_pct, gk_def_actions_outside_pen_area, gk_avg_distance_def_actions;
+    while (true) {
+        try {
+            const res = await axios.get(`https://fbref.com/en/squads/${team_id}/${year}/matchlogs/c9/keeper`)
+            const table = await res.data.match(/matchlogs_for.*<\/table>/)[0]
+            row = await table.match(/<tfoot.*?<\/tfoot>/)[0]
+            gk_shots_on_target_against = row.match(/data-stat="gk_shots_on_target_against".*?<\/td>/)[0].slice(40, -5)
+            gk_goals_against = row.match(/data-stat="gk_goals_against".*?<\/td>/)[0].slice(30, -5)
+            gk_saves = row.match(/data-stat="gk_saves".*?<\/td>/)[0].slice(22, -5)
+            gk_save_pct = row.match(/data-stat="gk_save_pct".*?<\/td>/)[0].slice(25, -5)
+            gk_clean_sheets = row.match(/data-stat="gk_clean_sheets".*?<\/td>/)[0].slice(29, -5)
+        
+            gk_passes_launched = row.match(/data-stat="gk_passes_launched".*?<\/td>/)[0].slice(32, -5)
+            gk_passes_completed_launched = row.match(/data-stat="gk_passes_completed_launched".*?<\/td>/)[0].slice(42, -5)
+            gk_passes_pct_launched = row.match(/data-stat="gk_passes_pct_launched".*?<\/td>/)[0].slice(36, -5)
+        
+            gk_passes = row.match(/data-stat="gk_passes".*?<\/td>/)[0].slice(23, -5)
+            gk_passes_throws = row.match(/data-stat="gk_passes_throws".*?<\/td>/)[0].slice(30, -5)
+            gk_pct_passes_launched = row.match(/data-stat="gk_pct_passes_launched".*?<\/td>/)[0].slice(36, -5)
+            gk_passes_length_avg = row.match(/data-stat="gk_passes_length_avg".*?<\/td>/)[0].slice(34, -5)
+        
+            gk_goal_kicks = row.match(/data-stat="gk_goal_kicks".*?<\/td>/)[0].slice(27, -5)
+            gk_pct_goal_kicks_launched = row.match(/data-stat="gk_pct_goal_kicks_launched".*?<\/td>/)[0].slice(40, -5)
+            gk_goal_kick_length_avg = row.match(/data-stat="gk_goal_kick_length_avg".*?<\/td>/)[0].slice(37, -5)
+        
+            gk_crosses = row.match(/data-stat="gk_crosses".*?<\/td>/)[0].slice(24, -5)
+            gk_crosses_stopped = row.match(/data-stat="gk_crosses_stopped".*?<\/td>/)[0].slice(32, -5)
+            gk_crosses_stopped_pct = row.match(/data-stat="gk_crosses_stopped_pct".*?<\/td>/)[0].slice(36, -5)
+        
+            gk_def_actions_outside_pen_area = row.match(/data-stat="gk_def_actions_outside_pen_area".*?<\/td>/)[0].slice(45, -5)
+            gk_avg_distance_def_actions = row.match(/data-stat="gk_avg_distance_def_actions".*?<\/td>/)[0].slice(41, -5)
+            break;
+        } catch (error) {
+            console.log(error)
+        }
+        await new Promise(resolve => setTimeout(resolve, 500));
+    }
 
     return [
         {'Shots On Target Against': gk_shots_on_target_against},
@@ -343,32 +416,38 @@ const fetchGoalkeeping = async (team_id) => {
         {'Actions Outside Pen Area': gk_def_actions_outside_pen_area},
         {'Avg Action Distance (yards)': gk_avg_distance_def_actions},
     ]
-
-
-
 }
 
 const fetchMiscellaneous = async (team_id) => {
     // Miscellaneous
-    const res = await axios.get(`https://fbref.com/en/squads/${team_id}/${year}/matchlogs/c9/misc`)
-    const table = await res.data.match(/matchlogs_for.*<\/table>/)[0]
-    const row = await table.match(/<tfoot.*?<\/tfoot>/)[0]
-
-    const cards_yellow = row.match(/data-stat="cards_yellow".*?<\/td>/)[0].slice(26, -5)
-    const cards_red = row.match(/data-stat="cards_red".*?<\/td>/)[0].slice(23, -5)
-    const cards_yellow_red = row.match(/data-stat="cards_yellow_red".*?<\/td>/)[0].slice(30, -5)
-    const fouls = row.match(/data-stat="fouls".*?<\/td>/)[0].slice(19, -5)
-    const fouled = row.match(/data-stat="fouled".*?<\/td>/)[0].slice(20, -5)
-    const offsides = row.match(/data-stat="offsides".*?<\/td>/)[0].slice(22, -5)
-
-    const pens_won = row.match(/data-stat="pens_won".*?<\/td>/)[0].slice(22, -5)
-    const pens_conceded = row.match(/data-stat="pens_conceded".*?<\/td>/)[0].slice(27, -5)
-    const own_goals = row.match(/data-stat="own_goals".*?<\/td>/)[0].slice(23, -5)
-    const ball_recoveries = row.match(/data-stat="ball_recoveries".*?<\/td>/)[0].slice(29, -5)
-
-    const aerials_won = row.match(/data-stat="aerials_won".*?<\/td>/)[0].slice(25, -5)
-    const aerials_lost = row.match(/data-stat="aerials_lost".*?<\/td>/)[0].slice(26, -5)
-    const aerials_won_pct = row.match(/data-stat="aerials_won_pct".*?<\/td>/)[0].slice(29, -5)
+    let row;
+    let cards_yellow, cards_red, cards_yellow_red, fouls, fouled, offsides, pens_won, pens_conceded, own_goals, ball_recoveries, aerials_won, aerials_lost, aerials_won_pct;
+    while (true) {
+        try {
+            const res = await axios.get(`https://fbref.com/en/squads/${team_id}/${year}/matchlogs/c9/misc`)
+            const table = await res.data.match(/matchlogs_for.*<\/table>/)[0]
+            row = await table.match(/<tfoot.*?<\/tfoot>/)[0]
+            cards_yellow = row.match(/data-stat="cards_yellow".*?<\/td>/)[0].slice(26, -5)
+            cards_red = row.match(/data-stat="cards_red".*?<\/td>/)[0].slice(23, -5)
+            cards_yellow_red = row.match(/data-stat="cards_yellow_red".*?<\/td>/)[0].slice(30, -5)
+            fouls = row.match(/data-stat="fouls".*?<\/td>/)[0].slice(19, -5)
+            fouled = row.match(/data-stat="fouled".*?<\/td>/)[0].slice(20, -5)
+            offsides = row.match(/data-stat="offsides".*?<\/td>/)[0].slice(22, -5)
+        
+            pens_won = row.match(/data-stat="pens_won".*?<\/td>/)[0].slice(22, -5)
+            pens_conceded = row.match(/data-stat="pens_conceded".*?<\/td>/)[0].slice(27, -5)
+            own_goals = row.match(/data-stat="own_goals".*?<\/td>/)[0].slice(23, -5)
+            ball_recoveries = row.match(/data-stat="ball_recoveries".*?<\/td>/)[0].slice(29, -5)
+        
+            aerials_won = row.match(/data-stat="aerials_won".*?<\/td>/)[0].slice(25, -5)
+            aerials_lost = row.match(/data-stat="aerials_lost".*?<\/td>/)[0].slice(26, -5)
+            aerials_won_pct = row.match(/data-stat="aerials_won_pct".*?<\/td>/)[0].slice(29, -5)
+            break;
+        } catch (error) {
+            console.log(error)
+        }
+        await new Promise(resolve => setTimeout(resolve, 500));
+    }
 
     return [
         {'Yellow Cards': cards_yellow},
