@@ -14,12 +14,15 @@ const fetchTable = async (url) => {
     };
     let result;
 
-    try {
-        const response = await fetch(url, options);
-        result = await response.json();
-    } catch (error) {
-        console.error(error);
-    }
+    while (result === undefined) {
+        try {
+            const response = await fetch(url, options);
+            result = await response.json();
+        } catch (error) {
+            console.error(error);
+            await new Promise(resolve => setTimeout(resolve, 1000));
+        }
+    }    
 
     // access the APIs table array
     const inputTable = result.standings[0].rows;    
@@ -111,27 +114,18 @@ const fetchTable = async (url) => {
 
 const fetchAllTables = async () => {
     const table = await fetchTable('https://footapi7.p.rapidapi.com/api/tournament/17/season/52186/standings/total');
-    // table.forEach((club) => {
-    //     club.logo = dataClubs[club.club_id].club.logo;  
-    // })
     setData('league_tables', 'all', {table});
     console.log('Fetched table (all)');
 }
 
 const fetchHomeTables = async () => {
     const table = await fetchTable('https://footapi7.p.rapidapi.com/api/tournament/17/season/52186/standings/home');
-    // table.forEach((club) => {
-    //     club.logo = dataClubs[club.club_id].club.logo;  
-    // })
     setData('league_tables', 'home', {table});
     console.log('Fetched table (home)');
 }
 
 const fetchAwayTables = async () => {
     const table = await fetchTable('https://footapi7.p.rapidapi.com/api/tournament/17/season/52186/standings/away');
-    // table.forEach((club) => {
-    //     club.logo = dataClubs[club.club_id].club.logo;  
-    // })
     setData('league_tables', 'away', {table});
     console.log('Fetched table (away)');
 }
