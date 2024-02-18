@@ -46,7 +46,7 @@ const TempScreen = () => {
             <TouchableOpacity
                 onPress={() => {fetchClubStats()}} style={styles.temp_button}
             >
-                <Text>{`[club stats] (hourly?)\n (15 mins) FBREF -> Firestore`}</Text>
+                <Text>{`[club stats] (daily?)\n (15 mins) FBREF -> Firestore`}</Text>
             </TouchableOpacity>
             <TouchableOpacity
                 onPress={() => {fetchPlayers()}} style={styles.temp_button}
@@ -56,7 +56,7 @@ const TempScreen = () => {
             <TouchableOpacity
                 onPress={() => {fetchMatches()}} style={styles.temp_button}
             >
-                <Text>{`FBREF -> Firestore`}</Text>
+                <Text>{`[match info + stats] (daily?) (20 mins) FBREF -> Firestore`}</Text>
             </TouchableOpacity>
         </View>
     );
