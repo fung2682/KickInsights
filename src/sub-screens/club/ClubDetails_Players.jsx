@@ -17,7 +17,7 @@ const ClubDetails_Players = ({ club }) => {
             style={styles.scrollContainer}
             showsVerticalScrollIndicator={true}
             indicatorStyle="white"
-            scrollIndicatorInsets={{ right: 1 }}
+            scrollIndicatorInsets={{ right: -2 }}
         >
             <View style={styles.container}>
                 {renderPlayers()}

@@ -38,7 +38,7 @@ const PlayerDetails = ({playerData}) => {
                 style={styles.scrollContainer}
                 showsVerticalScrollIndicator={true}
                 indicatorStyle="white"
-                scrollIndicatorInsets={{ right: -1 }}
+                scrollIndicatorInsets={{ right: -2 }}
             >
                 <View style={styles.statsContainer}>
                     <PlayerInfo player={player_info} image={playerImage}/>
@@ -66,12 +66,12 @@ const styles = StyleSheet.create({
       },
     scrollContainer: {
         flex: 1,
-        width: "97%",
+        width: "100%",
     },
     statsContainer: {
         flex: 1,
-        width: "100%",
-        alignItems: "center",
+        width: "97%",
+        alignSelf: "center",
         marginTop: 8,
         marginBottom: 8,
     },
