@@ -63,6 +63,7 @@ const Item = ({match, nav, firstMatch, first, last}) => {
             <TouchableOpacity 
                 style={styles.row}
                 activeOpacity={0.8}
+                onPress={() => nav.navigate("MatchDetails", {match: match})}   
             >
                 <Text style={styles.teamLeft}>{ match.homeTeam}</Text>
                 <Image 

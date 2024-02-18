@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import MatchMain from "../sub-screens/match/MatchMain";
-import tempScreen from "../sub-screens/tempScreen";
+import MatchDetails from "../sub-screens/match/MatchDetails";
 
 const Stack = createNativeStackNavigator();
 
@@ -32,12 +32,11 @@ const Matches = () => {
             initialRouteName="MatchMain"
         >
             <Stack.Screen name="MatchMain" component={MatchMain}/>
-            <Stack.Screen name="MatchDetails" component={tempScreen}/>
-            {/* <Stack.Screen name="ClubDetails" 
-                options={({route}) => ({ headerTitle: route.params.clubData.club.name_full })}
+            <Stack.Screen name="MatchDetails" 
+                options={({route}) => ({ headerTitle: "Match Centre" })}
             >
-                {(clubData) => <ClubDetails club={clubData}/>}
-            </Stack.Screen> */}
+                {(input) => <MatchDetails match={input}/>}
+            </Stack.Screen>
         </Stack.Navigator>
     );
 }
