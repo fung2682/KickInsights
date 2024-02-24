@@ -329,8 +329,6 @@ const fetchMatch = async (row, latest_fetched_stats_fbref_row, current_row) => {
     } else {
         if (scoreline.match(/<a.*?>.*?<\/a>/) !== null) {   // if match has been played and not postponed
             matchRef = columns[11].match(/<a.*?>.*?<\/a>/)[0].match(/href=".*?"/)[0].split('/')[3]
-            // temporary: if match report not immediately available (it is uploaded after the game)
-            // check if update needed by fetching matchRef from firestore
             if (current_row > latest_fetched_stats_fbref_row) {
                 await fetchInGameStats(matchRef, matchWeek, current_row)
                 await new Promise(resolve => setTimeout(resolve, 3500))
