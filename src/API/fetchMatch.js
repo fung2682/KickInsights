@@ -14,9 +14,10 @@ const fetchInGameStats = async (matchRef, matchWeek, current_row) => {
     while (root === undefined) {
         try {
             const res = await axios.get('https://fbref.com/en/matches/' + matchRef);
-            const docRef = matchRef.split("/")[3]
+            // const docRef = matchRef.split("/")[3]
             root = parse(res.data)
         } catch (error) {
+            console.log(error)
             console.log("Error fetching matchRef:", matchRef, "retrying...")
             await new Promise(resolve => setTimeout(resolve, 3500))
         }
@@ -52,8 +53,9 @@ const fetchInGameStats = async (matchRef, matchWeek, current_row) => {
             const varReferee = detailsHTML.match(/\(4th\) &#183;.*\(VAR\)/)[0].slice(13, -5).trim()
 
             // goals
-            const homeGoals_HTML = root.querySelectorAll('#events_wrap .event.a .goal+div div')
-            const awayGoals_HTML = root.querySelectorAll('#events_wrap .event.b .goal+div div')
+            const homeGoals_HTML = root.querySelectorAll('#events_wrap .event.a .goal+div div, #events_wrap .event.a .own_goal+div div, #events_wrap .event.a .penalty_goal+div div')
+            const awayGoals_HTML = root.querySelectorAll('#events_wrap .event.b .goal+div div, #events_wrap .event.b .own_goal+div div, #events_wrap .event.b .penalty_goal+div div')
+
             
             let homeGoals = []
             let awayGoals = []
