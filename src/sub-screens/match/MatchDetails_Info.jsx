@@ -49,6 +49,16 @@ const Stats_Row = ({ title, homePercent, homeSuccess, homeTotal, awayPercent, aw
   )
 };
 
+const Extra_Stats_Row = ({ attribute, home, away }) => {
+  return (
+    <View style={styles.extraStatsRow}>
+      <Text style={styles.extraStatsContent}>{home}</Text>
+      <Text style={styles.extraStatsContent}>{attribute}</Text>
+      <Text style={styles.extraStatsContent}>{away}</Text>
+    </View>
+  )
+};
+
 const MatchDetails_Info = ({ matchData, matchStats }) => {
 
   const { homeNameCode, awayNameCode, homeGoal, awayGoal } = matchData;   // immediately available
@@ -115,6 +125,24 @@ const MatchDetails_Info = ({ matchData, matchStats }) => {
             { Stats_Row({ title: "Passing Accuracy", homePercent: home.stats.passPercentage, homeSuccess: home.stats.passSuccess, homeTotal: home.stats.passTotal, awayPercent: away.stats.passPercentage, awaySuccess: away.stats.passSuccess, awayTotal: away.stats.passTotal }) }
             { Stats_Row({ title: "Shots on Target", homePercent: home.stats.shotPercentage, homeSuccess: home.stats.shotSuccess, homeTotal: home.stats.shotTotal, awayPercent: away.stats.shotPercentage, awaySuccess: away.stats.shotSuccess, awayTotal: away.stats.shotTotal }) }
             { Stats_Row({ title: "Saves", homePercent: home.stats.savePercentage, homeSuccess: home.stats.saveSuccess, homeTotal: home.stats.saveTotal, awayPercent: away.stats.savePercentage, awaySuccess: away.stats.saveSuccess, awayTotal: away.stats.saveTotal }) }
+          </View>
+        }
+
+        {
+          home !== null && away !== null &&
+          <View style={styles.extraStatsArea}>
+            { Extra_Stats_Row({ attribute: "Fouls", home: home.extraStats.fouls, away: away.extraStats.fouls }) }
+            { Extra_Stats_Row({ attribute: "Corners", home: home.extraStats.corners, away: away.extraStats.corners }) }
+            { Extra_Stats_Row({ attribute: "Crosses", home: home.extraStats.crosses, away: away.extraStats.crosses }) }
+            { Extra_Stats_Row({ attribute: "Touches", home: home.extraStats.touches, away: away.extraStats.touches }) }
+            { Extra_Stats_Row({ attribute: "Tackles", home: home.extraStats.tackles, away: away.extraStats.tackles }) }
+            { Extra_Stats_Row({ attribute: "Interceptions", home: home.extraStats.interceptions, away: away.extraStats.interceptions }) }
+            { Extra_Stats_Row({ attribute: "Aerials Won", home: home.extraStats.aerialsWon, away: away.extraStats.aerialsWon }) }
+            { Extra_Stats_Row({ attribute: "Clearances", home: home.extraStats.clearances, away: away.extraStats.clearances }) }
+            { Extra_Stats_Row({ attribute: "Offsides", home: home.extraStats.offsides, away: away.extraStats.offsides }) }
+            { Extra_Stats_Row({ attribute: "Goal Kicks", home: home.extraStats.goalKicks, away: away.extraStats.goalKicks }) }
+            { Extra_Stats_Row({ attribute: "Throw Ins", home: home.extraStats.throwIns, away: away.extraStats.throwIns }) }
+            { Extra_Stats_Row({ attribute: "Long Balls", home: home.extraStats.longBalls, away: away.extraStats.longBalls }) }
           </View>
         }
 
@@ -297,6 +325,28 @@ const styles = StyleSheet.create({
     height: 9,
     borderRadius: 4.5,
     backgroundColor: "#54a761",
+  },
+  extraStatsArea: {
+    // backgroundColor: 'green',
+    flexDirection: "column",
+    justifyContent: "space-between",
+    alignItems: "center",
+    height: 250,
+    marginTop: 10,
+    marginBottom: 10,
+  },
+  extraStatsRow: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
+  },
+  extraStatsContent: {
+    // backgroundColor: 'blue',
+    color: "white",
+    fontSize: 15,
+    width: "28%",
+    textAlign: "center",
   },
 });
 
