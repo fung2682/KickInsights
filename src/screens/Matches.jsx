@@ -3,6 +3,7 @@ import { View, Text, StyleSheet } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import MatchMain from "../sub-screens/match/MatchMain";
 import MatchDetails from "../sub-screens/match/MatchDetails";
+import ClubDetails from "../sub-screens/club/ClubDetails";
 
 const Stack = createNativeStackNavigator();
 
@@ -35,7 +36,12 @@ const Matches = () => {
             <Stack.Screen name="MatchDetails" 
                 options={({route}) => ({ headerTitle: "Match Centre" })}
             >
-                {(input) => <MatchDetails match={input}/>}
+                {(input) => <MatchDetails props={input}/>}
+            </Stack.Screen>
+            <Stack.Screen name="ClubDetails" 
+                options={({route}) => ({ headerTitle: route.params.clubData.club.name_full , headerBackTitle: "Back" })}
+            >
+                {(clubData) => <ClubDetails club={clubData}/>}
             </Stack.Screen>
         </Stack.Navigator>
     );

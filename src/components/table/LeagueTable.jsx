@@ -7,7 +7,7 @@ import { getData } from "../../firebase/firestore";
 
 const Item = ({club, nav, lastItem}) => (
     <TouchableOpacity 
-        style={lastItem? styles.row: [styles.row, {borderBottomWidth: 2, borderBottomLeftRadius: 10, borderBottomRightRadius: 10}]}
+        style={lastItem? [styles.row, {borderBottomWidth: 2, borderBottomLeftRadius: 10, borderBottomRightRadius: 10}] : styles.row }
         activeOpacity={0.8}
         onPress={() => nav.navigate("ClubDetails", {clubData: dataClubs[club.club_id]})}
     >
@@ -46,9 +46,9 @@ const LeagueTable = ({Data, type, nav}) => {
                 renderItem={
                     ({item, index}) => (
                         index == 19? 
-                        <Item club={item} nav={nav} lastItem={false}/>
-                        : 
                         <Item club={item} nav={nav} lastItem={true}/>
+                        : 
+                        <Item club={item} nav={nav} lastItem={false}/>
                     )
                 }
                 keyExtractor={item => item.club_id}
@@ -124,3 +124,4 @@ const styles = StyleSheet.create({
 });
 
 export default LeagueTable;
+export { Item };
