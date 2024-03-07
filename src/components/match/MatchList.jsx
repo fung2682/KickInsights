@@ -1,7 +1,8 @@
 import React, {useState} from "react";
-import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, RefreshControl } from "react-native";
 import { dataMatchesList } from "../../fetchCloud";
 import { clubLogo } from "../../clubLogo";
+import { getData } from "../../firebase/firestore";
 
 const scoreBoard = (match) => {
     // if (match.result === "Postponed") {
@@ -90,10 +91,19 @@ const Item = ({match, nav, firstMatch, first, last}) => {
 
 
 const MatchList = ({nav, week}) => {
+    const [refreshing, setRefreshing] = useState(false);
+    const [currentWeekData, setCurrentWeekData] = useState(dataMatchesList[`Week ${week}`]);
 
-    const currentWeekData = dataMatchesList[`Week ${week}`];
     let first, last;   // boolean to see if the row is the last row, for styling
 
+    const onRefresh = async() => {
+        setRefreshing(true);
+        const data_matches_list = await getData("match_list", "full_match_list");
+        setCurrentWeekData(data_matches_list[`Week ${week}`]);
+        setTimeout(() => {
+          setRefreshing(false);
+        }, 500);
+    }
 
     return (
         // logosLoaded === 20 ?
@@ -112,10 +122,17 @@ const MatchList = ({nav, week}) => {
                             last={last} 
                         />
                     )}
-                    // keyExtractor={item => item.club.id}
+                    // keyExtractor={item => item.match.id}
                     indicatorStyle="white"
                     scrollIndicatorInsets={{right: -8}}
                     initialNumToRender={10}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={refreshing}
+                            onRefresh={onRefresh}
+                            tintColor="lightgrey"
+                        />
+                    }
                 />
             </View>
     );
