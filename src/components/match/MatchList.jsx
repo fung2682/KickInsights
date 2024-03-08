@@ -1,8 +1,9 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, RefreshControl } from "react-native";
 import { dataMatchesList } from "../../fetchCloud";
 import { clubLogo } from "../../clubLogo";
 import { getData } from "../../firebase/firestore";
+import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 
 const scoreBoard = (match) => {
     // if (match.result === "Postponed") {
@@ -90,10 +91,10 @@ const Item = ({match, nav, firstMatch, first, last}) => {
 };
 
 
-const MatchList = ({nav, week}) => {
+const MatchList = ({nav, week, firstLoad}) => {
     const [refreshing, setRefreshing] = useState(false);
     const [currentWeekData, setCurrentWeekData] = useState(dataMatchesList[`Week ${week}`]);
-
+    
     let first, last;   // boolean to see if the row is the last row, for styling
 
     const onRefresh = async() => {
@@ -105,36 +106,44 @@ const MatchList = ({nav, week}) => {
         }, 500);
     }
 
+    useEffect(() => {
+        setCurrentWeekData(dataMatchesList[`Week ${week}`]);
+    }, [week]);
+
     return (
-        // logosLoaded === 20 ?
-            <View style={styles.container}>
-                <FlatList 
-                    style={styles.list}
-                    data={currentWeekData}
-                    renderItem={({item, index}) => (
-                        index === 0 ? first = true : first = false,
-                        index === currentWeekData.length - 1 ? last = true : last = false,
-                        <Item 
-                            match={item} 
-                            nav={nav} 
-                            firstMatch={item.firstMatch} 
-                            first={first} 
-                            last={last} 
-                        />
-                    )}
-                    // keyExtractor={item => item.match.id}
-                    indicatorStyle="white"
-                    scrollIndicatorInsets={{right: -8}}
-                    initialNumToRender={10}
-                    refreshControl={
-                        <RefreshControl
-                            refreshing={refreshing}
-                            onRefresh={onRefresh}
-                            tintColor="lightgrey"
-                        />
-                    }
+        <Animated.View 
+            pointerEvents={"box-none"}
+            style={styles.container} 
+            entering={firstLoad? null : FadeIn.duration(10).delay(200)}
+            exiting={FadeOut.duration(10).delay(400)}
+        >
+            <FlatList 
+                style={styles.list}
+                data={currentWeekData}
+                renderItem={({item, index}) => (
+                    index === 0 ? first = true : first = false,
+                    index === currentWeekData.length - 1 ? last = true : last = false,
+                    <Item 
+                        match={item} 
+                        nav={nav} 
+                        firstMatch={item.firstMatch} 
+                        first={first} 
+                        last={last} 
+                    />
+                )}
+                // keyExtractor={item => item.match.id}
+                indicatorStyle="white"
+                scrollIndicatorInsets={{right: -8}}
+                initialNumToRender={10}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={onRefresh}
+                        tintColor="lightgrey"
+                    />
+                }
                 />
-            </View>
+        </Animated.View>
     );
 }
 
