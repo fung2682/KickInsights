@@ -16,22 +16,11 @@ function getCurrentWeek() {
 const MatchMain = ({navigation}) => {
 
     const [currentWeek, setCurrentWeek] = useState(getCurrentWeek());
-    const [loading, setLoading] = useState(false);
-    const [firstLoad, setFirstLoad] = useState(true);
 
     // useEffect to update currentWeek
 
     const arrow_left_icon = <MaterialIcons name="keyboard-arrow-down" size={28} color="white" style={{height:28, transform: [{ rotate: "90deg" }], opacity: currentWeek > 1 ? 1 : 0.3}}/>
     const arrow_right_icon = <MaterialIcons name="keyboard-arrow-down" size={28} color="white" style={{height:28, transform: [{ rotate: "270deg" }] , opacity: currentWeek < 38 ? 1 : 0.3}}/>
-
-    const changeWeek = async (week) => {
-        setFirstLoad(false);
-        setLoading(true);
-        setCurrentWeek(week);
-        setTimeout(() => {
-            setLoading(false);
-        }, 1);
-    }
 
     return (
         <View style={styles.container}>
@@ -39,7 +28,7 @@ const MatchMain = ({navigation}) => {
                 <TouchableOpacity 
                     style={styles.changeWeek}
                     activeOpacity={0.8}
-                    onPress={() => currentWeek > 1 ? changeWeek(currentWeek - 1) : currentWeek}
+                    onPress={() => currentWeek > 1 ? setCurrentWeek(currentWeek - 1) : currentWeek}
                 >
                     {arrow_left_icon}
                 </TouchableOpacity>
@@ -49,20 +38,14 @@ const MatchMain = ({navigation}) => {
                 <TouchableOpacity 
                     style={styles.changeWeek}
                     activeOpacity={0.8}
-                    onPress={() => currentWeek < 38 ? changeWeek(currentWeek + 1) : currentWeek}
+                    onPress={() => currentWeek < 38 ? setCurrentWeek(currentWeek + 1) : currentWeek}
                 >
                     {arrow_right_icon}
                 </TouchableOpacity>
             </View>
-            {
-                loading?
-                <View style={styles.matchList_container}>
-                    {/* <View style={styles.matchList_transitionBox}>
-                    </View> */}
-                </View>
-                :
-                <MatchList nav={navigation} week={currentWeek} firstLoad={firstLoad}/>
-            }
+
+            <MatchList nav={navigation} week={currentWeek}/>
+
         </View>
     );
 }
@@ -99,9 +82,6 @@ const styles = StyleSheet.create({
         height: "100%",
         alignItems: "center",
         justifyContent: "center",
-    },
-    matchList_container: {
-        marginTop: 10,
     },
 });
 

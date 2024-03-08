@@ -3,7 +3,6 @@ import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, RefreshContr
 import { dataMatchesList } from "../../fetchCloud";
 import { clubLogo } from "../../clubLogo";
 import { getData } from "../../firebase/firestore";
-import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 
 const scoreBoard = (match) => {
     // if (match.result === "Postponed") {
@@ -91,7 +90,7 @@ const Item = ({match, nav, firstMatch, first, last}) => {
 };
 
 
-const MatchList = ({nav, week, firstLoad}) => {
+const MatchList = ({nav, week}) => {
     const [refreshing, setRefreshing] = useState(false);
     const [currentWeekData, setCurrentWeekData] = useState(dataMatchesList[`Week ${week}`]);
     
@@ -111,12 +110,7 @@ const MatchList = ({nav, week, firstLoad}) => {
     }, [week]);
 
     return (
-        <Animated.View 
-            pointerEvents={"box-none"}
-            style={styles.container} 
-            entering={firstLoad? null : FadeIn.duration(10).delay(200)}
-            exiting={FadeOut.duration(10).delay(400)}
-        >
+        <View style={styles.container}>
             <FlatList 
                 style={styles.list}
                 data={currentWeekData}
@@ -143,7 +137,7 @@ const MatchList = ({nav, week, firstLoad}) => {
                     />
                 }
                 />
-        </Animated.View>
+        </View>
     );
 }
 
