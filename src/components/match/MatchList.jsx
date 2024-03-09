@@ -52,7 +52,7 @@ const Item = ({match, nav, firstMatch, first, last}) => {
                 </View>
             }
             {
-                match.homeGoal != 'f'?  // if match is in future
+                match.homeGoal != 'f'?  // if match is in the past, show FT
                 <View style={styles.time}>
                     <Text style={styles.timeText}>FT</Text>
                 </View>
@@ -72,7 +72,7 @@ const Item = ({match, nav, firstMatch, first, last}) => {
                     style={styles.image}
                 />
                 {
-                    match.homeGoal != 'f'?  // if match is in future, no score
+                    match.homeGoal != 'f'?  // if match is in the past, show score
                     scoreBoard(match)
                     :
                     <View style={[styles.score, {backgroundColor: "#505050"}]}>

@@ -69,13 +69,41 @@ const MatchDetails_Stats = ({ matchData, matchStats }) => {
   const [general, setGeneral] = useState(null);
 
   useEffect(() => {
-    if (matchStats !== null) {
+    if ((matchStats !== null) && (matchStats !== "NA")) {
       setHome(matchStats.home);
       setAway(matchStats.away);
       setGeneral(matchStats.general);
     }
   }, [matchStats]);
 
+	// if the match is in the future
+	if (matchStats === "NA") {
+		return (
+			<ScrollView
+				style={styles.scrollContainer}
+				showsVerticalScrollIndicator={true}
+				indicatorStyle="white"
+				scrollIndicatorInsets={{ right: -2 }}
+			>
+				<View style={styles.container}>
+
+					<View style={styles.titleRow}>
+						<Image source={clubLogo[homeNameCode]} style={styles.image}/>
+						<Text style={styles.titleTeamLeft}>{homeNameCode}</Text>
+						<Text style={styles.titleNum}></Text>
+						<Text style={styles.titleNum}>-</Text>
+						<Text style={styles.titleNum}></Text>
+						<Text style={styles.titleTeamRight}>{awayNameCode}</Text>
+						<Image source={clubLogo[awayNameCode]} style={styles.image}/>
+					</View>
+					
+					<Text style={styles.noDataText}>Stats will be available after the match.</Text>
+				</View>
+			</ScrollView>
+		)
+	}
+
+	// if the match is in the past
   return (
     <ScrollView
       style={styles.scrollContainer}
@@ -348,6 +376,14 @@ const styles = StyleSheet.create({
     width: "28%",
     textAlign: "center",
   },
+  noDataText: {
+		color: "white",
+		fontSize: 15,
+		textAlign: "center",
+		marginBottom: 10,
+		height: 540,
+		paddingTop: 230,
+	},
 });
 
 export default MatchDetails_Stats;
