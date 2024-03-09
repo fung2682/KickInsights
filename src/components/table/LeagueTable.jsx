@@ -5,25 +5,44 @@ import { clubLogo } from "../../clubLogo";
 import { dataClubs } from "../../fetchCloud";
 import { getData } from "../../firebase/firestore";
 
-const Item = ({club, nav, lastItem}) => (
-    <TouchableOpacity 
-        style={lastItem? [styles.row, {borderBottomWidth: 2, borderBottomLeftRadius: 10, borderBottomRightRadius: 10}] : styles.row }
-        activeOpacity={0.8}
-        onPress={() => nav.navigate("ClubDetails", {clubData: dataClubs[club.club_id]})}
-    >
-        <Text style={[styles.num, ]}>{club.position}</Text>
-        <View style={styles.club}>
-            <Image source={clubLogo[club.name_code]} style={styles.image}/>
-            <Text style={[styles.clubName, ]}>{club.name_short}</Text>
-        </View>
-        <Text style={[styles.num, ]}>{club.played}</Text>
-        <Text style={[styles.num, ]}>{club.win}</Text>
-        <Text style={[styles.num, ]}>{club.draw}</Text>
-        <Text style={[styles.num, ]}>{club.loss}</Text>
-        <Text style={[styles.num, ]}>{club.goal_difference}</Text>
-        <Text style={[styles.num, , {fontWeight: "bold"}]}>{club.points}</Text>
-    </TouchableOpacity>
-);
+const Item = ({club, nav, pos, lastItem}) => {
+
+    let indicatorColor = "transparent";
+    if (pos < 4) {
+        indicatorColor = "#54a761";
+    } else if (pos == 4) {
+        indicatorColor = "#134ecf";
+    } else if (pos > 16) {
+        indicatorColor = "#bd1f0d";
+    }
+
+    return (
+        <TouchableOpacity 
+            style={lastItem? [styles.row, {borderBottomWidth: 2, borderBottomLeftRadius: 10, borderBottomRightRadius: 10}] : styles.row }
+            activeOpacity={0.8}
+            onPress={() => nav.navigate("ClubDetails", {clubData: dataClubs[club.club_id]})}
+        >
+            <View
+                style={[
+                    {backgroundColor: indicatorColor},
+                    lastItem? styles.indicator_bottom : styles.indicator
+                ]}
+            >
+            </View>
+            <Text style={[styles.num, ]}>{club.position}</Text>
+            <View style={styles.club}>
+                <Image source={clubLogo[club.name_code]} style={styles.image}/>
+                <Text style={[styles.clubName, ]}>{club.name_short}</Text>
+            </View>
+            <Text style={[styles.num, ]}>{club.played}</Text>
+            <Text style={[styles.num, ]}>{club.win}</Text>
+            <Text style={[styles.num, ]}>{club.draw}</Text>
+            <Text style={[styles.num, ]}>{club.loss}</Text>
+            <Text style={[styles.num, ]}>{club.goal_difference}</Text>
+            <Text style={[styles.num, , {fontWeight: "bold"}]}>{club.points}</Text>
+        </TouchableOpacity>
+    );
+};
 
 const LeagueTable = ({Data, type, nav}) => {
     const [refreshing, setRefreshing] = useState(false);
@@ -45,10 +64,7 @@ const LeagueTable = ({Data, type, nav}) => {
                 data={table}
                 renderItem={
                     ({item, index}) => (
-                        index == 19? 
-                        <Item club={item} nav={nav} lastItem={true}/>
-                        : 
-                        <Item club={item} nav={nav} lastItem={false}/>
+                        <Item club={item} nav={nav} pos={index} lastItem={index == 19? true : false}/>
                     )
                 }
                 keyExtractor={item => item.club_id}
@@ -63,6 +79,23 @@ const LeagueTable = ({Data, type, nav}) => {
                         onRefresh={onRefresh}
                         tintColor="lightgrey"
                     />
+                }
+                ListFooterComponent={
+                    <View style={styles.legend}>
+                        <Text style={styles.legendTitle}>Qualification / Relegation</Text>
+                        <View style={styles.legendRow}>
+                            <View style={[styles.legendBox, {backgroundColor: "#54a761"}]}></View>
+                            <Text style={styles.legendText}>Champions League group stage</Text>
+                        </View>
+                        <View style={styles.legendRow}>
+                            <View style={[styles.legendBox, {backgroundColor: "#134ecf"}]}></View>
+                            <Text style={styles.legendText}>Europa League group stage</Text>
+                        </View>
+                        <View style={styles.legendRow}>
+                            <View style={[styles.legendBox, {backgroundColor: "#bd1f0d"}]}></View>
+                            <Text style={styles.legendText}>Relegation</Text>
+                        </View>
+                    </View>
                 }
             />
         </View>
@@ -121,6 +154,57 @@ const styles = StyleSheet.create({
         width: 30,
         textAlign: "center",
     },
+    indicator: {
+        width: 3,
+        height: 37,
+        borderTopRightRadius: 3,
+        borderBottomRightRadius: 3,
+        position: "absolute",
+        top: 1,
+        left: 0,
+    },
+    indicator_bottom: {
+        width: 3,
+        height: 35,
+        borderTopRightRadius: 3,
+        position: "absolute",
+        top: 1,
+        left: 0,
+        borderBottomLeftRadius: 3,
+    },
+    legend: {
+        width: "65%",
+        height: 'fit-content',
+        backgroundColor: "transparent",
+        borderColor: "#3a3a3a",
+        borderWidth: 2,
+        borderRadius: 10,
+        marginTop: 10,
+        padding: 10,
+        alignItems: "flex-start",
+        justifyContent: "center",
+    },
+    legendTitle: {
+        color: "white",
+        fontSize: 13,
+        marginBottom: 5,
+    },
+    legendRow: {
+        width: "100%",
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "flex-start",
+    },
+    legendBox: {
+        width: 10,
+        height: 10,
+        borderRadius: 2,
+        marginRight: 8,
+    },
+    legendText: {
+        color: "white",
+        fontSize: 13,
+    }
 });
 
 export default LeagueTable;

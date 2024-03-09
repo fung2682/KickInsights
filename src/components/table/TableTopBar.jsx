@@ -5,6 +5,7 @@ const TableTopBar = () => {
     return (
     <View style={styles.background}>
         <View style={styles.row}>
+            <View style={styles.indicator}></View>
             <Text style={[styles.text, ]}>#</Text>
             <Text style={[styles.club, ]}>CLUB</Text>
             <Text style={[styles.text, ]}>PL</Text>
@@ -32,6 +33,14 @@ const styles = StyleSheet.create({
         borderTopLeftRadius: 10,
         borderTopRightRadius: 10,
         backgroundColor: "#272727",
+    },
+    indicator: {
+        width: 3,
+        height: 37,
+        top: 1,
+        left: 0,
+        position: "absolute",
+        backgroundColor: "transparent",
     },
     text: {
         color: "#54a761",
