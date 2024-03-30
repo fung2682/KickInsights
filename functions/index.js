@@ -2,6 +2,7 @@ import functions from "firebase-functions";
 import { fetchTables } from "./func_files/fetchTable.js";
 import { fetchClubs } from "./func_files/fetchClub.js";
 import { fetchPlayerImage } from "./func_files/fetchPlayerImages.js";
+import { fetchLastNext3 } from "./func_files/fetchLastNext3.js";
 
 // Function 1: fetch the League Table (All) from  FootApi, transforms it and adds it to Firestore
 // Schedule: every 5 minutes from 2am to 6am on weekdays
@@ -60,3 +61,19 @@ export const fetchPlayerImages_daily = functions.region('asia-east2').runWith({t
   fetchPlayerImage();
   console.log("fetching player images");
 });
+
+// Function 4: fetch the last 3 and next 3 matches for each club from FootApi, transforms it and adds it to Firestore
+// Schedule: every 10 minutes from 2am to 6am on weekdays
+export const fetchLastNext3_weekdays = functions.region('asia-east2').runWith({timeoutSeconds: 540})
+.pubsub.schedule("*/10 2-6 * * 1-5").timeZone('Asia/Hong_Kong').onRun((context) => {
+  fetchLastNext3();
+  console.log("fetching lastNext3 matches");
+});
+
+// Schedule: every 10 minutes on weekends
+export const fetchLastNext3_weekends = functions.region('asia-east2').runWith({timeoutSeconds: 540})
+.pubsub.schedule("*/10 * * * 6,7").timeZone('Asia/Hong_Kong').onRun((context) => {
+  fetchLastNext3();
+  console.log("fetching lastNext3 matches");
+});
+
