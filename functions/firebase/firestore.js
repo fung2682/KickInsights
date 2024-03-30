@@ -1,7 +1,9 @@
 import  app  from './base.js';
 import { getFirestore, collection, addDoc, getDoc, getDocs, doc, setDoc, query, updateDoc } from "firebase/firestore";
+import { initializeFirestore } from 'firebase/firestore';
 
-const db = getFirestore(app);
+// const db = getFirestore(app);
+const db = initializeFirestore(app, {experimentalForceLongPolling: true, useFetchStreams: false});
 
 // add a new document
 const addData = async (collectionName, data) => {
@@ -50,7 +52,15 @@ const getData = async (collectionName, docName) => {
 const getClubs = async () => {
     const club_array = [];
     const q = query(collection(db, "clubs"));
-    const querySnapshot = await getDocs(q);
+    let querySnapshot = await getDocs(q);
+    while (querySnapshot.size === 0) {
+        try {
+            querySnapshot = await getDocs(q);
+            console.log("snapshot length: ", querySnapshot.size);
+        } catch (e) {
+            console.error("Error getting clubs: ", e);
+        }
+    }
     querySnapshot.forEach((doc) => {
         // console.log(JSON.stringify(doc.data()).length);  // to get document size in bytes
         club_array.push(doc.data());

@@ -2,7 +2,7 @@
 // scrape the kits from the Premier League website,
 // transforms it and adds it to Firestore
 import axios from 'axios';
-import { updateData } from "..//firebase/firestore.js";
+import { updateData } from "../firebase/firestore.js";
 import { X_RapidAPI_Key, X_RapidAPI_Host } from "../env.js";
 import { downloadPlayerImage } from '../firebase/storage.js';
 

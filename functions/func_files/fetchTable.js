@@ -1,6 +1,6 @@
 // This function fetches the League Table (All) from  FootApi,
 // transforms it and adds it to Firestore
-import { setData } from "..//firebase/firestore.js";
+import { setData } from "../firebase/firestore.js";
 import { X_RapidAPI_Key, X_RapidAPI_Host } from "../env.js";
 import { clubShortName } from "./clubShortName.js";
 

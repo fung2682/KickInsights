@@ -1,15 +1,16 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getStorage, ref } from "firebase/storage";
 import { initializeAuth, getAuth } from 'firebase/auth';
 
-// import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
-
-import { apiKey, authDomain, projectId, storageBucket, messagingSenderId, appId, measurementId } from "../env.js"
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-
+// credentials for firebase
+const apiKey="AIzaSyA2sHvoHBLu9ZiyxQzbU8C95VNRTA4NOE0"
+const authDomain="kickinsights-ccc1e.firebaseapp.com"
+const projectId="kickinsights-ccc1e"
+//storageBucket="kickinsights-ccc1e.appspot.com"
+const messagingSenderId="489611157233"
+const appId="1:489611157233:web:f64d2707fcdb5f53db9350"
+const measurementId="G-M3EX1V1R97"
+const storageBucket="gs://kickinsights-ccc1e.appspot.com"
 
 const firebaseConfig = {
   apiKey: apiKey,
