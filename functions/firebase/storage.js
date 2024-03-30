@@ -1,5 +1,4 @@
-import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
-import { storage } from './base';
+import { storage } from './base.js';
 import { ref, getDownloadURL, uploadBytes } from "firebase/storage";
 
 
