@@ -3,6 +3,7 @@ import { fetchTables } from "./func_files/fetchTable.js";
 import { fetchClubs } from "./func_files/fetchClub.js";
 import { fetchPlayerImage } from "./func_files/fetchPlayerImages.js";
 import { fetchLastNext3 } from "./func_files/fetchLastNext3.js";
+import { fetchClubStats } from "./func_files/fetchClubStats.js";
 
 // Function 1: fetch the League Table (All) from  FootApi, transforms it and adds it to Firestore
 // Schedule: every 5 minutes from 2am to 6am on weekdays
@@ -77,3 +78,43 @@ export const fetchLastNext3_weekends = functions.region('asia-east2').runWith({t
   console.log("fetching lastNext3 matches");
 });
 
+// Function 5: fetch the club stats from FBREF, transforms it and adds it to Firestore
+// Scope: club 0-3 (alphabetical order)
+// Schedule: every day at 1:31am (01:31)
+export const fetchClubStats_1_daily = functions.region('asia-east2').runWith({timeoutSeconds: 540})
+.pubsub.schedule("31 1 * * *").timeZone('Asia/Hong_Kong').onRun((context) => {
+  fetchClubStats(0, 4);
+  console.log("fetching club stats");
+});
+
+// Scope: club 4-7 (alphabetical order)
+// Schedule: every day at 1:41am (01:41)
+export const fetchClubStats_2_daily = functions.region('asia-east2').runWith({timeoutSeconds: 540})
+.pubsub.schedule("41 1 * * *").timeZone('Asia/Hong_Kong').onRun((context) => {
+  fetchClubStats(4, 8);
+  console.log("fetching club stats");
+});
+
+// Scope: club 8-11 (alphabetical order)
+// Schedule: every day at 1:51am (01:51)
+export const fetchClubStats_3_daily = functions.region('asia-east2').runWith({timeoutSeconds: 540})
+.pubsub.schedule("51 1 * * *").timeZone('Asia/Hong_Kong').onRun((context) => {
+  fetchClubStats(8, 12);
+  console.log("fetching club stats");
+});
+
+// Scope: club 12-15 (alphabetical order)
+// Schedule: every day at 2:01am (02:01)
+export const fetchClubStats_4_daily = functions.region('asia-east2').runWith({timeoutSeconds: 540})
+.pubsub.schedule("1 2 * * *").timeZone('Asia/Hong_Kong').onRun((context) => {
+  fetchClubStats(12, 16);
+  console.log("fetching club stats");
+});
+
+//Scope: club 16-19 (alphabetical order)
+// Schedule: every day at 2:11am (02:11)
+export const fetchClubStats_5_daily = functions.region('asia-east2').runWith({timeoutSeconds: 540})
+.pubsub.schedule("11 2 * * *").timeZone('Asia/Hong_Kong').onRun((context) => {
+  fetchClubStats(16, 20);
+  console.log("fetching club stats");
+});
