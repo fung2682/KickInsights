@@ -43,8 +43,13 @@ const fetchCloud = async (progress) => {
         const data_clubs = await getClubs();
         dataClubs = data_clubs;
     } else if (progress == 5) {
-        const data_players_list = await getData("player_list", "full_player_list");
-        dataPlayersList = data_players_list.full_player_list;
+        const data_players_list_1 = await getData("player_list", "full_player_list(0-4)");
+        const data_players_list_2 = await getData("player_list", "full_player_list(4-8)");
+        const data_players_list_3 = await getData("player_list", "full_player_list(8-12)");
+        const data_players_list_4 = await getData("player_list", "full_player_list(12-16)");
+        const data_players_list_5 = await getData("player_list", "full_player_list(16-20)");
+        const data_players_list = [...data_players_list_1.full_player_list, ...data_players_list_2.full_player_list, ...data_players_list_3.full_player_list, ...data_players_list_4.full_player_list, ...data_players_list_5.full_player_list];
+        dataPlayersList = data_players_list;
     } else if (progress == 6) {
         const data_matches_list = await getData("match_list", "full_match_list");
         dataMatchesList = data_matches_list;

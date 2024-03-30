@@ -4,6 +4,7 @@ import { fetchClubs } from "./func_files/fetchClub.js";
 import { fetchPlayerImage } from "./func_files/fetchPlayerImages.js";
 import { fetchLastNext3 } from "./func_files/fetchLastNext3.js";
 import { fetchClubStats } from "./func_files/fetchClubStats.js";
+import { fetchPlayers } from "./func_files/fetchPlayer.js";
 
 // Function 1: fetch the League Table (All) from  FootApi, transforms it and adds it to Firestore
 // Schedule: every 5 minutes from 2am to 6am on weekdays
@@ -117,4 +118,45 @@ export const fetchClubStats_5_daily = functions.region('asia-east2').runWith({ti
 .pubsub.schedule("11 2 * * *").timeZone('Asia/Hong_Kong').onRun((context) => {
   fetchClubStats(16, 20);
   console.log("fetching club stats");
+});
+
+// Function 6: fetch the player details from FootApi with statistics from FBREF, transforms it and adds it to Firestore
+// Scope: club 0-3 (alphabetical order)
+// Schedule: every day at 2:21am (02:21)
+export const fetchPlayers_1_daily = functions.region('asia-east2').runWith({timeoutSeconds: 540})
+.pubsub.schedule("21 2 * * *").timeZone('Asia/Hong_Kong').onRun((context) => {
+  fetchPlayers(0, 4);
+  console.log("fetching players");
+});
+
+// Scope: club 4-7 (alphabetical order)
+// Schedule: every day at 2:31am (02:31)
+export const fetchPlayers_2_daily = functions.region('asia-east2').runWith({timeoutSeconds: 540})
+.pubsub.schedule("31 2 * * *").timeZone('Asia/Hong_Kong').onRun((context) => {
+  fetchPlayers(4, 8);
+  console.log("fetching players");
+});
+
+// Scope: club 8-11 (alphabetical order)
+// Schedule: every day at 2:41am (02:41)
+export const fetchPlayers_3_daily = functions.region('asia-east2').runWith({timeoutSeconds: 540})
+.pubsub.schedule("41 2 * * *").timeZone('Asia/Hong_Kong').onRun((context) => {
+  fetchPlayers(8, 12);
+  console.log("fetching players");
+});
+
+// Scope: club 12-15 (alphabetical order)
+// Schedule: every day at 2:51am (02:51)
+export const fetchPlayers_4_daily = functions.region('asia-east2').runWith({timeoutSeconds: 540})
+.pubsub.schedule("51 2 * * *").timeZone('Asia/Hong_Kong').onRun((context) => {
+  fetchPlayers(12, 16);
+  console.log("fetching players");
+});
+
+// Scope: club 16-19 (alphabetical order)
+// Schedule: every day at 3:01am (03:01)
+export const fetchPlayers_5_daily = functions.region('asia-east2').runWith({timeoutSeconds: 540})
+.pubsub.schedule("1 3 * * *").timeZone('Asia/Hong_Kong').onRun((context) => {
+  fetchPlayers(16, 20);
+  console.log("fetching players");
 });
