@@ -20,10 +20,10 @@ const fetchImage = async (player_id) => {
 }
 
 const fetchPlayerImage = async () => {
+    const start = new Date();
     const dataClubs = await getClubs();
     console.log("checkpoint:" + dataClubs.length)
 
-    const start = new Date();
     for (let i = 0; i < dataClubs.length; i++) {
         const club_name = dataClubs[i].club.name_full;
         const players = dataClubs[i].club.players;
