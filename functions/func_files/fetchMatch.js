@@ -395,7 +395,7 @@ const fetchMatches = async () => {
                     let cloud_match_list = await getData("match_list", "full_match_list")
                     let original_matches = cloud_match_list["Week " + match.matchWeek]
                     original_matches.push(match)
-                    updateData("match_list", "full_match_list", {["Week " + match.matchWeek] : original_matches})
+                    await updateData("match_list", "full_match_list", {["Week " + match.matchWeek] : original_matches})
                     // console.log("a match in week", match.matchWeek, "was rescheduled")
                     rescheduled_matches.push(match)
                     continue;
