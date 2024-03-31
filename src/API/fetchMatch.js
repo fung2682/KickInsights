@@ -274,7 +274,7 @@ const fetchMatch = async (row, latest_fetched_stats_fbref_row, current_row) => {
             minute: 'numeric', 
             weekday: 'short' 
         })
-        const dateTimeArray = localDateTime.split(' ')
+        const dateTimeArray = localDateTime.split(' ') // Array: ["Sun,","Apr", "28", "at", "23:30",]
         dayOfWeek = dateTimeArray[0].slice(0, -1)
         month = dateTimeArray[1]
         day = dateTimeArray[2]
@@ -377,7 +377,7 @@ const fetchMatches = async () => {
     while (fetching_week < 39) {
         let matches = [];
 
-        for (let i = fetching_row; i < 419; i++) {  // total match rows
+        for (let i = fetching_row; i < 421; i++) {  // total match rows
             fetching_row++;
             const week = row[i].match(/<th.*>.*<\/th>/)[0].match(/>.*</)[0].slice(1, -1)
 
