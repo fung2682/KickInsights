@@ -5,6 +5,7 @@ import { fetchPlayerImage } from "./func_files/fetchPlayerImages.js";
 import { fetchLastNext3 } from "./func_files/fetchLastNext3.js";
 import { fetchClubStats } from "./func_files/fetchClubStats.js";
 import { fetchPlayers } from "./func_files/fetchPlayer.js";
+import { fetchMatches } from "./func_files/fetchMatch.js";
 
 // Function 1: fetch the League Table (All) from  FootApi, transforms it and adds it to Firestore
 // Schedule: every 5 minutes from 2am to 6am on weekdays
@@ -159,4 +160,19 @@ export const fetchPlayers_5_daily = functions.region('asia-east2').runWith({time
 .pubsub.schedule("1 3 * * *").timeZone('Asia/Hong_Kong').onRun((context) => {
   fetchPlayers(16, 20);
   console.log("fetching players");
+});
+
+// Function 7: fetch the match details from FBREF, transforms it and adds it to Firestore
+// Schedule: every 15 minutes from 2am to 6am on weekdays
+export const fetchMatches_weekdays = functions.region('asia-east2').runWith({timeoutSeconds: 540})
+.pubsub.schedule("*/15 2-6 * * 1-5").timeZone('Asia/Hong_Kong').onRun((context) => {
+  fetchMatches();
+  console.log("fetching matches");
+});
+
+// Schedule: every 15 minutes on weekends
+export const fetchMatches_weekends = functions.region('asia-east2').runWith({timeoutSeconds: 540})
+.pubsub.schedule("*/15 * * * 6,7").timeZone('Asia/Hong_Kong').onRun((context) => {
+  fetchMatches();
+  console.log("fetching matches");
 });

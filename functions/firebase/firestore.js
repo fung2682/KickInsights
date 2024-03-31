@@ -36,7 +36,15 @@ const updateData = async (collectionName, docName, data) => {
 const getData = async (collectionName, docName) => {
     //console.log(collectionName, docName)
     const docRef = doc(db, collectionName, docName);
-    const docSnap = await getDoc(docRef);
+    let docSnap = await getDoc(docRef);
+    while (docSnap.size === 0) {
+        try {
+            docSnap = await getDoc(docRef);
+            console.log("docSnap size: ", docSnap.size);
+        } catch (e) {
+            console.error("Error getting document: ", e);
+        }
+    }
 
     if (docSnap.exists()) {
         // console.log("Document data:", docSnap.data());
