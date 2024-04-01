@@ -21,7 +21,7 @@ const PredictionMain = ({navigation}) => {
             headerRight: () => (
                 <TouchableOpacity style={styles.userIcon} activeOpacity={0.8}
                     onPress={() => {
-                        navigation.navigate("ACCOUNT", {
+                        navigation.navigate("Account", {
                             user:{signedIn: (user !== null), user: user, setUser: setUser}
                         })
                     }}

@@ -33,8 +33,7 @@ const Prediction = () => {
         >
             <Stack.Screen name="PredictionMain" component={PredictionMain} options={{ title: 'ML Models'}}>
             </Stack.Screen>
-            {/* <Stack.Screen name="CommunityModel" component={ClubMain}/> */}
-            <Stack.Screen name="ACCOUNT" options={{headerTitle: "Account"}}>
+            <Stack.Screen name="Account" options={{headerTitle: "Account"}}>
                 {(user) => <Account userState={user} />}
             </Stack.Screen>
         </Stack.Navigator>
