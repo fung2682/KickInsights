@@ -58,7 +58,7 @@ const Item = ({match, nav, firstMatch, first, last}) => {
                 </View>
                 :
                 <View style={styles.time}>
-                    <Text style={styles.timeText}>{match.time}</Text>
+                    <Text style={styles.timeText}>{match.time == "f"? "TBC" : match.time}</Text>
                 </View>
             }
             <TouchableOpacity 
