@@ -279,6 +279,10 @@ const fetchMatch = async (row, latest_fetched_stats_fbref_row, current_row) => {
         month = dateTimeArray[1]
         day = dateTimeArray[2].slice(0, -1)
         time = dateTimeArray[3]
+        // for time, change 24 to 00
+        if (time.slice(0, 2) === "24") {
+            time = "00" + time.slice(2)
+        }
     }
 
     // Reference date (future schedule)
