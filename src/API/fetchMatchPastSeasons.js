@@ -1,9 +1,9 @@
 // This function fetches all matches from FBREF,
 // transforms it and adds it to Firestore
 import axios from 'axios';
-import { getData, setData, updateData } from "../firebase/firestore.js";
-import { clubShortName } from "./clubShortName.js";
-import { clubNameCode } from "./clubNameCode.js";
+import { getData, setData, updateData } from "../firebase/firestore";
+import { clubShortName } from '../clubShortName';
+import { clubNameCode } from '../clubNameCode';
 import { parse } from 'node-html-parser';
 
 let prevDate = "";   // to check if a match is the first match of the day
@@ -50,7 +50,7 @@ const fetchInGameStats = async (matchRef, matchWeek, current_row) => {
             const assistantReferee1 = detailsHTML.match(/\(Referee\) &#183;.*\(AR1\)/)[0].slice(17, -5).trim()
             const assistantReferee2 = detailsHTML.match(/\(AR1\) &#183;.*\(AR2\)/)[0].slice(13, -5).trim()
             const fourthOfficial = detailsHTML.match(/\(AR2\) &#183;.*\(4th\)/)[0].slice(13, -5).trim()
-            const varReferee = detailsHTML.match(/\(4th\) &#183;.*\(VAR\)/)[0].slice(13, -5).trim()
+            // const varReferee = detailsHTML.match(/\(4th\) &#183;.*\(VAR\)/)[0].slice(13, -5).trim()  // not available on or before 2018-2019 season
 
             // goals
             const homeGoals_HTML = root.querySelectorAll('#events_wrap .event.a .goal+div div, #events_wrap .event.a .own_goal+div div, #events_wrap .event.a .penalty_goal+div div')
@@ -229,7 +229,7 @@ const fetchInGameStats = async (matchRef, matchWeek, current_row) => {
                 assistantReferee1: assistantReferee1,
                 assistantReferee2: assistantReferee2,
                 fourthOfficial: fourthOfficial,
-                varReferee: varReferee,
+                // varReferee: varReferee,  // not available on or before 2018-2019 season
             }
 
             const inGameStats = {
@@ -237,8 +237,8 @@ const fetchInGameStats = async (matchRef, matchWeek, current_row) => {
                 away: away,
                 general: general
             }
-            setData("matches", matchRef, inGameStats)
-            attendance != "NA" ? updateData("match_list", "latest_fetched_row", {FBREF_row: current_row}) : null
+            setData("2018_matches", matchRef, inGameStats)   // CHANGE THIS
+            attendance != "NA" ? updateData("2018_match_list", "latest_fetched_row", {FBREF_row: current_row}) : null   // CHANGE THIS
             break;
         } catch (error) {
             console.log("Error fetching in-game stats for matchRef:", matchRef, "retrying...")
@@ -274,15 +274,11 @@ const fetchMatch = async (row, latest_fetched_stats_fbref_row, current_row) => {
             minute: 'numeric', 
             weekday: 'short' 
         })
-        const dateTimeArray = localDateTime.split(' ') // Array: ['Sat', 'Aug', '12,', '19:30'], different from local result
+        const dateTimeArray = localDateTime.split(' ') // Array: ["Sun,","Apr", "28", "at", "23:30",]
         dayOfWeek = dateTimeArray[0].slice(0, -1)
         month = dateTimeArray[1]
-        day = dateTimeArray[2].slice(0, -1)
-        time = dateTimeArray[3]
-        // for time, change 24 to 00
-        if (time.slice(0, 2) === "24") {
-            time = "00" + time.slice(2)
-        }
+        day = dateTimeArray[2]
+        time = dateTimeArray[4]
     }
 
     // Reference date (future schedule)
@@ -306,10 +302,8 @@ const fetchMatch = async (row, latest_fetched_stats_fbref_row, current_row) => {
     let homeTeam, homeTeamNameCode, awayTeam, awayTeamNameCode;
     let homeTeam_FBREF = columns[3].match(/<a.*?>.*?<\/a>/)[0].match(/>.*?</)[0].slice(1, -1)
     homeTeam = clubShortName[homeTeam_FBREF] ? clubShortName[homeTeam_FBREF] : homeTeam_FBREF
-    homeTeamNameCode = clubNameCode[homeTeam_FBREF]
     let awayTeam_FBREF = columns[7].match(/<a.*?>.*?<\/a>/)[0].match(/>.*?</)[0].slice(1, -1)
     awayTeam = clubShortName[awayTeam_FBREF] ? clubShortName[awayTeam_FBREF] : awayTeam_FBREF
-    awayTeamNameCode = clubNameCode[awayTeam_FBREF]
 
     // Home and Away team goal
     const scoreline = columns[5]
@@ -335,7 +329,7 @@ const fetchMatch = async (row, latest_fetched_stats_fbref_row, current_row) => {
     } else {
         if (scoreline.match(/<a.*?>.*?<\/a>/) !== null) {   // if match has been played and not postponed
             matchRef = columns[11].match(/<a.*?>.*?<\/a>/)[0].match(/href=".*?"/)[0].split('/')[3]
-            if (current_row > latest_fetched_stats_fbref_row) {
+            if (current_row >= latest_fetched_stats_fbref_row) {
                 await fetchInGameStats(matchRef, matchWeek, current_row)
                 await new Promise(resolve => setTimeout(resolve, 3500))
             }
@@ -351,10 +345,8 @@ const fetchMatch = async (row, latest_fetched_stats_fbref_row, current_row) => {
         month: month,
         time: time,
         homeTeam: homeTeam,
-        homeNameCode: homeTeamNameCode,
         homeGoal: homeGoal,
         awayGoal: awayGoal,
-        awayNameCode: awayTeamNameCode,
         awayTeam: awayTeam,
         matchRef: matchRef,  // match stats for past games, H2H for future games
         rescheduled: false,
@@ -364,60 +356,57 @@ const fetchMatch = async (row, latest_fetched_stats_fbref_row, current_row) => {
     }
 }
 
-const fetchMatches = async () => {
-    const start = new Date();
-    const url = await axios.get('https://fbref.com/en/comps/9/schedule/Premier-League-Scores-and-Fixtures');
-    const table = url.data.match(/<table.*id="sched_2023-2024_9_1".*>.*<\/table>/)[0]
+const fetchMatchesPastSeasons = async () => {
+    // const url = await axios.get('https://fbref.com/en/comps/9/schedule/Premier-League-Scores-and-Fixtures');
+    const url = await axios.get('https://fbref.com/en/comps/9/2018-2019/schedule/2018-2019-Premier-League-Scores-and-Fixtures');    // CHANGE THIS
+    // const table = url.data.match(/<table.*id="sched_2023-2024_9_1".*>.*<\/table>/)[0]
+    const table = url.data.match(/<table.*id="sched_2018-2019_9_1".*>.*<\/table>/)[0]   // CHANGE THIS
     const tableBody = table.match(/<tbody>.*<\/tbody>/)[0]
     const row = tableBody.match(/<tr.*?>.*?<\/tr>/g) // ? makes it non-greedy
-    const match_with_stats = await getData("match_list", "latest_fetched_row")
+    const match_with_stats = await getData("2018_match_list", "latest_fetched_row")  // CHANGE THIS
     let rescheduled_matches = [];
 
     let latest_fetched_stats_fbref_row = match_with_stats.FBREF_row
     console.log("latest_fetched_stats_fbref_row:", latest_fetched_stats_fbref_row)
 
-    let fetching_week = 1;
-    let fetching_row = 0;
+    let fetching_week = 1;  // CHANGE THIS, to find max row
+    let fetching_row = 0;   // CHANGE THIS, to find max row
 
     while (fetching_week < 39) {
-        const func_start = new Date();
         let matches = [];
 
-        for (let i = fetching_row; i < 421; i++) {  // total match rows
+        // for (let i = fetching_row; i < 421; i++) {  // total match rows
+         for (let i = fetching_row; i < 425; i++) {  // total match rows    // CHANGE THIS, find max row before scraping
             fetching_row++;
             const week = row[i].match(/<th.*>.*<\/th>/)[0].match(/>.*</)[0].slice(1, -1)
 
             if (week != fetching_week) {
                 if (week.length === 0) {    // to skip title rows
                     continue; 
-                } else if (week == fetching_week + 1) { // to fetch the next week
+                } else if (week >= fetching_week) { // to fetch the next week
                     fetching_row--;
                     break;
                 } else {    // matches from previous week rescheduled
                     let match = await fetchMatch(row[i], latest_fetched_stats_fbref_row, i)
                     match["rescheduled"] = true
-                    let cloud_match_list = await getData("match_list", "full_match_list")
+                    let cloud_match_list = await getData("2018_match_list", "full_match_list")   // CHANGE THIS
                     let original_matches = cloud_match_list["Week " + match.matchWeek]
                     original_matches.push(match)
-                    await updateData("match_list", "full_match_list", {["Week " + match.matchWeek] : original_matches})
+                    // updateData("match_list", "full_match_list", {["Week " + match.matchWeek] : original_matches})
+                    updateData("2018_match_list", "full_match_list", {["Week " + match.matchWeek] : original_matches})  // CHANGE THIS
                     // console.log("a match in week", match.matchWeek, "was rescheduled")
                     rescheduled_matches.push(match)
                     continue;
                 }
-            }     
+            }
             let match = await fetchMatch(row[i], latest_fetched_stats_fbref_row, i)
             matches.push(match)
         }
-        await new Promise(resolve => setTimeout(resolve, 1000));    // wait for matches
-        updateData("match_list", "full_match_list", {["Week " + fetching_week] : matches})
-        const func_end = new Date();
-        console.log("Time taken for week", fetching_week, ":", (func_end - func_start) / 1000, "s")
+        updateData("2018_match_list", "full_match_list", {["Week " + fetching_week] : matches}) // CHANGE THIS
         fetching_week++;
     }
-    updateData("match_list", "rescheduled_matches", {"rescheduled":  rescheduled_matches})
+    updateData("2018_match_list", "rescheduled_matches", {"rescheduled":  rescheduled_matches}) // CHANGE THIS
     console.log("Finished fetching matches")
-    const end = new Date();
-    console.log("Time taken for fetchMatches:", (end - start) / 1000, "s");
 }
 
-export { fetchMatches }
+export { fetchMatchesPastSeasons }

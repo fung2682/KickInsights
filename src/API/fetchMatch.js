@@ -1,4 +1,4 @@
-// This function fetches all matches from FootApi,
+// This function fetches all matches from FBREF,
 // transforms it and adds it to Firestore
 import axios from 'axios';
 import { getData, setData, updateData } from "../firebase/firestore";
