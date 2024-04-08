@@ -44,7 +44,10 @@ const Tabs = () => {
                     name="Table" 
                     options={{
                         tabBarIcon: ({focused}) => (
-                            <MaterialCommunityIcons name="trophy-outline" size={28} color={focused ? "#54a761" : "gray"} />
+                            <MaterialCommunityIcons name="trophy-outline" size={31} color={focused ? "#54a761" : "gray"} marginTop={5}/>
+                        ),
+                        tabBarLabel: ({focused}) => (
+                            <Text style={{color: focused ? "#54a761" : "gray", fontSize: 13}}>Table</Text>
                         ),
                         headerShown: false,
                     }}
@@ -52,15 +55,15 @@ const Tabs = () => {
                     {() => <Table/>}
                 </Tab.Screen>
 
-                <Tab.Screen 
+                <Tab.Screen
                     name="Clubs" 
                     options={{
                         tabBarIcon: ({focused}) => (
-                            <Entypo name="shield" size={26} color={focused ? "#54a761" : "gray"} />
+                            <Entypo name="shield" size={30} color={focused ? "#54a761" : "gray"} marginTop={4}/>
                         ),
-                        tabBarIconStyle: {
-                            marginTop: -2
-                        },
+                        tabBarLabel: ({focused}) => (
+                            <Text style={{color: focused ? "#54a761" : "gray", fontSize: 13}}>Clubs</Text>
+                        ),
                         headerShown: false,
                     }}
                 >
@@ -71,9 +74,12 @@ const Tabs = () => {
                     name="Prediction" 
                     options={{
                         tabBarIcon: ({focused}) => (
-                            <MaterialCommunityIcons name="brain" size={29} color={focused ? "#54a761" : "gray"} />
+                            <MaterialCommunityIcons name="brain" size={33} color={focused ? "gold" : "#ad8d3b"} marginTop={6}/>
                         ),
-                        headerShown: false,
+                        tabBarLabel: ({focused}) => (
+                            <Text style={{color: focused ? "gold" : "#ad8d3b", fontSize: 13}}>Prediction</Text>
+                        ),
+                        headerShown: false
                     }}
                 >
                     {() => <Prediction/>}
@@ -83,7 +89,10 @@ const Tabs = () => {
                     name="Players" 
                     options={{
                         tabBarIcon: ({focused}) => (
-                            <Entypo name="man" size={26} color={focused ? "#54a761" : "gray"} />
+                            <Entypo name="man" size={28} color={focused ? "#54a761" : "gray"} marginTop={6}/>
+                        ),
+                        tabBarLabel: ({focused}) => (
+                            <Text style={{color: focused ? "#54a761" : "gray", fontSize: 13}}>Players</Text>
                         ),
                         headerShown: false,
                     }}
@@ -95,7 +104,10 @@ const Tabs = () => {
                     name="Matches" 
                     options={{
                         tabBarIcon: ({focused}) => (
-                            <MaterialCommunityIcons name="soccer-field" size={30} color={focused ? "#54a761" : "gray"} />
+                            <MaterialCommunityIcons name="soccer-field" size={33} color={focused ? "#54a761" : "gray"} marginTop={5}/>
+                        ),
+                        tabBarLabel: ({focused}) => (
+                            <Text style={{color: focused ? "#54a761" : "gray", fontSize: 13}}>Matches</Text>
                         ),
                         headerShown: false,
                     }}

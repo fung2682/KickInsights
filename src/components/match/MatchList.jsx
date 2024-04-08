@@ -170,13 +170,15 @@ const styles = StyleSheet.create({
     teamLeft: {
         color: "white",
         width: 120,
-        fontSize: 16,
+        fontSize: 15,
+        fontWeight: "600",
         textAlign: "right",
     },
     teamRight: {
         color: "white",
         width: 120,
-        fontSize: 16,
+        fontSize: 15,
+        fontWeight: "600",
         textAlign: "left",
     },
     image: {
