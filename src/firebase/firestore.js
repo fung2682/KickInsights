@@ -71,5 +71,26 @@ const getModels = async () => {
     return models_array;
 }
 
+const rate_model = async (model_id, type) => {
+    if (type === "like") {
+        const model = await getData("ml_models", model_id);
+        await updateData("ml_models", model_id, {likes: model.likes + 1});
+    } else if (type === "cancel like") {
+        const model = await getData("ml_models", model_id);
+        await updateData("ml_models", model_id, {likes: model.likes - 1});
+    } else if (type === "dislike to like") {
+        const model = await getData("ml_models", model_id);
+        await updateData("ml_models", model_id, {dislikes: model.dislikes - 1, likes: model.likes + 1});
+    } else if (type === "dislike") {
+        const model = await getData("ml_models", model_id);
+        await updateData("ml_models", model_id, {dislikes: model.dislikes + 1});
+    } else if (type === "cancel dislike") {
+        const model = await getData("ml_models", model_id);
+        await updateData("ml_models", model_id, {dislikes: model.dislikes - 1});
+    } else if (type === "like to dislike") {
+        const model = await getData("ml_models", model_id);
+        await updateData("ml_models", model_id, {likes: model.likes - 1, dislikes: model.dislikes + 1});
+    }
+}
 
-export { addData, setData, getData, getClubs, updateData, getModels };
+export { addData, setData, getData, getClubs, updateData, getModels, rate_model };

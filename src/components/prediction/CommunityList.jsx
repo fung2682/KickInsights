@@ -2,18 +2,14 @@ import React, {useState, useEffect} from "react";
 import { View, Text, StyleSheet, FlatList, RefreshControl, TouchableOpacity } from "react-native";
 import { dataModels } from "../../fetchCloud";
 import { AntDesign } from '@expo/vector-icons'; 
-import { updateData, getModels, getData } from "../..//firebase/firestore"; // for refreshing the data
+import { updateData, getModels, getData, rate_model } from "../..//firebase/firestore"; // for refreshing the data
 
-const Item = ({model, nav, user}) => {
+export const Model_ML = ({model, nav, user, setModelUser, allowRating}) => {
 
     const [likes, setLikes] = useState(model.likes);
     const [dislikes, setDislikes] = useState(model.dislikes);
     const [liked, setLiked] = useState(false);          // to be edited, fetch from firestore
     const [disliked, setDisliked] = useState(false);    // to be edited, fetch from firestore
-
-    useEffect(() => {
-        updateData("ml_models", model.id, {likes: likes, dislikes: dislikes});
-    }, [likes, dislikes]);
 
     useEffect(() => {
         if (user !== null) {
@@ -52,20 +48,33 @@ const Item = ({model, nav, user}) => {
                     user !== null &&
                     <View style={styles.likeDislikeBox}>
                         <TouchableOpacity style={styles.likeButton} activeOpacity={0.8}
-                            onPress={() => {
+                            onPress={async() => {
+                                if (!allowRating) {
+                                    alert("Please rate the model in the Community tab.");
+                                    return;
+                                }
                                 if (!liked) {
-                                    setLikes(likes + 1);
-                                    updateData("users", user.email, {liked: [...user.liked, model.id]});
-                                    setLiked(true);
                                     if (disliked) {
-                                        setDislikes(dislikes - 1);
-                                        updateData("users", user.email, {disliked: user.disliked.filter(id => id !== model.id)});
                                         setDisliked(false);
+                                        setLiked(true);
+                                        setDislikes(dislikes - 1);
+                                        setLikes(likes + 1);
+                                        await updateData("users", user.email, {disliked: user.disliked.filter(id => id !== model.id), liked: [...user.liked, model.id]});
+                                        rate_model(model.id, "dislike to like");
+                                        setModelUser(await getData("users", user.email));
+                                    } else {
+                                        setLiked(true);
+                                        setLikes(likes + 1);
+                                        await updateData("users", user.email, {liked: [...user.liked, model.id]});
+                                        rate_model(model.id, "like");
+                                        setModelUser(await getData("users", user.email));
                                     }
                                 } else {
-                                    setLikes(likes - 1);
-                                    updateData("users", user.email, {liked: user.liked.filter(id => id !== model.id)});
                                     setLiked(false);
+                                    setLikes(likes - 1);
+                                    await updateData("users", user.email, {liked: user.liked.filter(id => id !== model.id)});
+                                    rate_model(model.id, "cancel like");
+                                    setModelUser(await getData("users", user.email));
                                 }
                             }}
                         >
@@ -77,20 +86,33 @@ const Item = ({model, nav, user}) => {
                             <Text style={styles.likeDislikeNum}>{likes}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.dislikeButton} activeOpacity={0.8}
-                            onPress={() => {
+                            onPress={async() => {
+                                if (!allowRating) {
+                                    alert("Please rate the model in the Community tab.");
+                                    return;
+                                }
                                 if (!disliked) {
-                                    setDislikes(dislikes + 1);
-                                    updateData("users", user.email, {disliked: [...user.disliked, model.id]});
-                                    setDisliked(true);
                                     if (liked) {
-                                        setLikes(likes - 1);
-                                        updateData("users", user.email, {liked: user.liked.filter(id => id !== model.id)});
                                         setLiked(false);
+                                        setDisliked(true);
+                                        setDislikes(dislikes + 1);
+                                        setLikes(likes - 1);
+                                        await updateData("users", user.email, {liked: user.liked.filter(id => id !== model.id), disliked: [...user.disliked, model.id]});
+                                        rate_model(model.id, "like to dislike");
+                                        setModelUser(await getData("users", user.email));
+                                    } else {
+                                        setDisliked(true);
+                                        setDislikes(dislikes + 1);
+                                        await updateData("users", user.email, {disliked: [...user.disliked, model.id]});
+                                        rate_model(model.id, "dislike");
+                                        setModelUser(await getData("users", user.email));
                                     }
                                 } else {
-                                    setDislikes(dislikes - 1);
-                                    updateData("users", user.email, {disliked: user.disliked.filter(id => id !== model.id)});
                                     setDisliked(false);
+                                    setDislikes(dislikes - 1);
+                                    await updateData("users", user.email, {disliked: user.disliked.filter(id => id !== model.id)});
+                                    rate_model(model.id, "cancel dislike");
+                                    setModelUser(await getData("users", user.email));
                                 }
                             }}
                         >
@@ -135,19 +157,19 @@ const Item = ({model, nav, user}) => {
 
 const CommunityList = ({nav, user}) => {
 
-    const [modalUser, setModalUser] = useState(null);
+    const [modelUser, setModelUser] = useState(null);
     const [refreshing, setRefreshing] = useState(false);
     const [models, setModels] = useState(dataModels);
 
     useEffect(() => {
-        setModalUser(user);
+        setModelUser(user);
     }, [user]);
 
     const onRefresh = async() => {
         setRefreshing(true);
         setModels(await getModels());
         if (user !== null) {
-            setModalUser(await getData("users", user.email));
+            setModelUser(await getData("users", user.email));
         }
         setTimeout(() => {
           setRefreshing(false);
@@ -160,7 +182,7 @@ const CommunityList = ({nav, user}) => {
                 style={styles.list}
                 data={models}
                 // ensure child of the list is re-rendered when the state changes
-                renderItem={({item}) => !refreshing && <Item model={item} nav={nav} user={modalUser}/>}
+                renderItem={({item}) => !refreshing && <Model_ML model={item} nav={nav} user={modelUser} setModelUser={setModelUser} allowRating={true}/>}
                 keyExtractor={item => item.id}
                 ItemSeparatorComponent={<View style={{height: 10}}/>}
                 indicatorStyle="white"

@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from "react";
 import { StyleSheet, TouchableOpacity, Image, View, Text } from "react-native";
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import ClubList from "../../components/club/ClubList";
 import CommunityList from "../../components/prediction/CommunityList";
+import SavedList from "../../components/prediction/SavedList";
 import { userData } from "../../fetchCloud";
-import TempScreen from "../tempScreen";
+// import TempScreen from "../tempScreen";  // For emergency use
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -67,7 +67,8 @@ const PredictionMain = ({navigation}) => {
                 {() => <CommunityList nav={navigation} user={user}/>}
             </Tab.Screen>
             <Tab.Screen name="SAVED" options={{title: "SAVED"}}>
-                {() => <TempScreen/>}       
+                {() => <SavedList nav={navigation} user={user}/>}
+                {/* {() => <TempScreen/>}    // For emergency use */}
             </Tab.Screen>
         </Tab.Navigator>
     );

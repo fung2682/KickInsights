@@ -102,6 +102,7 @@ const Account = ({ userState }) => {
 					iconColor: getRandomColor(),
 					liked: [],
 					disliked: [],
+					saved: [],
 				}
 				setData("users", email, userData);
 			}
