@@ -1,25 +1,8 @@
 import React, {useState, useEffect} from "react";
 import { View, Text, StyleSheet, FlatList, RefreshControl, TouchableOpacity } from "react-native";
 import { dataModels } from "../../fetchCloud";
-import { AntDesign } from '@expo/vector-icons'; 
-import { updateData, getModels, getData, setData } from "../../firebase/firestore"; // for refreshing the data
+import { updateData, getModels, getData } from "../../firebase/firestore"; // for refreshing the data
 import { Model_ML } from "./CommunityList";
-
-const create_model = () => {
-    var model_id = (new Date()).getTime().toString() + '_' + Math.floor(Math.random() * 10).toString();    // unique id
-    setData("ml_models", model_id, {
-        accuracy: 59.5,
-        algorithms: ["Neural Network"],
-        aspects: ["Home&Away", "H2H"],
-        date: Date.now(),   // timestamp
-        dislikes: 5,
-        id: model_id,
-        likes: 23,
-        model_name: "Mary's Neural Network",
-        publisher: "Mary"
-    }
-    );
-}
 
 const SavedList = ({nav, user}) => {
 
@@ -51,24 +34,30 @@ const SavedList = ({nav, user}) => {
 
     return (
         <View style={styles.container}>
-            <FlatList 
-                style={styles.list}
-                data={savedModels}
-                // ensure child of the list is re-rendered when the state changes
-                renderItem={({item}) => !refreshing && <Model_ML model={item} nav={nav} user={modelUser} setModelUser={setModelUser} allowRating={false}/>}
-                keyExtractor={item => item.id}
-                ItemSeparatorComponent={<View style={{height: 10}}/>}
-                indicatorStyle="white"
-                scrollIndicatorInsets={{right: -8}}
-                initialNumToRender={8}
-                refreshControl={
-                    <RefreshControl
-                        refreshing={refreshing}
-                        onRefresh={onRefresh}
-                        tintColor="lightgrey"
-                    />
-                }
-            />
+            { modelUser === null ?
+                <View style={styles.signInReminder}>
+                    <Text style={styles.signInReminderText}>Sign in to view saved models</Text>
+                </View>
+                :
+                <FlatList 
+                    style={styles.list}
+                    data={savedModels}
+                    // ensure child of the list is re-rendered when the state changes
+                    renderItem={({item}) => !refreshing && <Model_ML model={item} nav={nav} user={modelUser} setModelUser={setModelUser} allowRating={false}/>}
+                    keyExtractor={item => item.id}
+                    ItemSeparatorComponent={<View style={{height: 10}}/>}
+                    indicatorStyle="white"
+                    scrollIndicatorInsets={{right: -8}}
+                    initialNumToRender={8}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={refreshing}
+                            onRefresh={onRefresh}
+                            tintColor="lightgrey"
+                        />
+                    }
+                />
+            }
         </View>
     );
 }
@@ -193,6 +182,31 @@ const styles = StyleSheet.create({
     likeDislikeNum: {
         color: "white",
         fontSize: 12,
+    },
+    createModelButton: {
+        position: "absolute",
+        bottom: 10,
+        right: 10,
+        width: 60,
+        height: 60,
+        borderRadius: 30,
+        backgroundColor: "white",
+        alignItems: "center",
+        justifyContent: "center",
+    },
+    signInReminder: {
+        width: "80%",
+        height: 60,
+        backgroundColor: "#141414",
+        borderRadius: 10,
+        borderColor: "white",
+        borderWidth: 1,
+        alignItems: "center",
+        justifyContent: "center",
+    },
+    signInReminderText: {
+        color: "white",
+        fontSize: 15,
     },
 });
 

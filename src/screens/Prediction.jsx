@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import PredictionMain from "../sub-screens/prediction/PredictionMain";
+import PredictionCreateModel from "../sub-screens/prediction/CreateModel";
 import Account from "../screens/Account";
 
 const Stack = createNativeStackNavigator();
@@ -27,7 +28,7 @@ const Prediction = () => {
                 },
                 headerTintColor: "#54a761",
                 headerTitle: "ML Models",
-                headerBackTitle: "ML Models",
+                headerBackTitle: "Models",
             }}
             initialRouteName="PredictionMain"
         >
@@ -35,6 +36,9 @@ const Prediction = () => {
             </Stack.Screen>
             <Stack.Screen name="Account" options={{headerTitle: "Account"}}>
                 {(user) => <Account userState={user} />}
+            </Stack.Screen>
+            <Stack.Screen name="PredictionCreateModel" options={{ headerTitle: 'Create Model'}}>
+                {(user) => <PredictionCreateModel userState={user} />}
             </Stack.Screen>
         </Stack.Navigator>
     );

@@ -4,6 +4,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import CommunityList from "../../components/prediction/CommunityList";
 import SavedList from "../../components/prediction/SavedList";
 import { userData } from "../../fetchCloud";
+import { AntDesign } from '@expo/vector-icons';
 // import TempScreen from "../tempScreen";  // For emergency use
 
 const Tab = createMaterialTopTabNavigator();
@@ -18,7 +19,7 @@ const PredictionMain = ({navigation}) => {
 
     useEffect(() => {
         navigation.setOptions({
-            headerRight: () => (
+            headerLeft: () => (
                 <TouchableOpacity style={styles.userIcon} activeOpacity={0.8}
                     onPress={() => {
                         navigation.navigate("Account", {
@@ -28,7 +29,7 @@ const PredictionMain = ({navigation}) => {
                 >
                     {   // if user is not signed in, show default icon
                         user === null &&
-                        <Image source={require("../../../assets/no_user_icon.png")} style={styles.userIcon}/>
+                        <Image source={require("../../../assets/no_user_icon.png")} style={styles.guestIcon}/>
                     }
                     {   // if user is signed in, show user icon
                         user !== null &&
@@ -36,6 +37,21 @@ const PredictionMain = ({navigation}) => {
                             <Text style={styles.userIconInitial}>{user.username[0].toUpperCase()}</Text>
                         </View> 
                     }
+                </TouchableOpacity>
+            ),
+            headerRight: () => (
+                <TouchableOpacity style={{paddingLeft: 15}} activeOpacity={0.8}
+                    onPress={() => {
+                        if (user === null) {
+                            alert("Sign in to create a model");
+                            return;
+                        }
+                        navigation.navigate("PredictionCreateModel", {
+                            user: user,
+                        });
+                    }}
+                >
+                    <AntDesign name="plus" size={28} color="white" />
                 </TouchableOpacity>
             ),
         })
@@ -76,15 +92,20 @@ const PredictionMain = ({navigation}) => {
 
 const styles = StyleSheet.create({
     userIcon: {
-        width: 36,
-        height: 36,
-        borderRadius: 18,
-        backgroundColor: "grey",
+        width: 30,
+        height: 30,
+        borderRadius: 15,
+        marginTop: -3,
+    },
+    guestIcon: {
+        width: 30,
+        height: 30,
+        borderRadius: 15,
     },
     signedInUserIcon: {
-        width: 36,
-        height: 36,
-        borderRadius: 18,
+        width: 30,
+        height: 30,
+        borderRadius: 15,
         justifyContent: "center",
     },
     userIconInitial: {
