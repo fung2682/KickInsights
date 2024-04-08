@@ -23,7 +23,8 @@ const Tabs = () => {
                     tabBarStyle: {
                         backgroundColor: "#141414",
                         height:55,
-                        paddingBottom: 2,
+                        paddingTop: 2,
+                        paddingBottom: 0,
                         borderTopWidth: 0,
                     },
                     tabBarLabelStyle: {
@@ -74,10 +75,10 @@ const Tabs = () => {
                     name="Prediction" 
                     options={{
                         tabBarIcon: ({focused}) => (
-                            <MaterialCommunityIcons name="brain" size={33} color={focused ? "gold" : "#ad8d3b"} marginTop={6}/>
+                            <MaterialCommunityIcons name="brain" size={33} color={focused ? "#54a761" : "gray"} marginTop={6}/>
                         ),
                         tabBarLabel: ({focused}) => (
-                            <Text style={{color: focused ? "gold" : "#ad8d3b", fontSize: 13}}>Prediction</Text>
+                            <Text style={{color: focused ? "#54a761" : "gray", fontSize: 13}}>Prediction</Text>
                         ),
                         headerShown: false
                     }}
