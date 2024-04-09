@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, FlatList, RefreshControl, TouchableOpacity } fr
 import { dataModels } from "../../fetchCloud";
 import { AntDesign } from '@expo/vector-icons'; 
 import { updateData, getModels, getData, rate_model } from "../..//firebase/firestore"; // for refreshing the data
+import DropDownPicker from 'react-native-dropdown-picker';
 
 export const Model_ML = ({model, nav, user, setModelUser, allowRating}) => {
 
@@ -167,6 +168,40 @@ const CommunityList = ({nav, user}) => {
     const [refreshing, setRefreshing] = useState(false);
     const [models, setModels] = useState(dataModels);
 
+    const [sortFilterOpen, setSortFilterOpen] = useState(false);
+    const [sortFilterValues, setSortFilterValues] = useState("ALL");     // default value "ALL
+    const [sortFilterItems, setSortFilterItems] = useState([
+        {label: "Publish Date", value: "date"},
+        {label: "Accuracy", value: "accuracy"},
+        {label: "Likes", value: "likes"},
+    ]);
+
+    const [metricFilterOpen, setMetricFilterOpen] = useState(false);
+    const [metricFilterValues, setMetricFilterValues] = useState("accuracy");     // default value "accuracy
+    const [metricFilterItems, setMetricFilterItems] = useState([
+        {label: "Accuracy", value: "accuracy"},
+        {label: "Precision", value: "precision"},
+        {label: "Recall", value: "recall"},
+        {label: "F1 Score", value: "f1"},
+    ]);
+
+    const [confidenceFilterOpen, setConfidenceFilterOpen] = useState(false);
+    const [confidenceFilterValues, setConfidenceFilterValues] = useState();     // default value "high
+    const [confidenceFilterItems, setConfidenceFilterItems] = useState([
+        {label: "> 0.80", value: "0.80"},
+        {label: "> 0.75", value: "0.75"},
+        {label: "> 0.70", value: "0.70"},
+        {label: "> 0.65", value: "0.65"},
+        {label: "> 0.60", value: "0.60"},
+        {label: "> 0.55", value: "0.55"},
+        {label: "> 0.50", value: "0.50"},
+        {label: "> 0.45", value: "0.45"},
+        {label: "> 0.40", value: "0.40"},
+        {label: "> 0.35", value: "0.35"},
+        {label: "> 0.30", value: "0.30"},
+    ]);
+
+
     useEffect(() => {
         setModelUser(user);
     }, [user]);
@@ -184,6 +219,70 @@ const CommunityList = ({nav, user}) => {
 
     return (
         <View style={styles.container}>
+            <View style={styles.filterContainer}>
+                <DropDownPicker
+                    open={sortFilterOpen}
+                    value={sortFilterValues}
+                    items={sortFilterItems}
+
+                    setOpen={setSortFilterOpen}
+                    setValue={setSortFilterValues}
+                    setItems={setSortFilterItems}
+
+                    containerStyle={styles.FilterContainerStyle}
+                    style={styles.FilterStyle}
+                    textStyle={styles.filterTextStyle}
+                    dropDownContainerStyle={styles.dropDownContainerStyle}
+                    listItemContainerStyle={styles.listItemContainerStyle}
+
+                    multiple={false}
+                    itemSeparator={true}
+                    placeholder="Sort by"
+                    theme="DARK"
+                    mode="SIMPLE"
+                />
+                <DropDownPicker
+                    open={metricFilterOpen}
+                    value={metricFilterValues}
+                    items={metricFilterItems}
+
+                    setOpen={setMetricFilterOpen}
+                    setValue={setMetricFilterValues}
+                    setItems={setMetricFilterItems}
+
+                    containerStyle={styles.FilterContainerStyle}
+                    style={styles.FilterStyle}
+                    textStyle={styles.filterTextStyle}
+                    dropDownContainerStyle={styles.dropDownContainerStyle}
+                    listItemContainerStyle={styles.listItemContainerStyle}
+
+                    multiple={false}
+                    itemSeparator={true}
+                    theme="DARK"
+                    mode="SIMPLE"
+                />
+                <DropDownPicker
+                    open={confidenceFilterOpen}
+                    value={confidenceFilterValues}
+                    items={confidenceFilterItems}
+
+                    setOpen={setConfidenceFilterOpen}
+                    setValue={setConfidenceFilterValues}
+                    setItems={setConfidenceFilterItems}
+
+                    containerStyle={styles.FilterContainerStyle}
+                    style={styles.FilterStyle}
+                    textStyle={styles.filterTextStyle}
+                    dropDownContainerStyle={styles.dropDownContainerStyle}
+                    listItemContainerStyle={styles.listItemContainerStyle}
+
+                    multiple={false}
+                    itemSeparator={true}
+                    placeholder="Confidence"
+                    theme="DARK"
+                    mode="SIMPLE"
+                />
+            </View>
             <FlatList 
                 style={styles.list}
                 data={models}
@@ -214,12 +313,45 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
     },
+    filterContainer: {
+        width: "97%",
+        height: 54,
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        zIndex: 10,
+        backgroundColor: "#141414",
+    },
+    FilterStyle : {
+        minHeight: 34,
+        width: "100%",
+        borderWidth: 1,
+        borderColor: "grey",
+        borderRadius: 5,  
+        backgroundColor: 'rgba(39, 39, 39, 1.0)', 
+    },
+    FilterContainerStyle: {
+        width: "32.5%", 
+        justifyContent: "center",
+        height: 34,
+        alignItems: "flex-start",
+    },
+    dropDownContainerStyle: {
+        // height: 34,
+        backgroundColor: 'rgba(39, 39, 39, 1.0)',
+        borderColor: "grey",
+        borderWidth: 1,
+    },
+    listItemContainerStyle: {
+        height: 34,
+    },
+    filterTextStyle: {
+        fontWeight: "bold",
+        fontSize: 12.9,
+    },
     list: {
-        marginTop: 10,
         overflow: "visible",
         marginBottom: 10,
-        // borderColor: "red",
-        // borderWidth: 1,
         width: "97%",
     },
     modelPane: {
