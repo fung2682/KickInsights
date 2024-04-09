@@ -8,8 +8,10 @@ export const Model_ML = ({model, nav, user, setModelUser, allowRating}) => {
 
     const [likes, setLikes] = useState(model.likes);
     const [dislikes, setDislikes] = useState(model.dislikes);
-    const [liked, setLiked] = useState(false);          // to be edited, fetch from firestore
-    const [disliked, setDisliked] = useState(false);    // to be edited, fetch from firestore
+    const [liked, setLiked] = useState(false);
+    const [disliked, setDisliked] = useState(false);
+    const [backgroundColor, setBackgroundColor] = useState("#287334");
+    const [borderColor, setBorderColor] = useState("#369746");
 
     useEffect(() => {
         if (user !== null) {
@@ -23,12 +25,16 @@ export const Model_ML = ({model, nav, user, setModelUser, allowRating}) => {
             } else {
                 setDisliked(false);
             }
+            if (user.username == model.publisher) {
+                setBackgroundColor("#1997BF");
+                setBorderColor("#40C6E3");
+            }
         }
     }, [user]);
 
     return (
         <TouchableOpacity 
-            style={[styles.modelPane, {backgroundColor: `#287334`}, {borderColor: `#369746`}]}
+            style={[styles.modelPane, {backgroundColor: backgroundColor}, {borderColor: borderColor}]}
             activeOpacity={0.8}
             // onPress={() => nav.navigate("ClubDetails", {clubData: dataClubs[club.id]})}
             // , 
@@ -46,8 +52,8 @@ export const Model_ML = ({model, nav, user, setModelUser, allowRating}) => {
                 </View>
                 {
                     user !== null &&
-                    <View style={styles.likeDislikeBox}>
-                        <TouchableOpacity style={styles.likeButton} activeOpacity={0.8}
+                    <View style={[styles.likeDislikeBox, {borderLeftColor: borderColor}]}>
+                        <TouchableOpacity style={[styles.likeButton, {borderBottomColor: borderColor}]} activeOpacity={0.8}
                             onPress={async() => {
                                 if (!allowRating) {
                                     alert("Please rate the model in the Community tab.");
@@ -85,7 +91,7 @@ export const Model_ML = ({model, nav, user, setModelUser, allowRating}) => {
                             }
                             <Text style={styles.likeDislikeNum}>{likes}</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.dislikeButton} activeOpacity={0.8}
+                        <TouchableOpacity style={[styles.dislikeButton, {borderTopColor: borderColor}]} activeOpacity={0.8}
                             onPress={async() => {
                                 if (!allowRating) {
                                     alert("Please rate the model in the Community tab.");
@@ -286,7 +292,6 @@ const styles = StyleSheet.create({
         width: 30,
         height: "100%",
         borderLeftWidth: 2,
-        borderLeftColor: "#369746",
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
@@ -299,7 +304,6 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: "#3A5735",
         borderBottomWidth: 1,
-        borderBottomColor: "#369746",
         pointerEvents: "box-only",
         borderTopRightRadius: 8,
         alignItems: "center",
@@ -310,7 +314,6 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: "#703030",
         borderTopWidth: 1,
-        borderTopColor: "#369746",
         pointerEvents: "box-only",
         zIndex: -1,
         borderBottomRightRadius: 8,

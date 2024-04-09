@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
     legend: {
         width: "65%",
         height: 'fit-content',
-        backgroundColor: "transparent",
+        backgroundColor: "black",
         borderColor: "#3a3a3a",
         borderWidth: 2,
         borderRadius: 10,
