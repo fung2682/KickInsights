@@ -76,7 +76,7 @@ const ModelLayout = ({setPage, header, button1, button2, button3, button4}) => {
     } else if (func === "evaluationPrevious") {
       setPage("training");
     } else if (func === "evaluationSave") {
-      console.log("save");
+      setPage("save");
     }
   }
 

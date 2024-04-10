@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import PredictionMain from "../sub-screens/prediction/PredictionMain";
@@ -8,6 +8,9 @@ import Account from "../screens/Account";
 const Stack = createNativeStackNavigator();
 
 const Prediction = () => {
+
+    const [page, setPage] = useState("data");   // for create model page
+
     return (
         <Stack.Navigator
             screenOptions={{
@@ -38,7 +41,7 @@ const Prediction = () => {
                 {(user) => <Account userState={user} />}
             </Stack.Screen>
             <Stack.Screen name="PredictionCreateModel" options={{ headerTitle: 'Create Model'}}>
-                {(user) => <PredictionCreateModel userState={user} />}
+                {(user) => <PredictionCreateModel userState={user} page={page} setPage={setPage} />}
             </Stack.Screen>
         </Stack.Navigator>
     );
