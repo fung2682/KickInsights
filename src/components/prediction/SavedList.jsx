@@ -35,8 +35,6 @@ const SavedList = ({nav, user}) => {
         }, 500);    // to smooth out the refresh animation
     }
 
-    console.log(savedModels)
-
     return (
         <View style={styles.container}>
             { modelUser === null ?
