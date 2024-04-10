@@ -4,6 +4,7 @@ import { dataModels } from "../../fetchCloud";
 import { updateData, getModels, getData } from "../../firebase/firestore"; // for refreshing the data
 import { Model_ML } from "./CommunityList";
 import PredictionLegend from "./PredictionLegend";
+import HeaderFilters from "./HeaderFilters";
 
 const SavedList = ({nav, user}) => {
 
@@ -11,6 +12,7 @@ const SavedList = ({nav, user}) => {
     const [refreshing, setRefreshing] = useState(false);
     const [models, setModels] = useState(dataModels);
     const [savedModels, setSavedModels] = useState([]);
+    const [modelDisplay, setModelDisplay] = useState([...savedModels]);
 
     useEffect(() => {
         setModelUser(user);
@@ -33,6 +35,8 @@ const SavedList = ({nav, user}) => {
         }, 500);    // to smooth out the refresh animation
     }
 
+    console.log(savedModels)
+
     return (
         <View style={styles.container}>
             { modelUser === null ?
@@ -40,24 +44,27 @@ const SavedList = ({nav, user}) => {
                     <Text style={styles.signInReminderText}>Sign in to view saved models</Text>
                 </View>
                 :
-                <FlatList 
-                    style={styles.list}
-                    data={savedModels}
-                    // ensure child of the list is re-rendered when the state changes
-                    renderItem={({item}) => !refreshing && <Model_ML model={item} nav={nav} user={modelUser} setModelUser={setModelUser} allowRating={false}/>}
-                    keyExtractor={item => item.id}
-                    ItemSeparatorComponent={<View style={{height: 10}}/>}
-                    indicatorStyle="white"
-                    scrollIndicatorInsets={{right: -8}}
-                    initialNumToRender={8}
-                    refreshControl={
-                        <RefreshControl
-                            refreshing={refreshing}
-                            onRefresh={onRefresh}
-                            tintColor="lightgrey"
-                        />
-                    }
-                />
+                <>
+                    <HeaderFilters models={savedModels} setModelDisplay={setModelDisplay}/>
+                    <FlatList 
+                        style={styles.list}
+                        data={modelDisplay}
+                        // ensure child of the list is re-rendered when the state changes
+                        renderItem={({item}) => !refreshing && <Model_ML model={item} nav={nav} user={modelUser} setModelUser={setModelUser} allowRating={false}/>}
+                        keyExtractor={item => item.id}
+                        ItemSeparatorComponent={<View style={{height: 10}}/>}
+                        indicatorStyle="white"
+                        scrollIndicatorInsets={{right: -8}}
+                        initialNumToRender={8}
+                        refreshControl={
+                            <RefreshControl
+                                refreshing={refreshing}
+                                onRefresh={onRefresh}
+                                tintColor="lightgrey"
+                            />
+                        }
+                    />
+                </>
             }
             <PredictionLegend />
         </View>
@@ -73,7 +80,6 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     },
     list: {
-        marginTop: 10,
         overflow: "visible",
         marginBottom: 10,
         width: "97%",
