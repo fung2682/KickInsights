@@ -1,7 +1,8 @@
 import React, {useState, useEffect} from "react";
-import { View, Text, StyleSheet, FlatList, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 
-const ModelLayout = ({setPage, header, button1, button2, button3, button4}) => {
+
+const ModelLayout = ({setPage, header, button1, button2, button3, button4, inputForm}) => {
 
   const [header1Color, setHeader1Color] = useState(["#bababa", "#272727"]);
   const [header2Color, setHeader2Color] = useState(["#272727", "white"]);
@@ -104,6 +105,7 @@ const ModelLayout = ({setPage, header, button1, button2, button3, button4}) => {
           <View style={[styles.formHeader, {backgroundColor: "#1997BF"}]}>
               <Text style={styles.formHeaderText}>{formTitle}</Text>
           </View>
+          {inputForm}
         </View>
       </View>
       <View style={styles.footer}>
@@ -195,12 +197,15 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: "#1997BF",
     borderRadius: 10,
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
   },
   formHeader: {
     alignItems: "center",
     justifyContent: "center",
     width: "100%",
-    height: 30,
+    height: "5.3%",
     top: 0,
     borderTopLeftRadius: 8,
     borderTopRightRadius: 8,

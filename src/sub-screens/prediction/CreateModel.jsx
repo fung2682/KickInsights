@@ -23,27 +23,45 @@ import { useNavigation } from '@react-navigation/native';
 const PredictionCreateModel = ({userState, page, setPage}) => {
   // const params = userState.route.params;
 
-  
+  const [modelInput, setModelInput] = useState({
+    "model_name": "",
+    "seasons": "1999"
+  });
 
   const nav = useNavigation();
 
+  console.log(modelInput);
+  const inputValid = (modelInput) => {
+    if (modelInput.model_name === "") {
+      alert("Please enter a model name.");
+      return false;
+    }
+    return true;
+  }
+
   if (page === "data") {
-    return (<ModelData setPage={setPage}></ModelData>);
+    return (<ModelData setPage={setPage} modelInput={modelInput} setModelInput={setModelInput}></ModelData>);
   } else if (page === "training") {
-    return (<ModelTraining setPage={setPage}></ModelTraining>);
+    return (<ModelTraining setPage={setPage} modelInput={modelInput} setModelInput={setModelInput}></ModelTraining>);
   } else if (page === "evaluation") {
     return (<ModelEvaluation setPage={setPage}></ModelEvaluation>);
   } else if (page === "save") {
     return (
       <View style={styles.container}>
         <Text style={styles.text}>Model Name:</Text>
-        <TextInput style={styles.textInput} placeholder="Enter model name"></TextInput>
+        <TextInput 
+          style={styles.textInput} 
+          placeholder="Enter model name" 
+          onChangeText={(text) => setModelInput({...modelInput, model_name: text})}
+        ></TextInput>
         <View style={styles.buttonContainer}>
           <TouchableOpacity 
             style={styles.saveButton} 
             onPress={() => {
-              setPage("data");
-              nav.navigate("SAVED");
+              if (inputValid(modelInput)) {
+                setPage("data");
+                nav.navigate("SAVED");
+              }
             }}
           >
             <Text style={styles.buttonText}>Save</Text>
@@ -51,8 +69,10 @@ const PredictionCreateModel = ({userState, page, setPage}) => {
           <TouchableOpacity
             style={styles.savePublishButton}
             onPress={() => {
-              setPage("data");
-              nav.navigate("COMMUNITY");
+              if (inputValid(modelInput)) {
+                setPage("data");
+                nav.navigate("COMMUNITY");
+              }
             }}
           >
             <Text style={styles.buttonText}>Save and Publish</Text>

@@ -10,11 +10,13 @@ export const dataNext = () => {
   console.log("next");
 }
 
-const ModelTraining = ({setPage}) => {
+const ModelTraining = ({setPage, modelInput, setModelInput}) => {
 
   return (
     <ModelLayout 
       setPage={setPage}
+      modelInput={modelInput}
+      setModelInput={setModelInput}
       header = {"Training"}
       button1 = {["modelReset", '#3a3a3a', 'Reset', false]} // [function, color, text, bold]
       button2 = {[]}

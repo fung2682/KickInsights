@@ -7,6 +7,7 @@ import { fetchClubStats } from "../API/fetchClubStats.js";
 import { fetchPlayerImage } from "../API/fetchPlayerImages.js";
 import { fetchPlayers } from "../API/fetchPlayer.js";
 import { fetchMatches } from "../API/fetchMatch.js";
+import { fetchMatchesPastSeasons } from "../API/fetchMatchPastSeasons.js";
 import fetchCloud from "../fetchCloud.jsx";
 
 const TempScreen = () => {
@@ -53,6 +54,11 @@ const TempScreen = () => {
 			>
 				<Text>{`[match info + stats] (daily?) (20 mins) FBREF -> Firestore`}</Text>
 			</TouchableOpacity> */}
+			<TouchableOpacity
+				onPress={() => { fetchMatchesPastSeasons() }} style={styles.temp_button}
+			>
+				<Text>{`[past seasons] FBREF -> Firestore`}</Text>
+			</TouchableOpacity>
 		</View>
 	);
 }
