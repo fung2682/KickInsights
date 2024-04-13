@@ -220,7 +220,6 @@ def rf_test2(dummy_arg1, dummy_arg2):
     importances = rf.feature_importances_
     indices = np.argsort(importances)[::-1]
     feature_importance_plot = plt.figure()
-    plt.title("Feature importances")
     plt.bar(range(train_df[predictor_columns].shape[1]), importances[indices], align="center")
     plt.xticks(range(train_df[predictor_columns].shape[1]), train_df[predictor_columns].columns[indices], rotation=90)
     plt.xlim([-1, train_df[predictor_columns].shape[1]])
@@ -278,11 +277,6 @@ def rf_test2(dummy_arg1, dummy_arg2):
         plt.ylabel('Actual Home', fontsize=10, rotation=90)
         plt.xticks(fontsize=10, rotation=0)
         plt.yticks(fontsize=10, rotation=90)
-        plt.gcf().patch.set_facecolor('#1f1f1f')
-        plt.setp(plt.gca().get_xticklabels(), color='white')
-        plt.setp(plt.gca().get_yticklabels(), color='white')
-        plt.gca().xaxis.label.set_color('white')
-        plt.gca().yaxis.label.set_color('white')
         plt.gcf().set_size_inches(2,2)
         sns.despine(left=False, right=False, top=False, bottom=False)
         cm_plot.show()
