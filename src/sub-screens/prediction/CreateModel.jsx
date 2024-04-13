@@ -49,7 +49,7 @@ const PredictionCreateModel = ({userState, page, setPage}) => {
     if (page === "prediction") {
       setPage("evaluation");
       nav.navigate("PredictionMatchList", {
-        confidence: parseFloat(confidence).toFixed(2),
+        confidence: parseFloat(confidence === undefined ? 0.5 : confidence).toFixed(2),
         e_result: e_result[confidence === undefined ? 0.5 : parseFloat(confidence)],
         p_result: p_result[confidence === undefined ? 0.5 : parseFloat(confidence)]
       });
