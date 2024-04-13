@@ -383,7 +383,7 @@ const fetchMatches = async () => {
         const func_start = new Date();
         let matches = [];
 
-        for (let i = fetching_row; i < 421; i++) {  // total match rows
+        for (let i = fetching_row; i < 423; i++) {  // total match rows
             fetching_row++;
             const week = row[i].match(/<th.*>.*<\/th>/)[0].match(/>.*</)[0].slice(1, -1)
 
