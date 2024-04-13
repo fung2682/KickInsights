@@ -2,7 +2,7 @@ import React, {useState, useEffect} from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 
 
-const ModelLayout = ({setPage, header, button1, button2, button3, button4, inputForm}) => {
+const ModelLayout = ({setPage, header, button1, button2, button3, button4, content}) => {
 
   const [header1Color, setHeader1Color] = useState(["#bababa", "#272727"]);
   const [header2Color, setHeader2Color] = useState(["#272727", "white"]);
@@ -105,7 +105,7 @@ const ModelLayout = ({setPage, header, button1, button2, button3, button4, input
           <View style={[styles.formHeader, {backgroundColor: "#1997BF"}]}>
               <Text style={styles.formHeaderText}>{formTitle}</Text>
           </View>
-          {inputForm}
+          {content}
         </View>
       </View>
       <View style={styles.footer}>

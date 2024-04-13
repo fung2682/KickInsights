@@ -3,14 +3,6 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from "react-nati
 import ModelLayout from "../../components/prediction/ModelLayout";
 import Checkbox from 'expo-checkbox';
 
-export const dataReset = () => {
-  console.log("reset");
-}
-
-export const dataNext = () => {
-  console.log("next");
-}
-
 const ModelData = ({setPage, modelInput, setModelInput}) => {
 
   const [seasonChecked, setSeasonChecked] = useState([false, false, false, false, false, false, false, false]);
@@ -33,7 +25,7 @@ const ModelData = ({setPage, modelInput, setModelInput}) => {
 
   console.log(modelInput);
 
-  const inputForm = 
+  const content = 
   <ScrollView style={styles.formContainer} contentContainerStyle={{alignItems: "center"}}>
     <View style={[styles.subContainer]}>
       <Text style={styles.subtitle}>Seasons</Text>
@@ -117,7 +109,7 @@ const ModelData = ({setPage, modelInput, setModelInput}) => {
       button2 = {[]}
       button3 = {[]}
       button4 = {["dataNext", '#1997BF', 'Next', true]}
-      inputForm = {inputForm}
+      content = {content}
     ></ModelLayout>
   );
 }
