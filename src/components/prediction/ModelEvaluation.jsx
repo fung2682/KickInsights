@@ -31,6 +31,8 @@ const ModelEvaluation = ({setPage}) => {
   const [confidenceFilterValues, setConfidenceFilterValues] = useState()
   const [confidenceFilterItems, setConfidenceFilterItems] = useState([]);
 
+  const [featureImageSize, setFeatureImageSize] = useState({width: 295, height: 235});
+
   useEffect(() => {
     getData("ml_models", "1712583980043_5").then((doc) => {
       setModelMetrics(doc.metrics)
@@ -47,6 +49,14 @@ const ModelEvaluation = ({setPage}) => {
       setModelPlots(urls);
     });
   }, []);
+
+  useEffect(() => {
+    if (modelPlots !== undefined) {
+      Image.getSize(modelPlots['feature_importance'], (width, height) => {
+        setFeatureImageSize({width: 295, height: 295 * height / width});
+      });
+    }
+  }, [modelPlots]);
 
 
   const content = 
@@ -100,6 +110,7 @@ const ModelEvaluation = ({setPage}) => {
       </View>
     </View>
     <View style={styles.separatorLine}></View>
+
     <View style={[styles.subContainer]}>
       <Text style={styles.subtitle}>Confusion Matrix</Text>
       {modelPlots === undefined ? 
@@ -129,6 +140,32 @@ const ModelEvaluation = ({setPage}) => {
       </View>
     </View>
     <View style={styles.separatorLine}></View>
+    <View style={[styles.subContainer]}>
+      <Text style={styles.subtitle}>Model Performance</Text>
+      {modelPlots === undefined ? 
+        <View style={styles.metricsImage}>
+          <ActivityIndicator size="large" color="#1997BF"></ActivityIndicator>
+        </View>
+        : 
+        <Image style={styles.metricsImage} 
+          source={{uri: modelPlots['metrics']}}>
+        </Image>
+      }
+    </View>
+
+    <View style={styles.separatorLine}></View>
+    <View style={[styles.subContainer]}>
+      <Text style={styles.subtitle}>Feature Importance</Text>
+      {modelPlots === undefined ? 
+        <View style={styles.featureImage}>
+          <ActivityIndicator size="large" color="#1997BF"></ActivityIndicator>
+        </View>
+        : 
+        <Image style={[styles.featureImage, featureImageSize]}
+          source={{uri: modelPlots['feature_importance']}}>
+        </Image>
+      }
+    </View>
   </ScrollView>
 
   return (
@@ -229,7 +266,27 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: "#3a3a3a",
     marginBottom: 5,
-},  
+  },  
+  metricsImage: {
+    width: 295,
+    height: 235,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 5,
+    borderWidth: 2,
+    borderColor: "#3a3a3a",
+    marginBottom: 5,
+  },
+  featureImage: {
+    width: 295,
+    height: 235,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 5,
+    borderWidth: 2,
+    borderColor: "#3a3a3a",
+    marginBottom: 5,
+  },
 });
 
 export default ModelEvaluation;
