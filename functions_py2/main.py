@@ -37,7 +37,7 @@ def rf_test2(dummy_arg1, dummy_arg2):
     print("total:", len(past_matches_df)-2279 + len(future_matches_df))  # should be 380
 
     # all user inputs are contained here
-    model_id = "123"
+    model_id = "1712583980043_5"
     train_seasons = ["2017", "2018", "2019", "2020", "2021", "2022", "2023"]
     model = "random_forest"
     n_estimators = 100
@@ -109,10 +109,10 @@ def rf_test2(dummy_arg1, dummy_arg2):
             metrics_row = {"Confidence": round(threshold, 2), "Accuracy": 0, "Precision": 0, "F1 Score": 0, "Matches Predicted": 0}
             metrics_list.append(metrics_row)
         else:
-            print(f"Confidence: {'%.2f' % threshold},      Accuracy: {'%.5f' % accuracy},      Precision: {'%.5f' % precision},    F1 Score: {'%.5f' % f1},    Matches Predicted: {matches_predicted}")
+            print(f"Confidence: {'%.2f' % threshold},      Accuracy: {'%.4f' % accuracy},      Precision: {'%.4f' % precision},    F1 Score: {'%.4f' % f1},    Matches Predicted: {matches_predicted}")
             # print(results_confidence.to_string())
             evaluation_result[threshold] = results_confidence
-            metrics_row = {"Confidence": round(threshold, 2), "Accuracy": round(accuracy, 5), "Precision": round(precision, 5), "F1 Score": round(f1, 5), "Matches Predicted": matches_predicted}
+            metrics_row = {"Confidence": round(threshold, 2), "Accuracy": float("{:.4f}".format(accuracy)), "Precision": float("{:.4f}".format(precision)), "F1 Score": float("{:.4f}".format(f1)), "Matches Predicted": matches_predicted}
             metrics_list.append(metrics_row)
 
             cm = confusion_matrix(results_confidence["home_result"], results_confidence["predicted"], labels=[-1, 0, 1])
@@ -193,7 +193,7 @@ def rf_test2(dummy_arg1, dummy_arg2):
     metrics_df.set_index("Confidence", inplace=True)
     metrics_df.index = metrics_df.index.map(str)
     metrics_json = metrics_df.to_dict(orient="index")
-    doc_ref.set({"metrics": metrics_json})
+    doc_ref.update({"metrics": metrics_json})
 
     # evaluation result
     evaluation_result_json = {}
@@ -201,7 +201,7 @@ def rf_test2(dummy_arg1, dummy_arg2):
         df = df.set_index("matchRef")
         evaluation_result_json[str(confidence)] = df.to_dict(orient="index")
 
-    doc_ref.set({"evaluation_result": evaluation_result_json}, merge=True)  # merge=True will update the document instead of overwriting it
+    doc_ref.update({"evaluation_result": evaluation_result_json})
 
     # prediction result
     prediction_results_json = {}
@@ -209,7 +209,7 @@ def rf_test2(dummy_arg1, dummy_arg2):
         df = df.set_index("match_id")
         prediction_results_json[str(confidence)] = df.to_dict(orient="index")
 
-    doc_ref.set({"prediction_result": prediction_results_json}, merge=True)  # merge=True will update the document instead of overwriting it
+    doc_ref.update({"prediction_result": prediction_results_json})
 
     print("Step 5: Outputs uploaded to Firestore")
 
@@ -274,10 +274,10 @@ def rf_test2(dummy_arg1, dummy_arg2):
     for confidence, cm in confusion_matrix_dict.items():
         cm_plot = plt.figure()
         sns.heatmap(cm, annot=True, fmt="g", square=True, cmap='gray_r', vmin=0, vmax=0, linewidths=0.5, linecolor='k', cbar=False, annot_kws={'size': 15})
-        plt.xlabel('Predicted Home', fontsize=15)
-        plt.ylabel('Actual Home', fontsize=15, rotation=90)
-        plt.xticks(fontsize=15, rotation=0)
-        plt.yticks(fontsize=15, rotation=90)
+        plt.xlabel('Predicted Home', fontsize=10)
+        plt.ylabel('Actual Home', fontsize=10, rotation=90)
+        plt.xticks(fontsize=10, rotation=0)
+        plt.yticks(fontsize=10, rotation=90)
         plt.gcf().patch.set_facecolor('#1f1f1f')
         plt.setp(plt.gca().get_xticklabels(), color='white')
         plt.setp(plt.gca().get_yticklabels(), color='white')
