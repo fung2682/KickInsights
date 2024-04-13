@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 
-
 const ModelLayout = ({setPage, header, button1, button2, button3, button4, content}) => {
 
   const [header1Color, setHeader1Color] = useState(["#bababa", "#272727"]);
@@ -78,6 +77,9 @@ const ModelLayout = ({setPage, header, button1, button2, button3, button4, conte
       setPage("training");
     } else if (func === "evaluationSave") {
       setPage("save");
+    } else if (func === "evaluationApply") {
+      console.log("apply");
+      setPage("prediction");
     }
   }
 

@@ -34,8 +34,6 @@ const downloadPlayerImage = async (team_name, player_id) => {
 
 const downloadModelPlots = async (model_id) => {
     let urls = {
-        'metrics': '',
-        'feature_importance': '',
         'confusion_matrix_0.3': '',
         'confusion_matrix_0.35': '',
         'confusion_matrix_0.4': '',
@@ -60,9 +58,26 @@ const downloadModelPlots = async (model_id) => {
         } catch (error) {
             console.log('[Firebase] No model plot found', model_id, key);
         }
-        await new Promise(resolve => setTimeout(resolve, 100));
     }
     return urls;
 }
 
-export { get_clubLogo_url, uploadPlayerImage, downloadPlayerImage, downloadModelPlots };
+const downloadDefaultPlots = async (model_id) => {
+    let urls = {
+        'metrics': '',
+        'feature_importance': '',
+        'confusion_matrix_0.5': '',
+    };
+    // loop through urls and download each
+    for (let key in urls) {
+        try {
+            urls[key] = await getDownloadURL(ref(storage, `/models/${model_id}/${key}.png`))
+            console.log('[Firebase] Downloaded model plot', model_id, key);
+        } catch (error) {
+            console.log('[Firebase] No model plot found', model_id, key);
+        }
+    }
+    return urls;
+}
+
+export { get_clubLogo_url, uploadPlayerImage, downloadPlayerImage, downloadModelPlots, downloadDefaultPlots };

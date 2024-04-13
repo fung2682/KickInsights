@@ -2,11 +2,11 @@ import React, {useState, useEffect} from "react";
 import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity } from "react-native";
 import ModelLayout from "../../components/prediction/ModelLayout";
 import { getData } from "../../firebase/firestore";
-import { downloadModelPlots } from "../../firebase/storage";
+import { downloadModelPlots, downloadDefaultPlots } from "../../firebase/storage";
 import DropDownPicker from 'react-native-dropdown-picker';
 import { ActivityIndicator } from "react-native";
 
-const ModelEvaluation = ({setPage}) => {
+const ModelEvaluation = ({setPage, confidence, setConfidence, dplots, setDplots, mplots, setMplots, e_result, setEResult, p_result, setPResult}) => {
 
   const [modelMetrics, setModelMetrics] = useState({
     "0.3": {"Accuracy": "loading...", "Precision": "loading...", "F1 Score": "loading...", "Matches Predicted": "loading..."},
@@ -25,10 +25,13 @@ const ModelEvaluation = ({setPage}) => {
     "0.95": {"Accuracy": "loading...", "Precision": "loading...", "F1 Score": "loading...", "Matches Predicted": "loading..."},
     "1.00": {"Accuracy": "loading...", "Precision": "loading...", "F1 Score": "loading...", "Matches Predicted": "loading..."},
   })
-  const [modelPlots, setModelPlots] = useState()
+  const [defaultPlots, setDefaultPlots] = useState(dplots);
+  const [modelPlots, setModelPlots] = useState(mplots);
+  const [evaluation_result, setEvaluationResult] = useState(e_result);
+  const [prediction_result, setPredictionResult] = useState(p_result);
 
   const [confidenceFilterOpen, setConfidenceFilterOpen] = useState(false);
-  const [confidenceFilterValues, setConfidenceFilterValues] = useState()
+  const [confidenceFilterValues, setConfidenceFilterValues] = useState(confidence);
   const [confidenceFilterItems, setConfidenceFilterItems] = useState([]);
 
   const [featureImageSize, setFeatureImageSize] = useState({width: 295, height: 235});
@@ -41,23 +44,56 @@ const ModelEvaluation = ({setPage}) => {
       setConfidenceFilterItems(availableConfidence.map((confidence) => {
         return {label: `> ${parseFloat(confidence).toFixed(2)}`, value: confidence};
       }));
+      setEvaluationResult(doc.evaluation_result);
+      console.log("Evaluation result set.")
+      setPredictionResult(doc.prediction_result);
+      console.log("Prediction result set.")
     });
   }, []);
 
   useEffect(() => {
-    downloadModelPlots("1712583980043_5").then((urls) => {
-      setModelPlots(urls);
-    });
+    if (defaultPlots === undefined) {
+      downloadDefaultPlots("1712583980043_5").then((urls) => {
+        setDefaultPlots(urls);
+      });
+    }
   }, []);
 
   useEffect(() => {
-    if (modelPlots !== undefined) {
-      Image.getSize(modelPlots['feature_importance'], (width, height) => {
+    if (modelPlots === undefined) {
+      downloadModelPlots("1712583980043_5").then((urls) => {
+        setModelPlots(urls);
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    if (defaultPlots !== undefined) {
+      Image.getSize(defaultPlots['feature_importance'], (width, height) => {
         setFeatureImageSize({width: 295, height: 295 * height / width});
       });
     }
+  }, [defaultPlots]);
+
+  useEffect(() => {
+    setConfidence(confidenceFilterValues);
+  }, [confidenceFilterValues]);
+
+  useEffect(() => {
+    setDplots(defaultPlots);
+  }, [defaultPlots]);
+
+  useEffect(() => {
+    setMplots(modelPlots);
   }, [modelPlots]);
 
+  useEffect(() => {
+    setEResult(evaluation_result);
+  }, [evaluation_result]);
+
+  useEffect(() => {
+    setPResult(prediction_result);
+  }, [prediction_result]);
 
   const content = 
   <ScrollView style={styles.formContainer} contentContainerStyle={{alignItems: "center"}}>
@@ -114,9 +150,14 @@ const ModelEvaluation = ({setPage}) => {
     <View style={[styles.subContainer]}>
       <Text style={styles.subtitle}>Confusion Matrix</Text>
       {modelPlots === undefined ? 
-        <View style={styles.confusionMatrixImage}>
-          <ActivityIndicator size="large" color="#1997BF"></ActivityIndicator>
-        </View>
+        defaultPlots === undefined ?
+          <View style={styles.confusionMatrixImage}>
+            <ActivityIndicator size="large" color="#1997BF"></ActivityIndicator>
+          </View>
+          :
+          <Image style={styles.confusionMatrixImage}
+            source={{uri: defaultPlots[`confusion_matrix_0.5`]}}>
+          </Image>
         : 
         <Image style={styles.confusionMatrixImage} 
           source={{uri: modelPlots[`confusion_matrix_${confidenceFilterValues === undefined ? "0.5" : confidenceFilterValues}`]}}>
@@ -142,13 +183,13 @@ const ModelEvaluation = ({setPage}) => {
     <View style={styles.separatorLine}></View>
     <View style={[styles.subContainer]}>
       <Text style={styles.subtitle}>Model Performance</Text>
-      {modelPlots === undefined ? 
+      {defaultPlots === undefined ? 
         <View style={styles.metricsImage}>
           <ActivityIndicator size="large" color="#1997BF"></ActivityIndicator>
         </View>
         : 
         <Image style={styles.metricsImage} 
-          source={{uri: modelPlots['metrics']}}>
+          source={{uri: defaultPlots['metrics']}}>
         </Image>
       }
     </View>
@@ -156,13 +197,13 @@ const ModelEvaluation = ({setPage}) => {
     <View style={styles.separatorLine}></View>
     <View style={[styles.subContainer]}>
       <Text style={styles.subtitle}>Feature Importance</Text>
-      {modelPlots === undefined ? 
+      {defaultPlots === undefined ? 
         <View style={styles.featureImage}>
           <ActivityIndicator size="large" color="#1997BF"></ActivityIndicator>
         </View>
         : 
         <Image style={[styles.featureImage, featureImageSize]}
-          source={{uri: modelPlots['feature_importance']}}>
+          source={{uri: defaultPlots['feature_importance']}}>
         </Image>
       }
     </View>
@@ -172,9 +213,9 @@ const ModelEvaluation = ({setPage}) => {
     <ModelLayout 
       setPage={setPage}
       header = {"Evaluation"}
-      button1 = {[]}
+      button1 = {["evaluationApply", '#E19500', 'Apply', true]}     // [function, color, text, bold]
       button2 = {[]}
-      button3 = {["evaluationPrevious", '#3a3a3a', 'Previous', false]}     // [function, color, text, bold]
+      button3 = {["evaluationPrevious", '#3a3a3a', 'Previous', false]}
       button4 = {["evaluationSave", '#1997BF', 'Save', true]}
       content = {content}
     ></ModelLayout>

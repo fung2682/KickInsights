@@ -28,6 +28,12 @@ const PredictionCreateModel = ({userState, page, setPage}) => {
     "seasons": "1999"
   });
 
+  const [confidence, setConfidence] = useState();
+  const [dplots, setDplots] = useState();
+  const [mplots, setMplots] = useState();
+  const [e_result, setEResult] = useState();
+  const [p_result, setPResult] = useState();
+
   const nav = useNavigation();
 
   console.log(modelInput);
@@ -39,12 +45,37 @@ const PredictionCreateModel = ({userState, page, setPage}) => {
     return true;
   }
 
+  useEffect(() => {
+    if (page === "prediction") {
+      setPage("evaluation");
+      nav.navigate("PredictionMatchList", {
+        confidence: parseFloat(confidence).toFixed(2),
+        e_result: e_result[confidence === undefined ? 0.5 : parseFloat(confidence)],
+        p_result: p_result[confidence === undefined ? 0.5 : parseFloat(confidence)]
+      });
+    }
+  }, [page]);
+
   if (page === "data") {
     return (<ModelData setPage={setPage} modelInput={modelInput} setModelInput={setModelInput}></ModelData>);
   } else if (page === "training") {
     return (<ModelTraining setPage={setPage} modelInput={modelInput} setModelInput={setModelInput}></ModelTraining>);
   } else if (page === "evaluation") {
-    return (<ModelEvaluation setPage={setPage}></ModelEvaluation>);
+    return (
+      <ModelEvaluation 
+        setPage={setPage} 
+        confidence={confidence} 
+        setConfidence={setConfidence}
+        plots={dplots} 
+        setDplots={setDplots} 
+        mplots={mplots} 
+        setMplots={setMplots}
+        evaluation_result={e_result}
+        setEResult={setEResult}
+        prediction_result={p_result}
+        setPResult={setPResult}
+      >
+      </ModelEvaluation>);
   } else if (page === "save") {
     return (
       <View style={styles.container}>

@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import PredictionMain from "../sub-screens/prediction/PredictionMain";
 import PredictionCreateModel from "../sub-screens/prediction/CreateModel";
 import Account from "../screens/Account";
+import PredictionMatch from "../sub-screens/prediction/PredictionMatch";
 
 const Stack = createNativeStackNavigator();
 
@@ -42,6 +43,10 @@ const Prediction = () => {
             </Stack.Screen>
             <Stack.Screen name="PredictionCreateModel" options={{ headerTitle: 'Create Model'}}>
                 {(user) => <PredictionCreateModel userState={user} page={page} setPage={setPage} />}
+            </Stack.Screen>
+            <Stack.Screen name="PredictionMatchList" 
+                options={({route}) => ({ headerTitle: `Confidence ( >${route.params.confidence} )`})}>
+                {(params) => <PredictionMatch input={params.route.params} />}
             </Stack.Screen>
         </Stack.Navigator>
     );
