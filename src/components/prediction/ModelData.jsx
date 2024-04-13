@@ -35,7 +35,7 @@ const ModelData = ({setPage, modelInput, setModelInput}) => {
 
   const inputForm = 
   <ScrollView style={styles.formContainer} contentContainerStyle={{alignItems: "center"}}>
-    <View style={[styles.seasonsContainer]}>
+    <View style={[styles.subContainer]}>
       <Text style={styles.subtitle}>Seasons</Text>
       <View style={styles.row}>
         <View style={styles.row_3_block}>
@@ -103,6 +103,10 @@ const ModelData = ({setPage, modelInput, setModelInput}) => {
       </View>
     </View>
     <View style={styles.separatorLine}></View>
+    <View style={[styles.subContainer]}>
+      <Text style={styles.subtitle}>Data Type</Text>
+    </View>
+    <View style={styles.separatorLine}></View>
   </ScrollView>
   
   return (
@@ -140,9 +144,9 @@ const styles = StyleSheet.create({
     height: 2,
     backgroundColor: "#1997BF",
   },
-  seasonsContainer: {
+  subContainer: {
     width: "100%",
-    height: 128,
+    paddingBottom: 6,
     display: "flex",
     flexDirection: "column",
     alignItems: "flex-start",
