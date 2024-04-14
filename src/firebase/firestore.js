@@ -64,8 +64,9 @@ const getModels = async () => {
     const q = query(collection(db, "ml_models"));
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
-        // console.log(JSON.stringify(doc.data()).length);  // to get document size in bytes
-        models_array.push(doc.data());
+        if (doc.data().published === true) {
+            models_array.push(doc.data());
+        }
     });
     console.log("Loaded: models")
     return models_array;

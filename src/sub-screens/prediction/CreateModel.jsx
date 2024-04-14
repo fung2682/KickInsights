@@ -5,28 +5,17 @@ import ModelTraining from "../../components/prediction/ModelTraining";
 import ModelEvaluation from "../../components/prediction/ModelEvaluation";
 import { useNavigation } from '@react-navigation/native';
 
-// const create_model = () => {
-//   var model_id = (new Date()).getTime().toString() + '_' + Math.floor(Math.random() * 10).toString();    // unique id
-//   setData("ml_models", model_id, {
-//       accuracy: 59.5,
-//       algorithms: ["Neural Network"],
-//       aspects: ["Home&Away", "H2H"],
-//       date: Date.now(),   // timestamp
-//       dislikes: 5,
-//       id: model_id,
-//       likes: 23,
-//       model_name: "Mary's Neural Network",
-//       publisher: "Mary"
-//   });
-// }
-
 const PredictionCreateModel = ({userState, page, setPage}) => {
-  // const params = userState.route.params;
+
+  var model_id = (new Date()).getTime().toString() + '_' + Math.floor(Math.random() * 10).toString();    // unique id
 
   const [modelInput, setModelInput] = useState({
-    "model_name": "",
-    "seasons": "1999"
+    "id": model_id,
+    "publisher": userState.route.params.user.username,
+    "seasons": [false, false, false, false, false, false, false, false],
+    "i_seasons": [],
   });
+  // console.log("create page model Input: ", modelInput)
 
   const [confidence, setConfidence] = useState();
   const [dplots, setDplots] = useState();
@@ -36,7 +25,17 @@ const PredictionCreateModel = ({userState, page, setPage}) => {
 
   const nav = useNavigation();
 
-  console.log(modelInput);
+  // convert boolean in seasons array to year 2017-2023
+  useEffect(() => {
+    var i_seasons = [];
+    for (var i = 0; i < modelInput.seasons.length; i++) {
+      if (modelInput.seasons[i]) {
+        i_seasons.push((2017 + i).toString());
+      }
+    }
+    setModelInput({...modelInput, i_seasons: i_seasons});
+  }, [modelInput.seasons]);
+
   const inputValid = (modelInput) => {
     if (modelInput.model_name === "") {
       alert("Please enter a model name.");
@@ -57,7 +56,13 @@ const PredictionCreateModel = ({userState, page, setPage}) => {
   }, [page]);
 
   if (page === "data") {
-    return (<ModelData setPage={setPage} modelInput={modelInput} setModelInput={setModelInput}></ModelData>);
+    return (
+      <ModelData 
+        setPage={setPage} 
+        modelInput={modelInput} 
+        setModelInput={setModelInput}
+      >
+      </ModelData>);
   } else if (page === "training") {
     return (<ModelTraining setPage={setPage} modelInput={modelInput} setModelInput={setModelInput}></ModelTraining>);
   } else if (page === "evaluation") {
@@ -66,7 +71,7 @@ const PredictionCreateModel = ({userState, page, setPage}) => {
         setPage={setPage} 
         confidence={confidence} 
         setConfidence={setConfidence}
-        plots={dplots} 
+        dplots={dplots} 
         setDplots={setDplots} 
         mplots={mplots} 
         setMplots={setMplots}

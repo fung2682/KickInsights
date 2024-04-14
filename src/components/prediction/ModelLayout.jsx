@@ -1,7 +1,28 @@
 import React, {useState, useEffect} from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { setData } from "../../firebase/firestore";
 
-const ModelLayout = ({setPage, header, button1, button2, button3, button4, content}) => {
+const create_and_train_model = async (modelInput) => {
+  console.log("Received Model Input: ", modelInput);
+  console.log("Submitted model with ID: ", modelInput.id);
+
+  await setData("ml_models", modelInput.id, {
+      id: modelInput.id,
+      publisher: modelInput.publisher,
+      published: false,
+      model_name: "", // to be filled later
+      // accuracy: 59.5,
+      // algorithms: ["Neural Network"],
+      // aspects: ["Home&Away", "H2H"],
+      // date: Date.now(),   // timestamp
+      // dislikes: 0,
+      // likes: 0,
+      i_seasons: modelInput.i_seasons,
+  });
+
+}
+
+const ModelLayout = ({setPage, header, button1, button2, button3, button4, content, modelInput, setModelInput}) => {
 
   const [header1Color, setHeader1Color] = useState(["#bababa", "#272727"]);
   const [header2Color, setHeader2Color] = useState(["#272727", "white"]);
@@ -70,6 +91,7 @@ const ModelLayout = ({setPage, header, button1, button2, button3, button4, conte
     } else if (func === "modelReset") {
       console.log("reset");
     } else if (func === "modelNext") {
+      create_and_train_model(modelInput);
       setPage("evaluation");
     } else if (func === "modelPrevious") {
       setPage("data");

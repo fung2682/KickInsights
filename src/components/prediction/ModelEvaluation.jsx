@@ -45,9 +45,7 @@ const ModelEvaluation = ({setPage, confidence, setConfidence, dplots, setDplots,
         return {label: `> ${parseFloat(confidence).toFixed(2)}`, value: confidence};
       }));
       setEvaluationResult(doc.evaluation_result);
-      console.log("Evaluation result set.")
       setPredictionResult(doc.prediction_result);
-      console.log("Prediction result set.")
     });
   }, []);
 

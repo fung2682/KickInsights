@@ -5,25 +5,13 @@ import Checkbox from 'expo-checkbox';
 
 const ModelData = ({setPage, modelInput, setModelInput}) => {
 
-  const [seasonChecked, setSeasonChecked] = useState([false, false, false, false, false, false, false, false]);
+  const [seasonChecked, setSeasonChecked] = useState(modelInput["seasons"]);
 
   useEffect(() => {
-    if (seasonChecked[7]) {
-      setModelInput({...modelInput, seasons: ["2017", "2018", "2019", "2020", "2021", "2022", "2023"]});
-    } else {
-      let seasons = [];
-      if (seasonChecked[0]) seasons.push("2017");
-      if (seasonChecked[1]) seasons.push("2018");
-      if (seasonChecked[2]) seasons.push("2019");
-      if (seasonChecked[3]) seasons.push("2020");
-      if (seasonChecked[4]) seasons.push("2021");
-      if (seasonChecked[5]) seasons.push("2022");
-      if (seasonChecked[6]) seasons.push("2023");
-      setModelInput({...modelInput, seasons: seasons});
-    }
+      setModelInput({...modelInput, seasons: seasonChecked});
   }, [seasonChecked]);
 
-  console.log(modelInput);
+  // console.log(modelInput);
 
   const content = 
   <ScrollView style={styles.formContainer} contentContainerStyle={{alignItems: "center"}}>
@@ -85,7 +73,7 @@ const ModelData = ({setPage, modelInput, setModelInput}) => {
         </View>
         <View style={styles.row_3_block}>
           <Checkbox style={styles.checkbox} value={seasonChecked[7]}
-            onValueChange={() => setSeasonChecked([seasonChecked[0], seasonChecked[1], seasonChecked[2], seasonChecked[3], seasonChecked[4], seasonChecked[5], seasonChecked[6], !seasonChecked[7]])}
+            onValueChange={() => setSeasonChecked(seasonChecked[7] ? [false, false, false, false, false, false, false, false] : [true, true, true, true, true, true, true, true])}
             color={seasonChecked[7] ? '#1997BF' : undefined}
           />
           <Text style={styles.formText}>ALL</Text>
