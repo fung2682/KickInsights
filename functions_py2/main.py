@@ -27,6 +27,9 @@ def rf_test2(dummy_arg1, dummy_arg2):
     past_matches_df = pd.read_csv('gs://kickinsights-ccc1e.appspot.com/past_matches.csv')
     future_matches_df = pd.read_csv('gs://kickinsights-ccc1e.appspot.com/future_matches.csv')
 
+    past_matches_df.fillna(0, inplace=True)
+    future_matches_df.fillna(0, inplace=True)
+
     past_matches_df['refDate'] = pd.to_datetime(past_matches_df['refDate'])
     future_matches_df['refDate'] = pd.to_datetime(future_matches_df['refDate'])
 
@@ -60,12 +63,37 @@ def rf_test2(dummy_arg1, dummy_arg2):
     ]
 
     # select training seasons according to user input
-    train_mask = (past_matches_df["refDate"] < pd.to_datetime("2023-8-10"))
-    train_df = past_matches_df[train_mask]
-    train_df = train_df.dropna()
+    e_train_df = pd.DataFrame() # for evaluation, wont include 2023
+    p_train_df = pd.DataFrame() # for prediction, will include 2023
+
+    if "2017" in train_seasons:
+        e_train_df = pd.concat([e_train_df, past_matches_df[(past_matches_df["refDate"] >= pd.to_datetime("2017-7-1")) & (past_matches_df["refDate"] < pd.to_datetime("2018-7-1"))]])
+    if "2018" in train_seasons:
+        e_train_df = pd.concat([e_train_df, past_matches_df[(past_matches_df["refDate"] >= pd.to_datetime("2018-7-1")) & (past_matches_df["refDate"] < pd.to_datetime("2019-7-1"))]])
+    if "2019" in train_seasons:
+        e_train_df = pd.concat([e_train_df, past_matches_df[(past_matches_df["refDate"] >= pd.to_datetime("2019-7-1")) & (past_matches_df["refDate"] < pd.to_datetime("2020-7-1"))]])
+    if "2020" in train_seasons:
+        e_train_df = pd.concat([e_train_df, past_matches_df[(past_matches_df["refDate"] >= pd.to_datetime("2020-7-1")) & (past_matches_df["refDate"] < pd.to_datetime("2021-7-1"))]])
+    if "2021" in train_seasons:
+        e_train_df = pd.concat([e_train_df, past_matches_df[(past_matches_df["refDate"] >= pd.to_datetime("2021-7-1")) & (past_matches_df["refDate"] < pd.to_datetime("2022-7-1"))]])
+    if "2022" in train_seasons:
+        e_train_df = pd.concat([e_train_df, past_matches_df[(past_matches_df["refDate"] >= pd.to_datetime("2022-7-1")) & (past_matches_df["refDate"] < pd.to_datetime("2023-7-1"))]])
+
+    p_train_df = e_train_df.copy()
+    if "2023" in train_seasons:
+        p_train_df = pd.concat([p_train_df, past_matches_df[(past_matches_df["refDate"] >= pd.to_datetime("2023-7-1"))]])
+
+    e_train_df = e_train_df.dropna()
+    p_train_df = p_train_df.dropna()
+
+    # for evaluation
     test_mask = (past_matches_df["refDate"] >= pd.to_datetime("2023-8-10"))
     test_df = past_matches_df[test_mask]
-    test_df = test_df.fillna(0)
+
+    # print the length of e_train_df, p_train_df, and test_df
+    print("e_train_df: ", len(e_train_df))
+    print("p_train_df: ", len(p_train_df))
+    print("test_df: ", len(test_df))
 
     # Random Forest Classifier
     from sklearn.ensemble import RandomForestClassifier
@@ -74,7 +102,7 @@ def rf_test2(dummy_arg1, dummy_arg2):
 
     print("Step 2: Model training started")
 
-    # only include predictions with confidence
+    # Evaluation: predict past matches
     def predict_with_confidence(train, test, predictors, confidence):
         rf.fit(train[predictors], train["home_result"])
         predictions = rf.predict(test[predictors])
@@ -104,7 +132,7 @@ def rf_test2(dummy_arg1, dummy_arg2):
     confusion_matrix_dict = {}
 
     for threshold in confidence_thresholds:
-        matches_predicted, accuracy, results_confidence, precision, f1 = predict_with_confidence(train_df, test_df, predictor_columns, threshold)
+        matches_predicted, accuracy, results_confidence, precision, f1 = predict_with_confidence(e_train_df, test_df, predictor_columns, threshold)
         if matches_predicted == 0:
             metrics_row = {"Confidence": round(threshold, 2), "Accuracy": 0, "Precision": 0, "F1 Score": 0, "Matches Predicted": 0}
             metrics_list.append(metrics_row)
@@ -121,7 +149,7 @@ def rf_test2(dummy_arg1, dummy_arg2):
 
     print("Step 3: Model training completed")
 
-    # predict future matches
+    # Prediction: predict future matches
     prediction_results = {}
     def make_future_predictions(train, test, predictors):
         rf.fit(train[predictors], train["home_result"])
@@ -140,7 +168,7 @@ def rf_test2(dummy_arg1, dummy_arg2):
         return results_confidence
 
     confidence_thresholds = [0.30, 0.35, 0.40, 0.45, 0.50, 0.55, 0.60, 0.65, 0.70, 0.75, 0.80, 0.85, 0.90, 0.95, 1.00]
-    future_predictions = make_future_predictions(past_matches_df, future_matches_df, predictor_columns)
+    future_predictions = make_future_predictions(p_train_df, future_matches_df, predictor_columns)
 
     for threshold in confidence_thresholds:
         results = future_predictions[future_predictions["confidence"] > threshold].reset_index(drop=True)
@@ -220,9 +248,9 @@ def rf_test2(dummy_arg1, dummy_arg2):
     importances = rf.feature_importances_
     indices = np.argsort(importances)[::-1]
     feature_importance_plot = plt.figure()
-    plt.bar(range(train_df[predictor_columns].shape[1]), importances[indices], align="center")
-    plt.xticks(range(train_df[predictor_columns].shape[1]), train_df[predictor_columns].columns[indices], rotation=90)
-    plt.xlim([-1, train_df[predictor_columns].shape[1]])
+    plt.bar(range(e_train_df[predictor_columns].shape[1]), importances[indices], align="center")
+    plt.xticks(range(e_train_df[predictor_columns].shape[1]), e_train_df[predictor_columns].columns[indices], rotation=90)
+    plt.xlim([-1, e_train_df[predictor_columns].shape[1]])
     # to set figure size
     plt.gcf().set_size_inches(6, 3)
     # plt.gcf().subplots_adjust(bottom=3, top=5)
@@ -269,7 +297,7 @@ def rf_test2(dummy_arg1, dummy_arg2):
             blob_temp.delete()
         except:
             pass    # do nothing if the file does not exist
-    
+
     for confidence, cm in confusion_matrix_dict.items():
         cm_plot = plt.figure()
         sns.heatmap(cm, annot=True, fmt="g", square=True, cmap='gray_r', vmin=0, vmax=0, linewidths=0.5, linecolor='k', cbar=False, annot_kws={'size': 15})
@@ -286,4 +314,4 @@ def rf_test2(dummy_arg1, dummy_arg2):
         blob.upload_from_filename(f"confusion_matrix_{confidence}.png")
         blob.make_public()
 
-    print(f"Step 8: Confusion matrix plot for confidence {confidence} uploaded to Firebase Storage")
+    print(f"Step 8: Confusion matrix plot uploaded to Firebase Storage")
