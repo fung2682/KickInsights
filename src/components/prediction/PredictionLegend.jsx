@@ -7,12 +7,30 @@ const PredictionLegend = () => {
     return (
         <View style={styles.legend}>
             <View style={styles.legendRow}>
-                <View style={[styles.legendBox, {backgroundColor: "#40C6E3"}]}></View>
-                <Text style={styles.legendText}>Community models</Text>
+                <View style={[styles.legendBox, {backgroundColor: "green"}]}></View>
+                <Text style={styles.legendText}>Correct Prediction</Text>
             </View>
             <View style={styles.legendRow}>
-                <View style={[styles.legendBox, {backgroundColor: "#369746"}]}></View>
-                <Text style={styles.legendText}>My models</Text>
+                <View style={[styles.legendBox, {backgroundColor: "red"}]}></View>
+                <Text style={styles.legendText}>Incorrect Prediction</Text>
+            </View>
+            <View style={styles.legendRow}>
+                <View style={[styles.legendBox, {backgroundColor: "#272727"}]}>
+                    <Text style={styles.legendiconText}>W</Text>
+                </View>
+                <Text style={styles.legendText}>Home Win</Text>
+            </View>
+            <View style={styles.legendRow}>
+                <View style={[styles.legendBox, {backgroundColor: "#272727"}]}>
+                    <Text style={styles.legendiconText}>D</Text>
+                </View>
+                <Text style={styles.legendText}>Draw</Text>
+            </View>
+            <View style={styles.legendRow}>
+                <View style={[styles.legendBox, {backgroundColor: "#272727"}]}>
+                    <Text style={styles.legendiconText}>L</Text>
+                </View>
+                <Text style={styles.legendText}>Home Loss</Text>
             </View>
         </View>
     );
@@ -20,9 +38,6 @@ const PredictionLegend = () => {
 
 const styles = StyleSheet.create({
     legend: {
-        position: "absolute",
-        bottom: "1.5%",
-        left: "1.5%",
         width: "45%",
         height: 'fit-content',
         backgroundColor: "black",
@@ -54,7 +69,13 @@ const styles = StyleSheet.create({
     legendText: {
         color: "white",
         fontSize: 13,
-    }
+    },
+    legendiconText: {
+        color: "white",
+        fontSize: 10,
+        fontWeight: "bold",
+        textAlign: "center",
+    }, 
 });
 
 export default PredictionLegend;

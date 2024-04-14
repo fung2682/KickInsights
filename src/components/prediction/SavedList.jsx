@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, FlatList, RefreshControl, TouchableOpacity } fr
 import { dataModels } from "../../fetchCloud";
 import { updateData, getModels, getData } from "../../firebase/firestore"; // for refreshing the data
 import { Model_ML } from "./CommunityList";
-import PredictionLegend from "./PredictionLegend";
+import SavedLegend from "./SavedLegend";
 import HeaderFilters from "./HeaderFilters";
 
 const SavedList = ({nav, user}) => {
@@ -64,7 +64,7 @@ const SavedList = ({nav, user}) => {
                     />
                 </>
             }
-            <PredictionLegend />
+            <SavedLegend />
         </View>
     );
 }

@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, RefreshContr
 import { dataMatchesList } from "../../fetchCloud";
 import { clubLogo } from "../../clubLogo";
 import { getData } from "../../firebase/firestore";
+import PredictionLegend from "../prediction/PredictionLegend";
 
 const scoreBoard = (match) => {
     // if (match.result === "Postponed") {
@@ -34,6 +35,15 @@ const Item = ({match, firstMatch, first, last}) => {
         rowDate = `${match.refDayOfWeek}, ${ref_Date} ${ref_Month}`
     }
 
+    if (match.home_predicted === 1) {
+        match.home_predicted = "W";
+    } else if (match.home_predicted === -1) {
+        match.home_predicted = "L";
+    } else if (match.home_predicted === 0) {
+        match.home_predicted = "D";
+    }
+    console.log(match)
+
     return (
         <View 
             style={[
@@ -51,16 +61,9 @@ const Item = ({match, firstMatch, first, last}) => {
                     </Text>
                 </View>
             }
-            {
-                match.homeGoal != 'f'?  // if match is in the past, show FT
-                <View style={styles.time}>
-                    <Text style={styles.timeText}>FT</Text>
-                </View>
-                :
-                <View style={styles.time}>
-                    <Text style={styles.timeText}>{match.time == "f"? "TBC" : match.time}</Text>
-                </View>
-            }
+            <View style={[styles.time, {backgroundColor: match.predictColor}]}>
+                <Text style={styles.timeText}>{match.home_predicted}</Text>
+            </View>
             <TouchableOpacity 
                 style={styles.row}
                 activeOpacity={0.8}
@@ -109,26 +112,29 @@ const PredictionMatchList = ({week, e_result, p_result}) => {
         setCurrentWeekData(dataMatchesList[`Week ${week}`]);
     }, [week]);
 
-    // create new id for both evaluation and prediction result
     currentWeekData.forEach((match) => {
+        // create new id for both evaluation and prediction result
         if ((match.matchRef === "NA") || (match.matchRef === "Match Postponed")) {
             match.predictID = `${match.homeNameCode}${match.awayNameCode}`;
         } else {
             match.predictID = match.matchRef;
         }
-        // if predictID exists in e_result keys, print "A"
-        if (Object.keys(e_result).includes(match.predictID)) {
-            console.log("A");
-        } else if (Object.keys(p_result).includes(match.predictID)) {
-            console.log("B");
+        // assign predicted result to each match
+        if ((e_result !== undefined) && (Object.keys(e_result).includes(match.predictID))) {
+            match.home_predicted = e_result[match.predictID].predicted;
+            if (e_result[match.predictID].home_result == e_result[match.predictID].predicted) {
+                match.predictColor = "green";
+            } else {
+                match.predictColor = "red";
+            }
+        } else if ((p_result !== undefined) && (Object.keys(p_result).includes(match.predictID))) {
+            match.home_predicted = p_result[match.predictID].predicted;
+            match.predictColor = "#272727";
         } else {
-            console.log("C");
+            match.home_predicted = "";
+            match.predictColor = "#272727";
         }
     });
-
-    console.log("currentWeekData", currentWeekData);
-    // console.log("e_result", e_result);
-    // console.log("p_result", p_result);
 
     return (
         <View style={styles.container}>
@@ -156,7 +162,8 @@ const PredictionMatchList = ({week, e_result, p_result}) => {
                         tintColor="lightgrey"
                     />
                 }
-                />
+                ListFooterComponent={<PredictionLegend />}
+            />
         </View>
     );
 }
@@ -240,6 +247,7 @@ const styles = StyleSheet.create({
     },
     timeText: {
         color: "white",
+        fontWeight: "bold",
     },
     firstRow: {
         borderTopLeftRadius: 10,
