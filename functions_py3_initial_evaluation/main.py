@@ -25,9 +25,8 @@ warnings.filterwarnings("ignore")
 
 def train_evaluate_model(request):
     url=str(request).replace("%3D", "=").replace("%3F", "?")
-    print(url)
     id = url.split("=")[1].split("\'")[0]
-    print(id)
+    print("model_id:", id)
 
     # Read the CSV files from firebase storage
     past_matches_df = pd.read_csv('gs://kickinsights-ccc1e.appspot.com/past_matches.csv')
