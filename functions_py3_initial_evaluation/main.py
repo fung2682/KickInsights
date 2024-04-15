@@ -126,6 +126,10 @@ def train_evaluate_model(request):
         # K-Nearest Neighbors
         from sklearn.neighbors import KNeighborsClassifier
         model = KNeighborsClassifier(n_neighbors=models[0]["neighbors"])
+    elif (models[0]["model"] == "Support Vector Machine"):
+        # Support Vector Machine
+        from sklearn.svm import SVC
+        model = SVC(random_state=1, kernel=models[0]["kernel"], C=models[0]["C"], probability=True)
 
     # Evaluation: predict past matches
     def predict_with_confidence(train, test, predictors, confidence):
@@ -285,9 +289,10 @@ def train_evaluate_model(request):
         plt.gcf().set_size_inches(6, 3)
         # plt.gcf().subplots_adjust(bottom=3, top=5)
         feature_importance_plot.show()
-    elif (models[0]["model"] == "Logistic Regression"):
+    elif ((models[0]["model"] == "Logistic Regression") or (models[0]["model"] == "Support Vector Machine")):
         importance = model.coef_[0]
         feat_importances = pd.Series(importance)
+        feat_importances = feat_importances.sort_values(ascending=False)
         feature_importance_plot = plt.figure()
         feat_importances.plot(kind='barh', figsize=(6, 3))
         plt.yticks(range(len(predictor_columns)), e_train_df[predictor_columns].columns)
@@ -362,4 +367,4 @@ def train_evaluate_model(request):
 
     return "Firestore updated with id: " + id
 
-train_evaluate_model("<Request 'http://asia-east2-kickinsights-ccc1e.cloudfunctions.net/id%3D1713191762364_1' [GET]>")
+train_evaluate_model("<Request 'http://asia-east2-kickinsights-ccc1e.cloudfunctions.net/id%3D1713195556633_1' [GET]>")
