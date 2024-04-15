@@ -114,7 +114,10 @@ def train_evaluate_model(request):
         # Random Forest Classifier
         from sklearn.ensemble import RandomForestClassifier
         model = RandomForestClassifier(n_estimators =  models[0]["trees"], random_state=1)
-    
+    elif (models[0]["model"] == "Logistic Regression"):
+        # Logistic Regression
+        from sklearn.linear_model import LogisticRegression
+        model = LogisticRegression(random_state=1)
 
 
     # Evaluation: predict past matches
@@ -264,21 +267,35 @@ def train_evaluate_model(request):
     bucket = storage.bucket()
 
     # feature importance plot
-    importances = model.feature_importances_
-    indices = np.argsort(importances)[::-1]
-    feature_importance_plot = plt.figure()
-    plt.bar(range(e_train_df[predictor_columns].shape[1]), importances[indices], align="center")
-    plt.xticks(range(e_train_df[predictor_columns].shape[1]), e_train_df[predictor_columns].columns[indices], rotation=90)
-    plt.xlim([-1, e_train_df[predictor_columns].shape[1]])
-    # to set figure size
-    plt.gcf().set_size_inches(6, 3)
-    # plt.gcf().subplots_adjust(bottom=3, top=5)
-    feature_importance_plot.show()
+    if (models[0]["model"] == "Random Forest"):
+        importances = model.feature_importances_
+        indices = np.argsort(importances)[::-1]
+        feature_importance_plot = plt.figure()
+        plt.bar(range(e_train_df[predictor_columns].shape[1]), importances[indices], align="center")
+        plt.xticks(range(e_train_df[predictor_columns].shape[1]), e_train_df[predictor_columns].columns[indices], rotation=90)
+        plt.xlim([-1, e_train_df[predictor_columns].shape[1]])
+        # to set figure size
+        plt.gcf().set_size_inches(6, 3)
+        # plt.gcf().subplots_adjust(bottom=3, top=5)
+        feature_importance_plot.show()
 
-    feature_importance_plot.savefig("feature_importance.png", bbox_inches="tight")
-    blob = bucket.blob(f"models/{model_id}/feature_importance.png")
-    blob.upload_from_filename("feature_importance.png")
-    blob.make_public()
+        feature_importance_plot.savefig("feature_importance.png", bbox_inches="tight")
+        blob = bucket.blob(f"models/{model_id}/feature_importance.png")
+        blob.upload_from_filename("feature_importance.png")
+        blob.make_public()
+    elif (models[0]["model"] == "Logistic Regression"):
+        importance = model.coef_[0]
+        feat_importances = pd.Series(importance)
+        feature_importance_plot = plt.figure()
+        feat_importances.plot(kind='barh', figsize=(6, 3))
+        plt.yticks(range(len(predictor_columns)), e_train_df[predictor_columns].columns)
+        feature_importance_plot.show()
+        
+        feature_importance_plot.savefig("feature_importance.png", bbox_inches="tight")
+        blob = bucket.blob(f"models/{model_id}/feature_importance.png")
+        blob.upload_from_filename("feature_importance.png")
+        blob.make_public()
+        
 
     print("Step 6: Feature importance plot uploaded to Firebase Storage")
 
