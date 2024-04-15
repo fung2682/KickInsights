@@ -110,30 +110,57 @@ def train_evaluate_model(request):
     print("Step 2: Model training started")
     summary_columns = ["refDate", "matchRef", "home", "home_score", "away_score", "away", "home_result"]
     
-    if (models[0]["model"] == "Random Forest"):
-        # Random Forest Classifier
-        from sklearn.ensemble import RandomForestClassifier
-        model = RandomForestClassifier(random_state=1, n_estimators =  models[0]["trees"])
-    elif (models[0]["model"] == "Logistic Regression"):
-        # Logistic Regression
-        from sklearn.linear_model import LogisticRegression
-        model = LogisticRegression(random_state=1, solver=models[0]["solver"], max_iter=models[0]["max_iter"])
-    elif (models[0]["model"] == "Naive Bayes"):
-        # Naive Bayes
-        from sklearn.naive_bayes import GaussianNB
-        model = GaussianNB()
-    elif (models[0]["model"] == "K-Nearest Neighbors"):
-        # K-Nearest Neighbors
-        from sklearn.neighbors import KNeighborsClassifier
-        model = KNeighborsClassifier(n_neighbors=models[0]["neighbors"])
-    elif (models[0]["model"] == "Support Vector Machine"):
-        # Support Vector Machine
-        from sklearn.svm import SVC
-        model = SVC(random_state=1, kernel="linear", C=models[0]["C"], probability=True)
-    elif (models[0]["model"] == "AdaBoost"):
-        # AdaBoost
-        from sklearn.ensemble import AdaBoostClassifier
-        model = AdaBoostClassifier(random_state=1, n_estimators=models[0]["n_estimators"], learning_rate=models[0]["learning_rate"])
+    if (len(models) == 1):
+        if (models[0]["model"] == "Random Forest"):
+            # Random Forest Classifier
+            from sklearn.ensemble import RandomForestClassifier
+            model = RandomForestClassifier(random_state=1, n_estimators =  models[0]["trees"])
+        elif (models[0]["model"] == "Logistic Regression"):
+            # Logistic Regression
+            from sklearn.linear_model import LogisticRegression
+            model = LogisticRegression(random_state=1, solver=models[0]["solver"], max_iter=models[0]["max_iter"])
+        elif (models[0]["model"] == "Naive Bayes"):
+            # Naive Bayes
+            from sklearn.naive_bayes import GaussianNB
+            model = GaussianNB()
+        elif (models[0]["model"] == "K-Nearest Neighbors"):
+            # K-Nearest Neighbors
+            from sklearn.neighbors import KNeighborsClassifier
+            model = KNeighborsClassifier(n_neighbors=models[0]["neighbors"])
+        elif (models[0]["model"] == "Support Vector Machine"):
+            # Support Vector Machine
+            from sklearn.svm import SVC
+            model = SVC(random_state=1, kernel="linear", C=models[0]["C"], probability=True)
+        elif (models[0]["model"] == "AdaBoost"):
+            # AdaBoost
+            from sklearn.ensemble import AdaBoostClassifier
+            model = AdaBoostClassifier(random_state=1, n_estimators=models[0]["n_estimators"], learning_rate=models[0]["learning_rate"])
+    else:
+        print("Ensemble model")
+        model_list = []
+        for model in models:
+            if model["model"] == "Random Forest":
+                from sklearn.ensemble import RandomForestClassifier
+                model_list.append((model["model"], RandomForestClassifier(random_state=1, n_estimators=model["trees"])))
+            elif model["model"] == "Logistic Regression":
+                from sklearn.linear_model import LogisticRegression
+                model_list.append((model["model"], LogisticRegression(random_state=1, solver=model["solver"], max_iter=model["max_iter"])))
+            elif model["model"] == "Naive Bayes":
+                from sklearn.naive_bayes import GaussianNB
+                model_list.append((model["model"], GaussianNB()))
+            elif model["model"] == "K-Nearest Neighbors":
+                from sklearn.neighbors import KNeighborsClassifier
+                model_list.append((model["model"], KNeighborsClassifier(n_neighbors=model["neighbors"])))
+            elif model["model"] == "Support Vector Machine":
+                from sklearn.svm import SVC
+                model_list.append((model["model"], SVC(random_state=1, kernel="linear", C=model["C"], probability=True)))
+            elif model["model"] == "AdaBoost":
+                from sklearn.ensemble import AdaBoostClassifier
+                model_list.append((model["model"], AdaBoostClassifier(random_state=1, n_estimators=model["n_estimators"], learning_rate=model["learning_rate"])))
+        
+        from sklearn.ensemble import VotingClassifier
+        model = VotingClassifier(estimators=model_list, voting="soft")
+                
 
     # Evaluation: predict past matches
     def predict_with_confidence(train, test, predictors, confidence):
@@ -282,30 +309,30 @@ def train_evaluate_model(request):
     bucket = storage.bucket()
 
     # feature importance plot
-    if ((models[0]["model"] == "Random Forest") or (models[0]["model"] == "AdaBoost")):
-        importances = model.feature_importances_
-        indices = np.argsort(importances)[::-1]
+    if ((len(models) == 1) and (models[0]["model"] != "Naive Bayes") and (models[0]["model"] != "K-Nearest Neighbors")):
+        if ((models[0]["model"] == "Random Forest") or (models[0]["model"] == "AdaBoost")):
+            importances = model.feature_importances_
+            indices = np.argsort(importances)[::-1]
+            feature_importance_plot = plt.figure()
+            plt.bar(range(e_train_df[predictor_columns].shape[1]), importances[indices], align="center")
+            plt.xticks(range(e_train_df[predictor_columns].shape[1]), e_train_df[predictor_columns].columns[indices], rotation=90)
+            plt.xlim([-1, e_train_df[predictor_columns].shape[1]])
+            # to set figure size
+            plt.gcf().set_size_inches(6, 3)
+            # plt.gcf().subplots_adjust(bottom=3, top=5)
+            feature_importance_plot.show()
+        elif ((models[0]["model"] == "Logistic Regression") or (models[0]["model"] == "Support Vector Machine")):
+            importance = model.coef_[0]
+            feat_importances = pd.Series(importance)
+            feat_importances = feat_importances.sort_values(ascending=False)
+            feature_importance_plot = plt.figure()
+            feat_importances.plot(kind='barh', figsize=(6, 3))
+            plt.yticks(range(len(predictor_columns)), e_train_df[predictor_columns].columns)
+            feature_importance_plot.show()
+    else:
         feature_importance_plot = plt.figure()
-        plt.bar(range(e_train_df[predictor_columns].shape[1]), importances[indices], align="center")
-        plt.xticks(range(e_train_df[predictor_columns].shape[1]), e_train_df[predictor_columns].columns[indices], rotation=90)
-        plt.xlim([-1, e_train_df[predictor_columns].shape[1]])
-        # to set figure size
-        plt.gcf().set_size_inches(6, 3)
-        # plt.gcf().subplots_adjust(bottom=3, top=5)
-        feature_importance_plot.show()
-    elif ((models[0]["model"] == "Logistic Regression") or (models[0]["model"] == "Support Vector Machine")):
-        importance = model.coef_[0]
-        feat_importances = pd.Series(importance)
-        feat_importances = feat_importances.sort_values(ascending=False)
-        feature_importance_plot = plt.figure()
-        feat_importances.plot(kind='barh', figsize=(6, 3))
-        plt.yticks(range(len(predictor_columns)), e_train_df[predictor_columns].columns)
-        feature_importance_plot.show()
-    elif ((models[0]["model"] == "Naive Bayes") or (models[0]["model"] == "K-Nearest Neighbors")):
-        feature_importance_plot = plt.figure()
-        feature_occurrence = e_train_df[predictor_columns].sum()
-        feature_occurrence.plot(kind='barh', figsize=(6, 3))
-        plt.yticks(range(len(predictor_columns)), e_train_df[predictor_columns].columns)
+        plt.text(0.5, 0.5, "Not available for Naive Bayes, K-Nearest Neighbors, and Ensemble models", horizontalalignment='center', verticalalignment='center', fontsize=12)
+        plt.axis("off")
         feature_importance_plot.show()
         
     feature_importance_plot.savefig("feature_importance.png", bbox_inches="tight")
@@ -371,4 +398,4 @@ def train_evaluate_model(request):
 
     return "Firestore updated with id: " + id
 
-train_evaluate_model("<Request 'http://asia-east2-kickinsights-ccc1e.cloudfunctions.net/id%3D1713195556633_1' [GET]>")
+train_evaluate_model("<Request 'http://asia-east2-kickinsights-ccc1e.cloudfunctions.net/id%3D1713202319188_9' [GET]>")
