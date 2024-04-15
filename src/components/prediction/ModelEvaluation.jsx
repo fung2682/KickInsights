@@ -114,32 +114,32 @@ const ModelEvaluation = ({setPage, confidence, setConfidence, dplots, setDplots,
         multiple={false}
         itemSeparator={true}
         listMode="SCROLLVIEW"
-        placeholder="Confidence ( > 0.5 )"
+        placeholder="Confidence ( > 0.3 )"
         theme="DARK"
         mode="SIMPLE"
       />
       <View style={styles.row}>
         <Text style={styles.formKey}>Accuracy</Text>
-        { modelMetrics["0.5"]["Accuracy"] === "loading..." ?
+        { modelMetrics["0.3"]["Accuracy"] === "loading..." ?
           <Text style={styles.formText}>loading...</Text>
           :
-          <Text style={styles.formText}>{`${(modelMetrics[confidenceFilterValues === undefined ? "0.5" : confidenceFilterValues]["Accuracy"]*100).toFixed(1)}%`}</Text>
+          <Text style={styles.formText}>{`${(modelMetrics[confidenceFilterValues === undefined ? "0.3" : confidenceFilterValues]["Accuracy"]*100).toFixed(1)}%`}</Text>
         }
       </View>
       <View style={styles.row}>
         <Text style={styles.formKey}>Precision</Text>
-        { modelMetrics["0.5"]["Precision"] === "loading..." ?
+        { modelMetrics["0.3"]["Precision"] === "loading..." ?
           <Text style={styles.formText}>loading...</Text>
           :
-          <Text style={styles.formText}>{`${(modelMetrics[confidenceFilterValues === undefined ? "0.5" : confidenceFilterValues]["Precision"]*100).toFixed(1)}%`}</Text>
+          <Text style={styles.formText}>{`${(modelMetrics[confidenceFilterValues === undefined ? "0.3" : confidenceFilterValues]["Precision"]*100).toFixed(1)}%`}</Text>
         }
       </View>
       <View style={styles.row}>
         <Text style={styles.formKey}>F1 Score</Text>
-        { modelMetrics["0.5"]["F1 Score"] === "loading..." ?
+        { modelMetrics["0.3"]["F1 Score"] === "loading..." ?
           <Text style={styles.formText}>loading...</Text>
           :
-          <Text style={styles.formText}>{`${(modelMetrics[confidenceFilterValues === undefined ? "0.5" : confidenceFilterValues]["F1 Score"]*100).toFixed(1)}%`}</Text>
+          <Text style={styles.formText}>{`${(modelMetrics[confidenceFilterValues === undefined ? "0.3" : confidenceFilterValues]["F1 Score"]*100).toFixed(1)}%`}</Text>
         }
       </View>
     </View>
@@ -154,24 +154,24 @@ const ModelEvaluation = ({setPage, confidence, setConfidence, dplots, setDplots,
           </View>
           :
           <Image style={styles.confusionMatrixImage}
-            source={{uri: defaultPlots[`confusion_matrix_0.5`]}}>
+            source={{uri: defaultPlots[`confusion_matrix_0.3`]}}>
           </Image>
         : 
         <Image style={styles.confusionMatrixImage} 
-          source={{uri: modelPlots[`confusion_matrix_${confidenceFilterValues === undefined ? "0.5" : confidenceFilterValues}`]}}>
+          source={{uri: modelPlots[`confusion_matrix_${confidenceFilterValues === undefined ? "0.3" : confidenceFilterValues}`]}}>
         </Image>
       }
       <View style={styles.row}>
         <Text style={styles.formKey}>Matches Predicted</Text>
-        { modelMetrics["0.5"]["Matches Predicted"] === "loading..." ?
+        { modelMetrics["0.3"]["Matches Predicted"] === "loading..." ?
           <Text style={styles.formText}>loading...</Text>
           :
-          <Text style={styles.formText}>{modelMetrics[confidenceFilterValues === undefined ? "0.5" : confidenceFilterValues]["Matches Predicted"]}</Text>
+          <Text style={styles.formText}>{modelMetrics[confidenceFilterValues === undefined ? "0.3" : confidenceFilterValues]["Matches Predicted"]}</Text>
         }
       </View>
       <View style={styles.row}>
         <Text style={styles.formKey}>Total Matches</Text>
-        { modelMetrics["0.5"]["Matches Predicted"] === "loading..." ?
+        { modelMetrics["0.3"]["Matches Predicted"] === "loading..." ?
           <Text style={styles.formText}>loading...</Text>
           :
           <Text style={styles.formText}>{modelMetrics["0.3"]["Matches Predicted"]}</Text>

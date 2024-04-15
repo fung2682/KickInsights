@@ -66,7 +66,7 @@ const downloadDefaultPlots = async (model_id) => {
     let urls = {
         'metrics': '',
         'feature_importance': '',
-        'confusion_matrix_0.5': '',
+        'confusion_matrix_0.3': '',
     };
     // loop through urls and download each
     for (let key in urls) {
