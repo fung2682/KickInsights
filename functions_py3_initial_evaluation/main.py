@@ -237,7 +237,7 @@ def train_evaluate_model(request):
     metrics_df.index = metrics_df.index.map(str)
     metrics_json = metrics_df.to_dict(orient="index")
     doc_ref.update({"metrics": metrics_json})
-    doc_ref2.update({"metrics": metrics_json})
+    doc_ref2.set({"metrics": metrics_json})
 
     # evaluation result
     evaluation_result_json = {}
