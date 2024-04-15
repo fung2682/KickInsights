@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput } from "r
 import ModelData from "../../components/prediction/ModelData";
 import ModelTraining from "../../components/prediction/ModelTraining";
 import ModelEvaluation from "../../components/prediction/ModelEvaluation";
+import ModelLoading from "../../components/prediction/ModelLoading";
 import { useNavigation } from '@react-navigation/native';
 
 const PredictionCreateModel = ({userState, page, setPage}) => {
@@ -116,6 +117,10 @@ const PredictionCreateModel = ({userState, page, setPage}) => {
           </TouchableOpacity>
         </View>
       </View>
+    );
+  } else if (page === "loading") {
+    return (
+      <ModelLoading modelInput={modelInput} setPage={setPage}></ModelLoading>
     );
   }
 }

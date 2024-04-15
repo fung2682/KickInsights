@@ -25,10 +25,10 @@ const ModelEvaluation = ({setPage, confidence, setConfidence, dplots, setDplots,
     "0.95": {"Accuracy": "loading...", "Precision": "loading...", "F1 Score": "loading...", "Matches Predicted": "loading..."},
     "1.00": {"Accuracy": "loading...", "Precision": "loading...", "F1 Score": "loading...", "Matches Predicted": "loading..."},
   })
-  const [defaultPlots, setDefaultPlots] = useState(dplots);
-  const [modelPlots, setModelPlots] = useState(mplots);
-  const [evaluation_result, setEvaluationResult] = useState(e_result);
-  const [prediction_result, setPredictionResult] = useState(p_result);
+  const [defaultPlots, setDefaultPlots] = useState();
+  const [modelPlots, setModelPlots] = useState();
+  const [evaluation_result, setEvaluationResult] = useState();
+  const [prediction_result, setPredictionResult] = useState();
 
   const [confidenceFilterOpen, setConfidenceFilterOpen] = useState(false);
   const [confidenceFilterValues, setConfidenceFilterValues] = useState(confidence);
