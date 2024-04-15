@@ -229,6 +229,7 @@ def train_evaluate_model(request):
 
     # upload outputs to Firestore
     doc_ref = db.collection("ml_models").document(model_id)
+    doc_ref2 = db.collection("ml_models_published").document(model_id)
 
     # metrics
     metrics_df = pd.DataFrame(metrics_list)
@@ -236,6 +237,7 @@ def train_evaluate_model(request):
     metrics_df.index = metrics_df.index.map(str)
     metrics_json = metrics_df.to_dict(orient="index")
     doc_ref.update({"metrics": metrics_json})
+    doc_ref2.update({"metrics": metrics_json})
 
     # evaluation result
     evaluation_result_json = {}
@@ -244,6 +246,7 @@ def train_evaluate_model(request):
         evaluation_result_json[str(confidence)] = df.to_dict(orient="index")
 
     doc_ref.update({"evaluation_result": evaluation_result_json})
+    doc_ref2.update({"evaluation_result": evaluation_result_json})
 
     # prediction result
     prediction_results_json = {}
@@ -252,6 +255,7 @@ def train_evaluate_model(request):
         prediction_results_json[str(confidence)] = df.to_dict(orient="index")
 
     doc_ref.update({"prediction_result": prediction_results_json})
+    doc_ref2.update({"prediction_result": prediction_results_json})
 
     print("Step 5: Outputs uploaded to Firestore")
 

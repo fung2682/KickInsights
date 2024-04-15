@@ -17,7 +17,6 @@ const HeaderFilters = ({models, setModelDisplay}) => {
   const [metricFilterItems, setMetricFilterItems] = useState([
       {label: "Accuracy", value: "accuracy"},
       {label: "Precision", value: "precision"},
-      {label: "Recall", value: "recall"},
       {label: "F1 Score", value: "f1"},
   ]);
 
