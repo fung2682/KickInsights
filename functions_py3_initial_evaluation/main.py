@@ -122,6 +122,10 @@ def train_evaluate_model(request):
         # Naive Bayes
         from sklearn.naive_bayes import GaussianNB
         model = GaussianNB()
+    elif (models[0]["model"] == "K-Nearest Neighbors"):
+        # K-Nearest Neighbors
+        from sklearn.neighbors import KNeighborsClassifier
+        model = KNeighborsClassifier(n_neighbors=models[0]["neighbors"])
 
     # Evaluation: predict past matches
     def predict_with_confidence(train, test, predictors, confidence):
@@ -288,8 +292,7 @@ def train_evaluate_model(request):
         feat_importances.plot(kind='barh', figsize=(6, 3))
         plt.yticks(range(len(predictor_columns)), e_train_df[predictor_columns].columns)
         feature_importance_plot.show()
-    elif (models[0]["model"] == "Naive Bayes"):
-        # plot feature occurrence, with the following code, note that GaussianNB does not have feature_count
+    elif ((models[0]["model"] == "Naive Bayes") or (models[0]["model"] == "K-Nearest Neighbors")):
         feature_importance_plot = plt.figure()
         feature_occurrence = e_train_df[predictor_columns].sum()
         feature_occurrence.plot(kind='barh', figsize=(6, 3))
