@@ -109,7 +109,7 @@ const PredictionCreateModel = ({userState, page, setPage}) => {
             onPress={() => {
               if (inputValid(modelInput)) {
                 updateData("ml_models", modelInput.id, {...modelInput, published: false, date: Date.now(), dislikes: 0, likes: 0});
-                setData("ml_models_published", modelInput.id, {...modelInput, published: false, date: Date.now(), dislikes: 0, likes: 0});
+                updateData("ml_models_published", modelInput.id, {...modelInput, published: false, date: Date.now(), dislikes: 0, likes: 0});
                 updateData("users", user_email, {saved: user_saved.concat(modelInput.id)});
                 setPage("data");
                 nav.navigate("SAVED");
@@ -123,7 +123,7 @@ const PredictionCreateModel = ({userState, page, setPage}) => {
             onPress={() => {
               if (inputValid(modelInput)) {
                 updateData("ml_models", modelInput.id, {...modelInput, published: true, date: Date.now(), dislikes: 0, likes: 0});
-                setData("ml_models_published", modelInput.id, {...modelInput, published: true, date: Date.now(), dislikes: 0, likes: 0});
+                updateData("ml_models_published", modelInput.id, {...modelInput, published: true, date: Date.now(), dislikes: 0, likes: 0});
                 updateData("users", user_email, {saved: user_saved.concat(modelInput.id)});
                 setPage("data");
                 nav.navigate("COMMUNITY");

@@ -5,7 +5,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { updateData, getModels, getData, rate_model } from "../..//firebase/firestore"; // for refreshing the data
 import HeaderFilters from "./HeaderFilters";
 
-export const Model_ML = ({model, nav, user, setModelUser, allowRating}) => {
+export const Model_ML = ({model, nav, user, setModelUser, allowRating, metric, confidence}) => {
 
     const [likes, setLikes] = useState(model.likes);
     const [dislikes, setDislikes] = useState(model.dislikes);
@@ -13,6 +13,15 @@ export const Model_ML = ({model, nav, user, setModelUser, allowRating}) => {
     const [disliked, setDisliked] = useState(false);
     const [backgroundColor, setBackgroundColor] = useState("#287334");
     const [borderColor, setBorderColor] = useState("#369746");
+    
+    if (confidence === undefined) {
+        confidence = 0.5;
+    }
+
+    let metricValue = `${(model["metrics"][confidence][metric]*100).toFixed(1)}%`;
+    if (metricValue === "0.0%") {
+        metricValue = "NA";
+    }
 
     useEffect(() => {
         if (user !== null) {
@@ -48,8 +57,10 @@ export const Model_ML = ({model, nav, user, setModelUser, allowRating}) => {
             <View style={styles.modelResults}>
                 <View style={styles.triangle}></View>
                 <View style={styles.rectangle}>
-                    <Text style={styles.accuracyF1_text}>Accuracy</Text>
-                    <Text style={[styles.accuracyF1_num, {color: "green"}]}>{model.accuracy}%</Text>
+                    <Text style={styles.accuracyF1_text}>{metric}</Text>
+                    <Text style={[styles.accuracyF1_num, {color: "green"}]}>
+                        {metricValue}
+                    </Text>
                 </View>
                 {
                     user !== null &&
@@ -169,6 +180,10 @@ const CommunityList = ({nav, user}) => {
     const [models, setModels] = useState([]);
     const [modelDisplay, setModelDisplay] = useState([...models]);
 
+    const [sortFilter, setSortFilter] = useState();
+    const [metricFilter, setMetricFilter] = useState();
+    const [confidenceFilter, setConfidenceFilter] = useState();
+
     useEffect(() => {
         setModelUser(user);
     }, [user]);
@@ -196,12 +211,12 @@ const CommunityList = ({nav, user}) => {
 
     return (
         <View style={styles.container}>
-            <HeaderFilters models={models} setModelDisplay={setModelDisplay}/>
+            <HeaderFilters models={models} setModelDisplay={setModelDisplay} setSortFilter={setSortFilter} setMetricFilter={setMetricFilter} setConfidenceFilter={setConfidenceFilter}/>
             <FlatList 
                 style={styles.list}
                 data={modelDisplay}
                 // ensure child of the list is re-rendered when the state changes
-                renderItem={({item}) => !refreshing && <Model_ML model={item} nav={nav} user={modelUser} setModelUser={setModelUser} allowRating={true}/>}
+                renderItem={({item}) => !refreshing && <Model_ML model={item} nav={nav} user={modelUser} setModelUser={setModelUser} allowRating={true} metric={metricFilter} confidence={confidenceFilter}/>}
                 keyExtractor={item => item.id}
                 ItemSeparatorComponent={<View style={{height: 10}}/>}
                 indicatorStyle="white"

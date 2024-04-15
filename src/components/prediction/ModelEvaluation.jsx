@@ -123,7 +123,7 @@ const ModelEvaluation = ({setPage, confidence, setConfidence, dplots, setDplots,
         { modelMetrics["0.5"]["Accuracy"] === "loading..." ?
           <Text style={styles.formText}>loading...</Text>
           :
-          <Text style={styles.formText}>{parseFloat(modelMetrics[confidenceFilterValues === undefined ? "0.5" : confidenceFilterValues]["Accuracy"]).toFixed(4)}</Text>
+          <Text style={styles.formText}>{`${(modelMetrics[confidenceFilterValues === undefined ? "0.5" : confidenceFilterValues]["Accuracy"]*100).toFixed(1)}%`}</Text>
         }
       </View>
       <View style={styles.row}>
@@ -131,7 +131,7 @@ const ModelEvaluation = ({setPage, confidence, setConfidence, dplots, setDplots,
         { modelMetrics["0.5"]["Precision"] === "loading..." ?
           <Text style={styles.formText}>loading...</Text>
           :
-          <Text style={styles.formText}>{parseFloat(modelMetrics[confidenceFilterValues === undefined ? "0.5" : confidenceFilterValues]["Precision"]).toFixed(4)}</Text>
+          <Text style={styles.formText}>{`${(modelMetrics[confidenceFilterValues === undefined ? "0.5" : confidenceFilterValues]["Precision"]*100).toFixed(1)}%`}</Text>
         }
       </View>
       <View style={styles.row}>
@@ -139,7 +139,7 @@ const ModelEvaluation = ({setPage, confidence, setConfidence, dplots, setDplots,
         { modelMetrics["0.5"]["F1 Score"] === "loading..." ?
           <Text style={styles.formText}>loading...</Text>
           :
-          <Text style={styles.formText}>{parseFloat(modelMetrics[confidenceFilterValues === undefined ? "0.5" : confidenceFilterValues]["F1 Score"]).toFixed(4)}</Text>
+          <Text style={styles.formText}>{`${(modelMetrics[confidenceFilterValues === undefined ? "0.5" : confidenceFilterValues]["F1 Score"]*100).toFixed(1)}%`}</Text>
         }
       </View>
     </View>

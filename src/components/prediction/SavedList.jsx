@@ -14,6 +14,10 @@ const SavedList = ({nav, user}) => {
     const [savedModels, setSavedModels] = useState([]);
     const [modelDisplay, setModelDisplay] = useState([...savedModels]);
 
+    const [sortFilter, setSortFilter] = useState();
+    const [metricFilter, setMetricFilter] = useState();
+    const [confidenceFilter, setConfidenceFilter] = useState();
+
     useEffect(() => {
         setModelUser(user);
         if (user !== null) {
@@ -43,12 +47,12 @@ const SavedList = ({nav, user}) => {
                 </View>
                 :
                 <>
-                    <HeaderFilters models={savedModels} setModelDisplay={setModelDisplay}/>
+                    <HeaderFilters models={savedModels} setModelDisplay={setModelDisplay} setSortFilter={setSortFilter} setMetricFilter={setMetricFilter} setConfidenceFilter={setConfidenceFilter} />
                     <FlatList 
                         style={styles.list}
                         data={modelDisplay}
                         // ensure child of the list is re-rendered when the state changes
-                        renderItem={({item}) => !refreshing && <Model_ML model={item} nav={nav} user={modelUser} setModelUser={setModelUser} allowRating={false}/>}
+                        renderItem={({item}) => !refreshing && <Model_ML model={item} nav={nav} user={modelUser} setModelUser={setModelUser} allowRating={false} metric={metricFilter} confidence={confidenceFilter}/>}
                         keyExtractor={item => item.id}
                         ItemSeparatorComponent={<View style={{height: 10}}/>}
                         indicatorStyle="white"
