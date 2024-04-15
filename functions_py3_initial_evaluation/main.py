@@ -129,7 +129,7 @@ def train_evaluate_model(request):
     elif (models[0]["model"] == "Support Vector Machine"):
         # Support Vector Machine
         from sklearn.svm import SVC
-        model = SVC(random_state=1, kernel=models[0]["kernel"], C=models[0]["C"], probability=True)
+        model = SVC(random_state=1, kernel="linear", C=models[0]["C"], probability=True)
 
     # Evaluation: predict past matches
     def predict_with_confidence(train, test, predictors, confidence):
