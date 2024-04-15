@@ -27,6 +27,12 @@ def train_evaluate_model(request):
     url=str(request).replace("%3D", "=").replace("%3F", "?")
     id = url.split("=")[1].split("\'")[0]
     print("model_id:", id)
+    
+    # download model inputs from Firestore
+    doc_ref = db.collection("ml_models").document(id)
+    doc = doc_ref.get()
+    model_inputs = doc.to_dict()
+    print("model_inputs:", model_inputs)
 
     # Read the CSV files from firebase storage
     past_matches_df = pd.read_csv('gs://kickinsights-ccc1e.appspot.com/past_matches.csv')
@@ -45,7 +51,7 @@ def train_evaluate_model(request):
     print("total:", len(past_matches_df)-2279 + len(future_matches_df))  # should be 380
 
     # all user inputs are contained here
-    model_id = "1712583980043_5"
+    model_id = model_inputs["id"]
     train_seasons = ["2017", "2018", "2019", "2020", "2021", "2022", "2023"]
     model = "random_forest"
     n_estimators = 100
