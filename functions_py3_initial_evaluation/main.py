@@ -118,7 +118,10 @@ def train_evaluate_model(request):
         # Logistic Regression
         from sklearn.linear_model import LogisticRegression
         model = LogisticRegression(random_state=1, solver=models[0]["solver"], max_iter=models[0]["max_iter"])
-
+    elif (models[0]["model"] == "Naive Bayes"):
+        # Naive Bayes
+        from sklearn.naive_bayes import GaussianNB
+        model = GaussianNB()
 
     # Evaluation: predict past matches
     def predict_with_confidence(train, test, predictors, confidence):
@@ -283,6 +286,13 @@ def train_evaluate_model(request):
         feat_importances = pd.Series(importance)
         feature_importance_plot = plt.figure()
         feat_importances.plot(kind='barh', figsize=(6, 3))
+        plt.yticks(range(len(predictor_columns)), e_train_df[predictor_columns].columns)
+        feature_importance_plot.show()
+    elif (models[0]["model"] == "Naive Bayes"):
+        # plot feature occurrence, with the following code, note that GaussianNB does not have feature_count
+        feature_importance_plot = plt.figure()
+        feature_occurrence = e_train_df[predictor_columns].sum()
+        feature_occurrence.plot(kind='barh', figsize=(6, 3))
         plt.yticks(range(len(predictor_columns)), e_train_df[predictor_columns].columns)
         feature_importance_plot.show()
         
