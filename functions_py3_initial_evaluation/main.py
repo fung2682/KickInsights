@@ -32,7 +32,6 @@ def train_evaluate_model(request):
     doc_ref = db.collection("ml_models").document(id)
     doc = doc_ref.get()
     model_inputs = doc.to_dict()
-    print("model_inputs:", model_inputs)
 
     # Read the CSV files from firebase storage
     past_matches_df = pd.read_csv('gs://kickinsights-ccc1e.appspot.com/past_matches.csv')
@@ -53,9 +52,7 @@ def train_evaluate_model(request):
     # all user inputs are contained here
     model_id = model_inputs["id"]
     train_seasons = model_inputs["i_seasons"]
-    model = "random_forest"
-    n_estimators = 100
-    min_samples_split = 5
+    models = model_inputs["i_models"]
     predictor_columns = [
         "agg_home_score",
         "agg_away_score",
@@ -74,7 +71,7 @@ def train_evaluate_model(request):
     ]
     print("model_id:", model_id)
     print("train_seasons:", train_seasons)
-    
+    print("models:", models)
 
     # select training seasons according to user input
     e_train_df = pd.DataFrame() # for evaluation, wont include 2023
@@ -109,22 +106,26 @@ def train_evaluate_model(request):
     print("p_train_df: ", len(p_train_df))
     print("test_df: ", len(test_df))
 
-    # Random Forest Classifier
-    from sklearn.ensemble import RandomForestClassifier
-    rf = RandomForestClassifier(n_estimators =  n_estimators, min_samples_split = min_samples_split, random_state=None) # random_state=None will make the results random
-    summary_columns = ["refDate", "matchRef", "home", "home_score", "away_score", "away", "home_result"]
-
+    # Training the model
     print("Step 2: Model training started")
+    summary_columns = ["refDate", "matchRef", "home", "home_score", "away_score", "away", "home_result"]
+    
+    if (models[0]["model"] == "Random Forest"):
+        # Random Forest Classifier
+        from sklearn.ensemble import RandomForestClassifier
+        model = RandomForestClassifier(n_estimators =  models[0]["trees"], random_state=1)
+    
+
 
     # Evaluation: predict past matches
     def predict_with_confidence(train, test, predictors, confidence):
-        rf.fit(train[predictors], train["home_result"])
-        predictions = rf.predict(test[predictors])
+        model.fit(train[predictors], train["home_result"])
+        predictions = model.predict(test[predictors])
 
         results = pd.DataFrame(dict(actual=test["home_result"], predicted=predictions), index=test.index) # column "actual" = actual result, column "predicted" = predicted result
         results = results.merge(test, left_index=True, right_index=True)
 
-        predictions_rf_proba = rf.predict_proba(test[predictor_columns])
+        predictions_rf_proba = model.predict_proba(test[predictor_columns])
         predictions_rf_proba = pd.DataFrame(predictions_rf_proba, columns=["lose", "draw", "win"], index=test.index)
         merged = pd.concat([results, predictions_rf_proba], axis=1)
         results_confidence = merged[summary_columns + ["predicted", "win", "draw", "lose"]]
@@ -166,13 +167,13 @@ def train_evaluate_model(request):
     # Prediction: predict future matches
     prediction_results = {}
     def make_future_predictions(train, test, predictors):
-        rf.fit(train[predictors], train["home_result"])
-        predictions = rf.predict(test[predictors])
-        predictions_rf_proba = rf.predict_proba(test[predictor_columns])
+        model.fit(train[predictors], train["home_result"])
+        predictions = model.predict(test[predictors])
+        predictions_rf_proba = model.predict_proba(test[predictor_columns])
         results = pd.DataFrame(dict(predicted=predictions), index=test.index) # column "actual" = actual result, column "predicted" = predicted result
         results = results.merge(test, left_index=True, right_index=True)
 
-        predictions_rf_proba = rf.predict_proba(test[predictor_columns])
+        predictions_rf_proba = model.predict_proba(test[predictor_columns])
         predictions_rf_proba = pd.DataFrame(predictions_rf_proba, columns=["lose", "draw", "win"], index=test.index)
         merged = pd.concat([results, predictions_rf_proba], axis=1)
         results_confidence = merged[["refDate", "home", "away", "predicted", "win", "draw", "lose"]]
@@ -263,7 +264,7 @@ def train_evaluate_model(request):
     bucket = storage.bucket()
 
     # feature importance plot
-    importances = rf.feature_importances_
+    importances = model.feature_importances_
     indices = np.argsort(importances)[::-1]
     feature_importance_plot = plt.figure()
     plt.bar(range(e_train_df[predictor_columns].shape[1]), importances[indices], align="center")
@@ -336,4 +337,4 @@ def train_evaluate_model(request):
 
     return "Firestore updated with id: " + id
 
-train_evaluate_model("<Request 'http://asia-east2-kickinsights-ccc1e.cloudfunctions.net/id%3D1713116562953_0' [GET]>")
+train_evaluate_model("<Request 'http://asia-east2-kickinsights-ccc1e.cloudfunctions.net/id%3D1713182830182_2' [GET]>")
