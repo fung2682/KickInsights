@@ -79,6 +79,7 @@ const PredictionCreateModel = ({userState, page, setPage}) => {
         setEResult={setEResult}
         prediction_result={p_result}
         setPResult={setPResult}
+        id={modelInput.id}
       >
       </ModelEvaluation>);
   } else if (page === "save") {

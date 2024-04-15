@@ -6,7 +6,7 @@ import { downloadModelPlots, downloadDefaultPlots } from "../../firebase/storage
 import DropDownPicker from 'react-native-dropdown-picker';
 import { ActivityIndicator } from "react-native";
 
-const ModelEvaluation = ({setPage, confidence, setConfidence, dplots, setDplots, mplots, setMplots, e_result, setEResult, p_result, setPResult}) => {
+const ModelEvaluation = ({setPage, confidence, setConfidence, dplots, setDplots, mplots, setMplots, e_result, setEResult, p_result, setPResult, id}) => {
 
   const [modelMetrics, setModelMetrics] = useState({
     "0.3": {"Accuracy": "loading...", "Precision": "loading...", "F1 Score": "loading...", "Matches Predicted": "loading..."},
@@ -37,7 +37,7 @@ const ModelEvaluation = ({setPage, confidence, setConfidence, dplots, setDplots,
   const [featureImageSize, setFeatureImageSize] = useState({width: 295, height: 235});
 
   useEffect(() => {
-    getData("ml_models", "1712583980043_5").then((doc) => {
+    getData("ml_models", id).then((doc) => {
       setModelMetrics(doc.metrics)
       let availableConfidence = Object.keys(doc.metrics).filter((key) => doc.metrics[key]["Matches Predicted"] !== 0);
       availableConfidence.sort((a, b) => parseFloat(b) - parseFloat(a));
@@ -51,7 +51,7 @@ const ModelEvaluation = ({setPage, confidence, setConfidence, dplots, setDplots,
 
   useEffect(() => {
     if (defaultPlots === undefined) {
-      downloadDefaultPlots("1712583980043_5").then((urls) => {
+      downloadDefaultPlots(id).then((urls) => {
         setDefaultPlots(urls);
       });
     }
@@ -59,7 +59,7 @@ const ModelEvaluation = ({setPage, confidence, setConfidence, dplots, setDplots,
 
   useEffect(() => {
     if (modelPlots === undefined) {
-      downloadModelPlots("1712583980043_5").then((urls) => {
+      downloadModelPlots(id).then((urls) => {
         setModelPlots(urls);
       });
     }

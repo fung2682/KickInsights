@@ -3,22 +3,34 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { setData } from "../../firebase/firestore";
 
 const create_and_train_model = async (modelInput) => {
-  console.log("Received Model Input: ", modelInput);
-  console.log("Submitted model with ID: ", modelInput.id);
+  console.log("[2] Received model input: ", modelInput);
 
-  await setData("ml_models", modelInput.id, {
-      id: modelInput.id,
-      publisher: modelInput.publisher,
-      published: false,
-      model_name: "", // to be filled later
-      // accuracy: 59.5,
-      // algorithms: ["Neural Network"],
-      // aspects: ["Home&Away", "H2H"],
-      // date: Date.now(),   // timestamp
-      // dislikes: 0,
-      // likes: 0,
-      i_seasons: modelInput.i_seasons,
-  });
+  try {
+    await setData("ml_models", modelInput.id, {
+        id: modelInput.id,
+        publisher: modelInput.publisher,
+        published: false,
+        model_name: "", // to be filled later
+        // accuracy: 59.5,
+        // algorithms: ["Neural Network"],
+        // aspects: ["Home&Away", "H2H"],
+        // date: Date.now(),   // timestamp
+        // dislikes: 0,
+        // likes: 0,
+        i_seasons: modelInput.i_seasons,
+    });
+    console.log("[3] Submitted model with ID: ", modelInput.id);
+  } catch (error) {
+    console.error("Error creating model: ", error);
+  }
+
+  // send a http get request with the id, cloud run will train the model and update the firestore
+  try {
+    const return_msg = await fetch("https://asia-east2-kickinsights-ccc1e.cloudfunctions.net/train_evaluate_model/id=" + modelInput.id)
+    console.log("[4] HTTP response status: " + return_msg.status);
+  } catch (error) {
+    console.error("Error training model: ", error);
+  }
 
 }
 
@@ -83,7 +95,7 @@ const ModelLayout = ({setPage, header, button1, button2, button3, button4, conte
     button4Function === null ? setButton4ActiveOpacity(0) : setButton4ActiveOpacity(0.8);
   }, [button1Function, button2Function, button3Function, button4Function]);
 
-  function run_function(func) {
+  async function run_function(func) {
     if (func === "dataReset") {
       console.log("reset");
     } else if (func === "dataNext") {
@@ -91,7 +103,9 @@ const ModelLayout = ({setPage, header, button1, button2, button3, button4, conte
     } else if (func === "modelReset") {
       console.log("reset");
     } else if (func === "modelNext") {
-      create_and_train_model(modelInput);
+      console.log("[1] Started model creation")
+      await create_and_train_model(modelInput);
+      console.log("[5] Model created and trained");
       setPage("evaluation");
     } else if (func === "modelPrevious") {
       setPage("data");
