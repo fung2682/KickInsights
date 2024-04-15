@@ -113,11 +113,11 @@ def train_evaluate_model(request):
     if (models[0]["model"] == "Random Forest"):
         # Random Forest Classifier
         from sklearn.ensemble import RandomForestClassifier
-        model = RandomForestClassifier(n_estimators =  models[0]["trees"], random_state=1)
+        model = RandomForestClassifier(random_state=1, n_estimators =  models[0]["trees"])
     elif (models[0]["model"] == "Logistic Regression"):
         # Logistic Regression
         from sklearn.linear_model import LogisticRegression
-        model = LogisticRegression(random_state=1)
+        model = LogisticRegression(random_state=1, solver=models[0]["solver"], max_iter=models[0]["max_iter"])
 
 
     # Evaluation: predict past matches
@@ -349,4 +349,4 @@ def train_evaluate_model(request):
 
     return "Firestore updated with id: " + id
 
-train_evaluate_model("<Request 'http://asia-east2-kickinsights-ccc1e.cloudfunctions.net/id%3D1713182830182_2' [GET]>")
+train_evaluate_model("<Request 'http://asia-east2-kickinsights-ccc1e.cloudfunctions.net/id%3D1713191762364_1' [GET]>")
