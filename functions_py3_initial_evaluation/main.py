@@ -130,6 +130,10 @@ def train_evaluate_model(request):
         # Support Vector Machine
         from sklearn.svm import SVC
         model = SVC(random_state=1, kernel="linear", C=models[0]["C"], probability=True)
+    elif (models[0]["model"] == "Neural Network"):
+        # Neural Network
+        from sklearn.neural_network import MLPClassifier
+        model = MLPClassifier(random_state=1, hidden_layer_sizes=models[0]["hidden_layer_sizes"], max_iter=models[0]["max_iter"])
 
     # Evaluation: predict past matches
     def predict_with_confidence(train, test, predictors, confidence):
@@ -297,7 +301,7 @@ def train_evaluate_model(request):
         feat_importances.plot(kind='barh', figsize=(6, 3))
         plt.yticks(range(len(predictor_columns)), e_train_df[predictor_columns].columns)
         feature_importance_plot.show()
-    elif ((models[0]["model"] == "Naive Bayes") or (models[0]["model"] == "K-Nearest Neighbors")):
+    elif ((models[0]["model"] == "Naive Bayes") or (models[0]["model"] == "K-Nearest Neighbors") or (models[0]["model"] == "Neural Network")):
         feature_importance_plot = plt.figure()
         feature_occurrence = e_train_df[predictor_columns].sum()
         feature_occurrence.plot(kind='barh', figsize=(6, 3))
