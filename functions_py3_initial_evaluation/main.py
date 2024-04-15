@@ -278,11 +278,6 @@ def train_evaluate_model(request):
         plt.gcf().set_size_inches(6, 3)
         # plt.gcf().subplots_adjust(bottom=3, top=5)
         feature_importance_plot.show()
-
-        feature_importance_plot.savefig("feature_importance.png", bbox_inches="tight")
-        blob = bucket.blob(f"models/{model_id}/feature_importance.png")
-        blob.upload_from_filename("feature_importance.png")
-        blob.make_public()
     elif (models[0]["model"] == "Logistic Regression"):
         importance = model.coef_[0]
         feat_importances = pd.Series(importance)
@@ -291,10 +286,10 @@ def train_evaluate_model(request):
         plt.yticks(range(len(predictor_columns)), e_train_df[predictor_columns].columns)
         feature_importance_plot.show()
         
-        feature_importance_plot.savefig("feature_importance.png", bbox_inches="tight")
-        blob = bucket.blob(f"models/{model_id}/feature_importance.png")
-        blob.upload_from_filename("feature_importance.png")
-        blob.make_public()
+    feature_importance_plot.savefig("feature_importance.png", bbox_inches="tight")
+    blob = bucket.blob(f"models/{model_id}/feature_importance.png")
+    blob.upload_from_filename("feature_importance.png")
+    blob.make_public()
         
 
     print("Step 6: Feature importance plot uploaded to Firebase Storage")
