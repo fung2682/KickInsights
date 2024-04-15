@@ -52,7 +52,7 @@ def train_evaluate_model(request):
 
     # all user inputs are contained here
     model_id = model_inputs["id"]
-    train_seasons = ["2017", "2018", "2019", "2020", "2021", "2022", "2023"]
+    train_seasons = model_inputs["i_seasons"]
     model = "random_forest"
     n_estimators = 100
     min_samples_split = 5
@@ -72,6 +72,9 @@ def train_evaluate_model(request):
         "ra3_home_corners",
         "ra5_home_corners",
     ]
+    print("model_id:", model_id)
+    print("train_seasons:", train_seasons)
+    
 
     # select training seasons according to user input
     e_train_df = pd.DataFrame() # for evaluation, wont include 2023
