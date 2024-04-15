@@ -61,12 +61,10 @@ const getClubs = async () => {
 
 const getModels = async () => {
     const models_array = [];
-    const q = query(collection(db, "ml_models"));
+    const q = query(collection(db, "ml_models_published"));
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
-        if (doc.data().published === true) {
-            models_array.push(doc.data());
-        }
+        models_array.push(doc.data());
     });
     console.log("Loaded: models")
     return models_array;
@@ -74,23 +72,23 @@ const getModels = async () => {
 
 const rate_model = async (model_id, type) => {
     if (type === "like") {
-        const model = await getData("ml_models", model_id);
-        await updateData("ml_models", model_id, {likes: model.likes + 1});
+        const model = await getData("ml_models_published", model_id);
+        await updateData("ml_models_published", model_id, {likes: model.likes + 1});
     } else if (type === "cancel like") {
-        const model = await getData("ml_models", model_id);
-        await updateData("ml_models", model_id, {likes: model.likes - 1});
+        const model = await getData("ml_models_published", model_id);
+        await updateData("ml_models_published", model_id, {likes: model.likes - 1});
     } else if (type === "dislike to like") {
-        const model = await getData("ml_models", model_id);
-        await updateData("ml_models", model_id, {dislikes: model.dislikes - 1, likes: model.likes + 1});
+        const model = await getData("ml_models_published", model_id);
+        await updateData("ml_models_published", model_id, {dislikes: model.dislikes - 1, likes: model.likes + 1});
     } else if (type === "dislike") {
-        const model = await getData("ml_models", model_id);
-        await updateData("ml_models", model_id, {dislikes: model.dislikes + 1});
+        const model = await getData("ml_models_published", model_id);
+        await updateData("ml_models_published", model_id, {dislikes: model.dislikes + 1});
     } else if (type === "cancel dislike") {
-        const model = await getData("ml_models", model_id);
-        await updateData("ml_models", model_id, {dislikes: model.dislikes - 1});
+        const model = await getData("ml_models_published", model_id);
+        await updateData("ml_models_published", model_id, {dislikes: model.dislikes - 1});
     } else if (type === "like to dislike") {
-        const model = await getData("ml_models", model_id);
-        await updateData("ml_models", model_id, {likes: model.likes - 1, dislikes: model.dislikes + 1});
+        const model = await getData("ml_models_published", model_id);
+        await updateData("ml_models_published", model_id, {likes: model.likes - 1, dislikes: model.dislikes + 1});
     }
 }
 

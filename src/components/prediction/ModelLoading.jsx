@@ -13,7 +13,7 @@ const ModelLoading = ({modelInput, setPage}) => {
       await setData("ml_models", modelInput.id, {
           id: modelInput.id,
           publisher: modelInput.publisher,
-          published: false,
+          published: modelInput.published,
           model_name: "", // to be filled later
           // accuracy: 59.5,
           // algorithms: ["Neural Network"],
@@ -64,7 +64,7 @@ const ModelLoading = ({modelInput, setPage}) => {
       setProgressText("[4/5] Training the model");
     }, 5000);
     setTimeout(() => {
-      setProgressText("[5/5] Fetching evaluation results");
+      setProgressText("[5/5] Generation evaluation results");
     }, 10000);
   }
   , []);

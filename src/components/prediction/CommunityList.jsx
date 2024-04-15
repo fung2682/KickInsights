@@ -166,16 +166,26 @@ const CommunityList = ({nav, user}) => {
 
     const [modelUser, setModelUser] = useState(null);
     const [refreshing, setRefreshing] = useState(false);
-    const [models, setModels] = useState(dataModels);
+    const [models, setModels] = useState([]);
     const [modelDisplay, setModelDisplay] = useState([...models]);
 
     useEffect(() => {
         setModelUser(user);
     }, [user]);
 
+    const fetchPublishedModel = async() => {
+        let fetchedModel = await getModels();
+        fetchedModel = fetchedModel.filter(model => model.published === true);
+        setModels(fetchedModel);
+    }
+
+    useEffect(() => {
+        fetchPublishedModel();
+    }, []);
+
     const onRefresh = async() => {
         setRefreshing(true);
-        setModels(await getModels());
+        await fetchPublishedModel();
         if (user !== null) {
             setModelUser(await getData("users", user.email));
         }

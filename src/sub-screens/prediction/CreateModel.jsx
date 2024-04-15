@@ -5,14 +5,25 @@ import ModelTraining from "../../components/prediction/ModelTraining";
 import ModelEvaluation from "../../components/prediction/ModelEvaluation";
 import ModelLoading from "../../components/prediction/ModelLoading";
 import { useNavigation } from '@react-navigation/native';
+import { getData, updateData, setData } from "../../firebase/firestore";
 
 const PredictionCreateModel = ({userState, page, setPage}) => {
+
+  const user_email = userState.route.params.user.email;
+  const [user_saved, setUserSaved] = useState();
+
+  useEffect(() => {
+    getData("users", user_email).then((doc) => {
+      setUserSaved(doc.saved);
+    });
+  }, []);
 
   var model_id = (new Date()).getTime().toString() + '_' + Math.floor(Math.random() * 10).toString();    // unique id
 
   const [modelInput, setModelInput] = useState({
     "id": model_id,
     "publisher": userState.route.params.user.username,
+    "published": false,
     "seasons": [false, false, false, false, false, false, false, false],
     "i_seasons": [],
   });
@@ -90,13 +101,16 @@ const PredictionCreateModel = ({userState, page, setPage}) => {
         <TextInput 
           style={styles.textInput} 
           placeholder="Enter model name" 
-          onChangeText={(text) => setModelInput({...modelInput, model_name: text})}
+          onChangeText={(text) => setModelInput({...modelInput, model_name: text, accuracy: 0, algorithms: ["rf"], aspects: ["a", "b"]})} // temporary
         ></TextInput>
         <View style={styles.buttonContainer}>
           <TouchableOpacity 
             style={styles.saveButton} 
             onPress={() => {
               if (inputValid(modelInput)) {
+                updateData("ml_models", modelInput.id, {...modelInput, published: false, date: Date.now(), dislikes: 0, likes: 0});
+                setData("ml_models_published", modelInput.id, {...modelInput, published: false, date: Date.now(), dislikes: 0, likes: 0});
+                updateData("users", user_email, {saved: user_saved.concat(modelInput.id)});
                 setPage("data");
                 nav.navigate("SAVED");
               }
@@ -108,6 +122,9 @@ const PredictionCreateModel = ({userState, page, setPage}) => {
             style={styles.savePublishButton}
             onPress={() => {
               if (inputValid(modelInput)) {
+                updateData("ml_models", modelInput.id, {...modelInput, published: true, date: Date.now(), dislikes: 0, likes: 0});
+                setData("ml_models_published", modelInput.id, {...modelInput, published: true, date: Date.now(), dislikes: 0, likes: 0});
+                updateData("users", user_email, {saved: user_saved.concat(modelInput.id)});
                 setPage("data");
                 nav.navigate("COMMUNITY");
               }
