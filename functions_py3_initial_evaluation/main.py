@@ -130,10 +130,10 @@ def train_evaluate_model(request):
         # Support Vector Machine
         from sklearn.svm import SVC
         model = SVC(random_state=1, kernel="linear", C=models[0]["C"], probability=True)
-    elif (models[0]["model"] == "Neural Network"):
-        # Neural Network
-        from sklearn.neural_network import MLPClassifier
-        model = MLPClassifier(random_state=1, hidden_layer_sizes=models[0]["hidden_layer_sizes"], max_iter=models[0]["max_iter"])
+    elif (models[0]["model"] == "AdaBoost"):
+        # AdaBoost
+        from sklearn.ensemble import AdaBoostClassifier
+        model = AdaBoostClassifier(random_state=1, n_estimators=models[0]["n_estimators"], learning_rate=models[0]["learning_rate"])
 
     # Evaluation: predict past matches
     def predict_with_confidence(train, test, predictors, confidence):
@@ -282,7 +282,7 @@ def train_evaluate_model(request):
     bucket = storage.bucket()
 
     # feature importance plot
-    if (models[0]["model"] == "Random Forest"):
+    if ((models[0]["model"] == "Random Forest") or (models[0]["model"] == "AdaBoost")):
         importances = model.feature_importances_
         indices = np.argsort(importances)[::-1]
         feature_importance_plot = plt.figure()
@@ -301,7 +301,7 @@ def train_evaluate_model(request):
         feat_importances.plot(kind='barh', figsize=(6, 3))
         plt.yticks(range(len(predictor_columns)), e_train_df[predictor_columns].columns)
         feature_importance_plot.show()
-    elif ((models[0]["model"] == "Naive Bayes") or (models[0]["model"] == "K-Nearest Neighbors") or (models[0]["model"] == "Neural Network")):
+    elif ((models[0]["model"] == "Naive Bayes") or (models[0]["model"] == "K-Nearest Neighbors")):
         feature_importance_plot = plt.figure()
         feature_occurrence = e_train_df[predictor_columns].sum()
         feature_occurrence.plot(kind='barh', figsize=(6, 3))
