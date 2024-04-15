@@ -211,7 +211,7 @@ const CommunityList = ({nav, user}) => {
 
     return (
         <View style={styles.container}>
-            <HeaderFilters models={models} setModelDisplay={setModelDisplay} setSortFilter={setSortFilter} setMetricFilter={setMetricFilter} setConfidenceFilter={setConfidenceFilter}/>
+            <HeaderFilters models={models} setModelDisplay={setModelDisplay} metricFilter={metricFilter} setMetricFilter={setMetricFilter} confidenceFilter={confidenceFilter} setConfidenceFilter={setConfidenceFilter}/>
             <FlatList 
                 style={styles.list}
                 data={modelDisplay}

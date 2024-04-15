@@ -2,14 +2,14 @@ import React, {useState, useEffect} from "react";
 import { View, Text, StyleSheet, FlatList, RefreshControl, TouchableOpacity } from "react-native";
 import DropDownPicker from 'react-native-dropdown-picker';
 
-const HeaderFilters = ({models, setModelDisplay, setSortFilter, setMetricFilter, setConfidenceFilter}) => {
+const HeaderFilters = ({models, setModelDisplay, metricFilter, setMetricFilter, confidenceFilter, setConfidenceFilter}) => {
 
   const [sortFilterOpen, setSortFilterOpen] = useState(false);
-  const [sortFilterValues, setSortFilterValues] = useState("ALL");     // default value "ALL
+  const [sortFilterValues, setSortFilterValues] = useState();
   const [sortFilterItems, setSortFilterItems] = useState([
-      {label: "Newest", value: "newest"},
-      {label: "Accuracy", value: "accuracy"},
-      {label: "Likes", value: "likes"},
+      {label: "Most Recent", value: "Most Recent"},
+      {label: "Performance", value: "Performance"},
+      {label: "Likes", value: "Likes"},
   ]);
 
   const [metricFilterOpen, setMetricFilterOpen] = useState(false);
@@ -40,16 +40,18 @@ const HeaderFilters = ({models, setModelDisplay, setSortFilter, setMetricFilter,
   ]);
 
   useEffect(() => {
-    if (sortFilterValues === "newest") {
+    if ((sortFilterValues === undefined) || (sortFilterValues === "Most Recent")) {
         setModelDisplay([...models].sort((a, b) => new Date(b.date) - new Date(a.date)));
-    } else if (sortFilterValues === "accuracy") {
-        setModelDisplay([...models].sort((a, b) => b.accuracy - a.accuracy));
-    } else if (sortFilterValues === "likes") {
+    } else if (sortFilterValues === "Performance") {
+        let tempConfidence = confidenceFilterValues;
+        if (tempConfidence === undefined) {
+          tempConfidence = 0.5;
+        }
+        setModelDisplay([...models].sort((a, b) => b["metrics"][tempConfidence][metricFilterValues] - a["metrics"][tempConfidence][metricFilterValues]));
+    } else if (sortFilterValues === "Likes") {
         setModelDisplay([...models].sort((a, b) => b.likes - a.likes));
-    } else {
-        setModelDisplay([...models]);
     }
-  }, [sortFilterValues, models]);
+  }, [sortFilterValues, models, metricFilter, confidenceFilter]);
 
   useEffect(() => {
     setMetricFilter(metricFilterValues);
@@ -162,7 +164,7 @@ const styles = StyleSheet.create({
   },
   filterTextStyle: {
       fontWeight: "bold",
-      fontSize: 12.9,
+      fontSize: 10.9,
   },
 });
 

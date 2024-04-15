@@ -47,7 +47,7 @@ const SavedList = ({nav, user}) => {
                 </View>
                 :
                 <>
-                    <HeaderFilters models={savedModels} setModelDisplay={setModelDisplay} setSortFilter={setSortFilter} setMetricFilter={setMetricFilter} setConfidenceFilter={setConfidenceFilter} />
+                    <HeaderFilters models={savedModels} setModelDisplay={setModelDisplay} metricFilter={metricFilter} setMetricFilter={setMetricFilter} confidenceFilter={confidenceFilter} setConfidenceFilter={setConfidenceFilter} />
                     <FlatList 
                         style={styles.list}
                         data={modelDisplay}

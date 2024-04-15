@@ -10,8 +10,6 @@ const Stack = createNativeStackNavigator();
 
 const Prediction = () => {
 
-    const [page, setPage] = useState("data");   // for create model page
-
     return (
         <Stack.Navigator
             screenOptions={{
@@ -42,7 +40,7 @@ const Prediction = () => {
                 {(user) => <Account userState={user} />}
             </Stack.Screen>
             <Stack.Screen name="PredictionCreateModel" options={{ headerTitle: 'Create Model'}}>
-                {(user) => <PredictionCreateModel userState={user} page={page} setPage={setPage} />}
+                {(user) => <PredictionCreateModel userState={user} />}
             </Stack.Screen>
             <Stack.Screen name="PredictionMatchList" 
                 options={({route}) => ({ headerTitle: `Confidence ( >${route.params.confidence} )`})}>

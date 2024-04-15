@@ -7,7 +7,9 @@ import ModelLoading from "../../components/prediction/ModelLoading";
 import { useNavigation } from '@react-navigation/native';
 import { getData, updateData, setData } from "../../firebase/firestore";
 
-const PredictionCreateModel = ({userState, page, setPage}) => {
+const PredictionCreateModel = ({userState}) => {
+
+  const [page, setPage] = useState("data");
 
   const user_email = userState.route.params.user.email;
   const [user_saved, setUserSaved] = useState();
@@ -101,14 +103,14 @@ const PredictionCreateModel = ({userState, page, setPage}) => {
         <TextInput 
           style={styles.textInput} 
           placeholder="Enter model name" 
-          onChangeText={(text) => setModelInput({...modelInput, model_name: text, accuracy: 0, algorithms: ["rf"], aspects: ["a", "b"]})} // temporary
+          onChangeText={(text) => setModelInput({...modelInput, model_name: text, algorithms: ["rf"], aspects: ["a", "b"]})} // temporary
         ></TextInput>
         <View style={styles.buttonContainer}>
           <TouchableOpacity 
             style={styles.saveButton} 
             onPress={() => {
               if (inputValid(modelInput)) {
-                updateData("ml_models", modelInput.id, {...modelInput, published: false, date: Date.now(), dislikes: 0, likes: 0});
+                updateData("ml_models", modelInput.id, {...modelInput, published: false, date: Date.now()});
                 updateData("ml_models_published", modelInput.id, {...modelInput, published: false, date: Date.now(), dislikes: 0, likes: 0});
                 updateData("users", user_email, {saved: user_saved.concat(modelInput.id)});
                 setPage("data");
@@ -122,7 +124,7 @@ const PredictionCreateModel = ({userState, page, setPage}) => {
             style={styles.savePublishButton}
             onPress={() => {
               if (inputValid(modelInput)) {
-                updateData("ml_models", modelInput.id, {...modelInput, published: true, date: Date.now(), dislikes: 0, likes: 0});
+                updateData("ml_models", modelInput.id, {...modelInput, published: true, date: Date.now()});
                 updateData("ml_models_published", modelInput.id, {...modelInput, published: true, date: Date.now(), dislikes: 0, likes: 0});
                 updateData("users", user_email, {saved: user_saved.concat(modelInput.id)});
                 setPage("data");
