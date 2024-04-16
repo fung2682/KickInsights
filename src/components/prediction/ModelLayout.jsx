@@ -2,7 +2,7 @@ import React, {useState, useEffect} from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { setData } from "../../firebase/firestore";
 
-const ModelLayout = ({setPage, header, button1, button2, button3, button4, content, setModelChecked, setLogisticRegressionValues, setAdaBoostValues, setRfValues, setLrValues, setKnnValues, setABValues, setSvmValues}) => {
+const ModelLayout = ({setPage, header, button1, button2, button3, button4, content, modelChecked, setModelChecked, setLogisticRegressionValues, setAdaBoostValues, setRfValues, setLrValues, setKnnValues, setABValues, setSvmValues}) => {
 
   const [header1Color, setHeader1Color] = useState(["#bababa", "#272727"]);
   const [header2Color, setHeader2Color] = useState(["#272727", "white"]);
@@ -88,7 +88,15 @@ const ModelLayout = ({setPage, header, button1, button2, button3, button4, conte
       setABValues(30);
       setSvmValues(1);
     } else if (func === "modelNext") {
-      setPage("loading");
+      if (modelChecked.filter(model => model.used).length === 0) {
+        alert("Please select at least one model.");
+      } else if (modelChecked[1].used && modelChecked[1].solver === null) {
+        alert("Please select a solver for Logistic Regression.");
+      } else if (modelChecked[4].used && modelChecked[4].learning_rate === null) {
+        alert("Please select a learning rate for AdaBoost.");
+      } else {
+        setPage("loading");
+      }
     } else if (func === "modelPrevious") {
       setPage("data");
     } else if (func === "evaluationPrevious") {
