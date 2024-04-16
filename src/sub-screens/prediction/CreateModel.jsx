@@ -124,7 +124,8 @@ const PredictionCreateModel = ({userState}) => {
         <TextInput 
           style={styles.textInput} 
           placeholder="Enter model name" 
-          onChangeText={(text) => setModelInput({...modelInput, model_name: text, algorithms: ["rf"], aspects: ["a", "b"]})} // temporary
+          // for algorithms, if there is only one model selected, use the first model and the first statistic, otherwise use the first two models
+          onChangeText={(text) => setModelInput({...modelInput, model_name: text, algorithms: [modelInput.i_models[0].model, modelInput.i_models.length > 1 ? modelInput.i_models[1].model : modelInput.statistics[0]]})}
         ></TextInput>
         <View style={styles.buttonContainer}>
           <TouchableOpacity 

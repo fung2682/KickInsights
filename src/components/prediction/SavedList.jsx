@@ -34,9 +34,7 @@ const SavedList = ({nav, user}) => {
         }
         setModels(tempModels);
         setModelUser(tempUser);
-        setTimeout(async () => {
-          setRefreshing(false);
-        }, 500);    // to smooth out the refresh animation
+        setRefreshing(false);
     }
 
     return (

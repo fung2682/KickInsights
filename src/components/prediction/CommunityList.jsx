@@ -52,7 +52,7 @@ export const Model_ML = ({model, nav, user, setModelUser, allowRating, metric, c
             <View style={[styles.modelDetails, {backgroundColor: `transparent`}]}>
                 <Text style={styles.modelName} numberOfLines={1}>{model.model_name}</Text>
                 <Text style={[styles.description, {marginTop: 17}]} numberOfLines={1}>{model.algorithms[0]}, {model.algorithms[1]}</Text>
-                <Text style={[styles.description, {marginTop: 2}]} numberOfLines={1}>{model.aspects[0]}, {model.aspects[1]}</Text>                
+                <Text style={[styles.description, {marginTop: 2}]} numberOfLines={1}>{`Publisher: ${model.publisher}`}</Text>  
             </View>
             <View style={styles.modelResults}>
                 <View style={styles.triangle}></View>
@@ -204,9 +204,7 @@ const CommunityList = ({nav, user}) => {
         if (user !== null) {
             setModelUser(await getData("users", user.email));
         }
-        setTimeout(() => {
-          setRefreshing(false);
-        }, 500);    // to smooth out the refresh animation
+        setRefreshing(false);
     }
 
     return (
