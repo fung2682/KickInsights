@@ -95,7 +95,7 @@ const ModelEvaluation = ({setPage, confidence, setConfidence, dplots, setDplots,
 
   const content = 
   <ScrollView style={styles.formContainer} contentContainerStyle={{alignItems: "center"}}>
-    <View style={[styles.subContainer]}>
+    <View style={[styles.subContainer, {zIndex: 10}]}>
     <DropDownPicker
         open={confidenceFilterOpen}
         value={confidenceFilterValues}
@@ -284,7 +284,7 @@ const styles = StyleSheet.create({
       marginBottom: 8,
   },
   dropDownContainerStyle: {
-      height: 98,
+      height: 200,
       backgroundColor: 'rgba(39, 39, 39, 1.0)',
       borderColor: "grey",
       borderWidth: 1,

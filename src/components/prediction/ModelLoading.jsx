@@ -14,13 +14,8 @@ const ModelLoading = ({modelInput, setPage}) => {
           id: modelInput.id,
           publisher: modelInput.publisher,
           published: modelInput.published,
-          model_name: "", // to be filled later
-          // accuracy: 59.5,
-          // algorithms: ["Neural Network"],
-          // aspects: ["Home&Away", "H2H"],
-          // date: Date.now(),   // timestamp
-          // dislikes: 0,
-          // likes: 0,
+          model_name: "",
+          i_models: modelInput.i_models,
           i_seasons: modelInput.i_seasons,
       });
       console.log("[3] Submitted model with ID: ", modelInput.id);
@@ -61,11 +56,11 @@ const ModelLoading = ({modelInput, setPage}) => {
       setProgressText("[3/5] Configuring model parameters");
     }, 2200);
     setTimeout(() => {
-      setProgressText("[4/5] Training the model");
+      setProgressText("[4/5] Preparing evaluation metrics");
     }, 5000);
     setTimeout(() => {
-      setProgressText("[5/5] Generation evaluation results");
-    }, 10000);
+      setProgressText("[5/5] Training the model");
+    }, 6000);
   }
   , []);
 

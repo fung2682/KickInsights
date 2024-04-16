@@ -28,8 +28,19 @@ const PredictionCreateModel = ({userState}) => {
     "published": false,
     "seasons": [false, false, false, false, false, false, false, false],
     "i_seasons": [],
+    "models": [
+      {"used": false, "model": "Random Forest", "trees": 130},                             // [0] Random Forest: default 100 trees, range 10-150, bad: 10, good: 130
+      {"used": false, "model": "Logistic Regression", "solver": "lbfgs", "max_iter": 100}, // [1] Logistic Regression: default 100 iterations, range 10 - 150, solvers: lbfgs, liblinear, sag, saga, newton-cg
+      {"used": false, "model": "Naive Bayes"},                                             // [2] Naive Bayes
+      {"used": false, "model": "K-Nearest Neighbors", "neighbors": 150},                   // [3] K-Nearest Neighbors: default 150 neighbors, range 20-200
+      {"used": false, "model": "Support Vector Machine", "C": 0.1},                        // [4] Support Vector Machine: Regularization Parameter C: 0.1, range: 0.1 - 10
+      {"used": false, "model": "AdaBoost", "n_estimators": 30, "learning_rate": 1}         // [5] AdaBoost: default 30 estimators, range 10-50, learning rate: 1.0, range 0.1-2.0
+    ],
+    "i_models": [],
+
   });
-  // console.log("create page model Input: ", modelInput)
+  console.log("create page models used: ", modelInput.models);
+  console.log("create page i_models used: ", modelInput.i_models);
 
   const [confidence, setConfidence] = useState();
   const [dplots, setDplots] = useState();
@@ -49,6 +60,17 @@ const PredictionCreateModel = ({userState}) => {
     }
     setModelInput({...modelInput, i_seasons: i_seasons});
   }, [modelInput.seasons]);
+
+  // convert boolean in models array to selected models
+  useEffect(() => {
+    var i_models = [];
+    for (var i = 0; i < modelInput.models.length; i++) {
+      if (modelInput.models[i].used) {
+        i_models.push(modelInput.models[i]);  // include both model name and parameters
+      }
+    }
+    setModelInput({...modelInput, i_models: i_models});
+  }, [modelInput.models]);
 
   const inputValid = (modelInput) => {
     if (modelInput.model_name === "") {
