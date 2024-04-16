@@ -4,6 +4,9 @@ import BottomTabs from "./src/components/BottomTabs";
 import LoadingScreen from "./src/screens/Loading";
 import { NavigationContainer } from "@react-navigation/native";
 import fetchCloud, {parts_to_load} from './src/fetchCloud';
+import { LogBox } from 'react-native';
+
+LogBox.ignoreAllLogs();
 
 const App = () => {
 
