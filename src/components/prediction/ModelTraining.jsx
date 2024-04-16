@@ -297,6 +297,7 @@ const ModelTraining = ({setPage, modelInput, setModelInput}) => {
       button3 = {["modelPrevious", '#3a3a3a', 'Previous', false]}
       button4 = {["modelNext", '#1997BF', 'Next', true]}
       content = {content}
+      modelChecked = {modelChecked}
       setModelChecked = {setModelChecked}
       setLogisticRegressionValues = {setLogisticRegressionValues}
       setAdaBoostValues = {setAdaBoostValues}
