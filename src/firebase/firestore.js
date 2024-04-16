@@ -1,5 +1,5 @@
 import { app } from './base';
-import { getFirestore, collection, addDoc, getDoc, getDocs, doc, setDoc, query, updateDoc } from "firebase/firestore";
+import { getFirestore, collection, addDoc, getDoc, getDocs, doc, setDoc, query, updateDoc, deleteDoc } from "firebase/firestore";
 
 const db = getFirestore(app);
 
@@ -92,4 +92,10 @@ const rate_model = async (model_id, type) => {
     }
 }
 
-export { addData, setData, getData, getClubs, updateData, getModels, rate_model };
+const delete_model = async (model_id) => {
+    await deleteDoc(doc(db, "ml_models", model_id));
+    await deleteDoc(doc(db, "ml_models_published", model_id));
+    console.log("Deleted: ", model_id);
+}
+
+export { addData, setData, getData, getClubs, updateData, getModels, rate_model, delete_model };

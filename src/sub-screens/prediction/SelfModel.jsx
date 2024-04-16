@@ -5,13 +5,61 @@ import ModelTraining from "../../components/prediction/ModelTraining";
 import ModelEvaluation from "../../components/prediction/ModelEvaluation";
 import ModelLoading from "../../components/prediction/ModelLoading";
 import { useNavigation } from '@react-navigation/native';
-import { getData, updateData, setData } from "../../firebase/firestore";
+import { getData, updateData, delete_model } from "../../firebase/firestore";
+import { Alert } from "react-native";
 
-const PredictionCreateModel = ({userState}) => {
+const PredictionSelfModel = ({input}) => {
+
+  const fetchedModel = input.route.params.model;
+
+  useEffect(() => {
+    input.navigation.setOptions({
+      headerRight: () => (  // delete button
+        <TouchableOpacity 
+          style={styles.deleteButton}
+          activeOpacity={0.8}
+          onPress={() => {
+            Alert.alert("Delete Model", `Confirm delete model "${fetchedModel.model_name}" ?`,
+              [
+                {
+                  text: "Cancel",
+                  style: "cancel",
+                },
+                {
+                  text: "Delete",
+                  style: "destructive",
+                  onPress: () => {
+                    delete_model(fetchedModel.id);
+                    input.navigation.navigate("SAVED");
+                  },
+                },
+              ]
+            );
+          }
+        }>
+          <Text style={styles.deleteButtonText}>Delete</Text>
+        </TouchableOpacity>
+      ),
+    });
+  }, []);
+
 
   const [page, setPage] = useState("data");
 
-  const user_email = userState.route.params.user.email;
+  const [modelInput, setModelInput] = useState({
+    "id": fetchedModel.id,
+    "publisher": fetchedModel.publisher,
+    "published": fetchedModel.published,
+    "seasons": fetchedModel.seasons,
+    "i_seasons": fetchedModel.i_seasons,
+    "models": fetchedModel.models,
+    "i_models": fetchedModel.i_models,
+    "statistics": fetchedModel.statistics,
+    "model_name": fetchedModel.model_name,
+  });
+  console.log("self page model: ", modelInput);
+
+  const user_email = `${fetchedModel.publisher}@gmail.com`;
   const [user_saved, setUserSaved] = useState();
 
   useEffect(() => {
@@ -20,27 +68,6 @@ const PredictionCreateModel = ({userState}) => {
     });
   }, []);
 
-  var model_id = (new Date()).getTime().toString() + '_' + Math.floor(Math.random() * 10).toString();    // unique id
-
-  const [modelInput, setModelInput] = useState({
-    "id": model_id,
-    "publisher": userState.route.params.user.username,
-    "published": false,
-    "seasons": [false, false, false, false, false, false, false, false],
-    "i_seasons": [],
-    "models": [
-      {"used": false, "model": "Random Forest", "trees": 100},                         // [0] Random Forest: default 100 trees, range 50-150, bad: 50, good: 130
-      {"used": false, "model": "Logistic Regression", "solver": null, "max_iter": 80}, // [1] Logistic Regression: default 100 iterations, range 10 - 150, solvers: lbfgs, liblinear, sag, saga, newton-cg
-      {"used": false, "model": "Naive Bayes"},                                         // [2] Naive Bayes
-      {"used": false, "model": "K-Nearest Neighbors", "neighbors": 150},               // [3] K-Nearest Neighbors: default 150 neighbors, range 20-200
-      {"used": false, "model": "AdaBoost", "n_estimators": 30, "learning_rate": null}, // [4] AdaBoost: default 30 estimators, range 10-50, learning rate: 1.0, range 0.1-2.0
-      {"used": false, "model": "Support Vector Machine", "C": 1},                    // [5] Support Vector Machine: Regularization Parameter C: 0.1, range: 0.1 - 10
-    ],
-    "i_models": [],
-    "statistics": [],
-  });
-  console.log("create page statistics: ", modelInput.statistics);
-
   const [confidence, setConfidence] = useState();
   const [dplots, setDplots] = useState();
   const [mplots, setMplots] = useState();
@@ -48,17 +75,6 @@ const PredictionCreateModel = ({userState}) => {
   const [p_result, setPResult] = useState();
 
   const nav = useNavigation();
-
-  // convert boolean in seasons array to year 2017-2023
-  useEffect(() => {
-    var i_seasons = [];
-    for (var i = 0; i < modelInput.seasons.length; i++) {
-      if (modelInput.seasons[i]) {
-        i_seasons.push((2017 + i).toString());
-      }
-    }
-    setModelInput({...modelInput, i_seasons: i_seasons});
-  }, [modelInput.seasons]);
 
   // convert boolean in models array to selected models
   useEffect(() => {
@@ -123,7 +139,8 @@ const PredictionCreateModel = ({userState}) => {
         <Text style={styles.text}>Model Name:</Text>
         <TextInput 
           style={styles.textInput} 
-          placeholder="Enter model name"
+          placeholder="Enter model name" 
+          value={modelInput.model_name}
           // for algorithms, if there is only one model selected, use the first model and the first statistic, otherwise use the first two models
           onChangeText={(text) => setModelInput({...modelInput, model_name: text, algorithms: [modelInput.i_models[0].model, modelInput.i_models.length > 1 ? modelInput.i_models[1].model : modelInput.statistics[0]]})}
         ></TextInput>
@@ -213,6 +230,19 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 14,
   },
+  deleteButton: {
+    backgroundColor: "#700c0c",
+    width: 86,
+    height: 28,
+    borderRadius: 5,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  deleteButtonText: {
+    color: "white",
+    fontWeight: "bold",
+    fontSize: 15,
+  },
 });
 
-export default PredictionCreateModel;
+export default PredictionSelfModel;

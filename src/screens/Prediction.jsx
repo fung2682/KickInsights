@@ -3,6 +3,7 @@ import { View, Text, StyleSheet } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import PredictionMain from "../sub-screens/prediction/PredictionMain";
 import PredictionCreateModel from "../sub-screens/prediction/CreateModel";
+import PredictionSelfModel from "../sub-screens/prediction/SelfModel";
 import Account from "../screens/Account";
 import PredictionMatch from "../sub-screens/prediction/PredictionMatch";
 
@@ -45,6 +46,9 @@ const Prediction = () => {
             <Stack.Screen name="PredictionMatchList" 
                 options={({route}) => ({ headerTitle: `Confidence ( >${route.params.confidence} )`})}>
                 {(params) => <PredictionMatch input={params.route.params} />}
+            </Stack.Screen>
+            <Stack.Screen name="PredictionSelfModel" options={(model) => ({ headerTitle: model.route.params.model.model_name })}>
+                {(input) => <PredictionSelfModel input={input} />}
             </Stack.Screen>
         </Stack.Navigator>
     );
