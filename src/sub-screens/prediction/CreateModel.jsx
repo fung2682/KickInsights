@@ -37,10 +37,9 @@ const PredictionCreateModel = ({userState}) => {
       {"used": false, "model": "Support Vector Machine", "C": 1},                    // [5] Support Vector Machine: Regularization Parameter C: 0.1, range: 0.1 - 10
     ],
     "i_models": [],
-
+    "statistics": [],
   });
-  console.log("create page models used: ", modelInput.models);
-  console.log("create page i_models used: ", modelInput.i_models);
+  console.log("create page statistics: ", modelInput.statistics);
 
   const [confidence, setConfidence] = useState();
   const [dplots, setDplots] = useState();

@@ -2,7 +2,7 @@ import React, {useState, useEffect} from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { setData } from "../../firebase/firestore";
 
-const ModelLayout = ({setPage, header, button1, button2, button3, button4, content, modelChecked, setModelChecked, setLogisticRegressionValues, setAdaBoostValues, setRfValues, setLrValues, setKnnValues, setABValues, setSvmValues}) => {
+const ModelLayout = ({setPage, header, button1, button2, button3, button4, content, modelChecked, setModelChecked, setLogisticRegressionValues, setAdaBoostValues, setRfValues, setLrValues, setKnnValues, setABValues, setSvmValues, seasonChecked, setSeasonChecked, statisticsList, setStatisticsList}) => {
 
   const [header1Color, setHeader1Color] = useState(["#bababa", "#272727"]);
   const [header2Color, setHeader2Color] = useState(["#272727", "white"]);
@@ -66,8 +66,16 @@ const ModelLayout = ({setPage, header, button1, button2, button3, button4, conte
   async function run_function(func) {
     if (func === "dataReset") {
       console.log("reset");
+      setSeasonChecked([false, false, false, false, false, false, false]);
+      setStatisticsList([]);
     } else if (func === "dataNext") {
-      setPage("training");
+      if (seasonChecked.filter(season => season).length === 0) {
+        alert("Please select at least one season.");
+      } else if (statisticsList.length === 0) {
+        alert("Please add at least one statistic.");
+      } else {
+        setPage("training");
+      }
     } else if (func === "modelReset") {
       console.log("reset");
       setModelChecked(

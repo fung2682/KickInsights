@@ -78,8 +78,6 @@ const ModelTraining = ({setPage, modelInput, setModelInput}) => {
           minimumValue={50}
           maximumValue={150}
           value={rfValues}
-          minimumTrackTintColor="#FFFFFF"
-          maximumTrackTintColor="#000000"
           tapToSeek={true}
           onValueChange={(value) => setRfValues(value)}
           onSlidingComplete={() => setModelChecked([{"used": modelChecked[0]["used"], "model": modelChecked[0]["model"], "trees": rfValues}, modelChecked[1], modelChecked[2], modelChecked[3], modelChecked[4], modelChecked[5]])}
@@ -135,8 +133,6 @@ const ModelTraining = ({setPage, modelInput, setModelInput}) => {
           minimumValue={10}
           maximumValue={150}
           value={lrValues}
-          minimumTrackTintColor="#FFFFFF"
-          maximumTrackTintColor="#000000"
           tapToSeek={true}
           onValueChange={(value) => setLrValues(value)}
           onSlidingComplete={() => setModelChecked([modelChecked[0], {"used": modelChecked[1]["used"], "model": modelChecked[1]["model"], "solver": modelChecked[1]["solver"], "max_iter": lrValues}, modelChecked[2], modelChecked[3], modelChecked[4], modelChecked[5]])}
@@ -183,8 +179,6 @@ const ModelTraining = ({setPage, modelInput, setModelInput}) => {
           minimumValue={10}
           maximumValue={290}
           value={knnValues}
-          minimumTrackTintColor="#FFFFFF"
-          maximumTrackTintColor="#000000"
           tapToSeek={true}
           onValueChange={(value) => setKnnValues(value)}
           onSlidingComplete={() => setModelChecked([modelChecked[0], modelChecked[1], modelChecked[2], {"used": modelChecked[3]["used"], "model": modelChecked[3]["model"], "neighbors": knnValues}, modelChecked[4], modelChecked[5]])}
@@ -240,8 +234,6 @@ const ModelTraining = ({setPage, modelInput, setModelInput}) => {
           minimumValue={10}
           maximumValue={50}
           value={aBValues}
-          minimumTrackTintColor="#FFFFFF"
-          maximumTrackTintColor="#000000"
           tapToSeek={true}
           onValueChange={(value) => setABValues(value)}
           onSlidingComplete={() => setModelChecked([modelChecked[0], modelChecked[1], modelChecked[2], modelChecked[3], {"used": modelChecked[4]["used"], "model": modelChecked[4]["model"], "n_estimators": aBValues, "learning_rate": modelChecked[4]["learning_rate"]}, modelChecked[5]])}
@@ -274,8 +266,6 @@ const ModelTraining = ({setPage, modelInput, setModelInput}) => {
           minimumValue={0.1}
           maximumValue={1.9}
           value={svmValues}
-          minimumTrackTintColor="#FFFFFF"
-          maximumTrackTintColor="#000000"
           tapToSeek={true}
           onValueChange={(value) => setSvmValues(parseFloat(value.toFixed(1)))}
           onSlidingComplete={() => setModelChecked([modelChecked[0], modelChecked[1], modelChecked[2], modelChecked[3], modelChecked[4], {"used": modelChecked[5]["used"], "model": modelChecked[5]["model"], "C": svmValues}])}

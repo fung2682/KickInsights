@@ -53,25 +53,11 @@ def train_evaluate_model(request):
     model_id = model_inputs["id"]
     train_seasons = model_inputs["i_seasons"]
     models = model_inputs["i_models"]
-    predictor_columns = [
-        "agg_home_score",
-        "agg_away_score",
-        "ra3_home_score",
-        "ra3_away_score",
-        "ra20_home_result",
-        "ra20_away_result",
-        "ra38_home_result",
-        "ra38_away_result",
-        "ra3_home_shotSuccess",
-        "ra5_home_shotSuccess",
-        "diff_ra3_score",
-        "ra3_home_xg",
-        "ra3_home_corners",
-        "ra5_home_corners",
-    ]
+    predictor_columns = model_inputs["statistics"]  # ["agg/ra3/5/10/20/38"_"home/away"_"attribute"] or ["diff"_"agg/ra3/5/10/20/38"_"attribute"]
     print("model_id:", model_id)
     print("train_seasons:", train_seasons)
     print("models:", models)
+    print("predictor_columns:", predictor_columns)
 
     # select training seasons according to user input
     e_train_df = pd.DataFrame() # for evaluation, wont include 2023

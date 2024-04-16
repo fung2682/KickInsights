@@ -17,6 +17,7 @@ const ModelLoading = ({modelInput, setPage}) => {
           model_name: "",
           i_models: modelInput.i_models,
           i_seasons: modelInput.i_seasons,
+          statistics: modelInput.statistics,
       });
       console.log("[3] Submitted model with ID: ", modelInput.id);
     } catch (error) {
