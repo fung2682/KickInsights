@@ -46,8 +46,13 @@ export const Model_ML = ({model, nav, user, setModelUser, allowRating, metric, c
         <TouchableOpacity 
             style={[styles.modelPane, {backgroundColor: backgroundColor}, {borderColor: borderColor}]}
             activeOpacity={0.8}
-            // onPress={() => nav.navigate("ClubDetails", {clubData: dataClubs[club.id]})}
-            // , 
+            onPress={() => {
+                if (user.username === model.publisher) {
+                    nav.navigate("PredictionSelfModel", {user: user, model: model})
+                } else {
+                    nav.navigate("PredictionUseModel", {user: user, model: model})
+                }
+            }}
         >   
             <View style={[styles.modelDetails, {backgroundColor: `transparent`}]}>
                 <Text style={styles.modelName} numberOfLines={1}>{model.model_name}</Text>

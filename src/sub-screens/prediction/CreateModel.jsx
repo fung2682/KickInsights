@@ -17,6 +17,7 @@ const PredictionCreateModel = ({userState}) => {
   useEffect(() => {
     getData("users", user_email).then((doc) => {
       setUserSaved(doc.saved);
+      console.log("user saved: ", doc.saved)
     });
   }, []);
 
