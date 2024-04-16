@@ -2,7 +2,7 @@ import React, {useState, useEffect} from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { setData } from "../../firebase/firestore";
 
-const ModelLayout = ({setPage, header, button1, button2, button3, button4, content, modelInput, setModelInput}) => {
+const ModelLayout = ({setPage, header, button1, button2, button3, button4, content, setModelChecked, setLogisticRegressionValues, setAdaBoostValues, setRfValues, setLrValues, setKnnValues, setABValues, setSvmValues}) => {
 
   const [header1Color, setHeader1Color] = useState(["#bababa", "#272727"]);
   const [header2Color, setHeader2Color] = useState(["#272727", "white"]);
@@ -70,6 +70,23 @@ const ModelLayout = ({setPage, header, button1, button2, button3, button4, conte
       setPage("training");
     } else if (func === "modelReset") {
       console.log("reset");
+      setModelChecked(
+        [
+          {"used": false, "model": "Random Forest", "trees": 100},                         // [0] Random Forest: default 100 trees, range 50-150, bad: 50, good: 130
+          {"used": false, "model": "Logistic Regression", "solver": null, "max_iter": 80}, // [1] Logistic Regression: default 100 iterations, range 10 - 150, solvers: lbfgs, liblinear, sag, saga, newton-cg
+          {"used": false, "model": "Naive Bayes"},                                         // [2] Naive Bayes
+          {"used": false, "model": "K-Nearest Neighbors", "neighbors": 150},               // [3] K-Nearest Neighbors: default 150 neighbors, range 20-200
+          {"used": false, "model": "AdaBoost", "n_estimators": 30, "learning_rate": null}, // [4] AdaBoost: default 30 estimators, range 10-50, learning rate: 1.0, range 0.1-2.0
+          {"used": false, "model": "Support Vector Machine", "C": 1},                    // [5] Support Vector Machine: Regularization Parameter C: 0.1, range: 0.1 - 10
+        ]
+      );
+      setLogisticRegressionValues(null);
+      setAdaBoostValues(null);
+      setRfValues(100);
+      setLrValues(80);
+      setKnnValues(150);
+      setABValues(30);
+      setSvmValues(1);
     } else if (func === "modelNext") {
       setPage("loading");
     } else if (func === "modelPrevious") {

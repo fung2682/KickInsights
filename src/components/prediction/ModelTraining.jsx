@@ -297,6 +297,14 @@ const ModelTraining = ({setPage, modelInput, setModelInput}) => {
       button3 = {["modelPrevious", '#3a3a3a', 'Previous', false]}
       button4 = {["modelNext", '#1997BF', 'Next', true]}
       content = {content}
+      setModelChecked = {setModelChecked}
+      setLogisticRegressionValues = {setLogisticRegressionValues}
+      setAdaBoostValues = {setAdaBoostValues}
+      setRfValues = {setRfValues}
+      setLrValues = {setLrValues}
+      setKnnValues = {setKnnValues}
+      setABValues = {setABValues}
+      setSvmValues = {setSvmValues}
     ></ModelLayout>
   );
 }
