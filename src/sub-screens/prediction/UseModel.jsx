@@ -70,7 +70,13 @@ const PredictionUseModel = ({input}) => {
     getData("users", user_email).then((doc) => {
       setUserSaved(doc.saved);
     });
-  }, []);
+  }, [page]);
+
+  const updateSaved = async () => {
+    const doc = await getData("users", input.route.params.user.email);
+    const saved = doc.saved;
+    updateData("users", input.route.params.user.email, {saved: [...saved, modelInput.id]});
+  }
 
   const [confidence, setConfidence] = useState();
   const [dplots, setDplots] = useState();
@@ -145,7 +151,7 @@ const PredictionUseModel = ({input}) => {
             style={styles.saveButton} 
             onPress={() => {
               if (inputValid(modelInput)) {
-                updateData("users", input.route.params.user.email, {saved: user_saved.concat(modelInput.id)});
+                updateSaved();
                 setPage("data");
                 nav.navigate("SAVED");
               }
