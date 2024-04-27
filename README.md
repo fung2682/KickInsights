@@ -1,5 +1,9 @@
 # KickInsights
 
+Project webpage: https://wp2023.cs.hku.hk/fyp23083/
+Promo video: https://youtu.be/vj2C1eZv_60
+Full demonstration video: https://youtu.be/zR4RKUquyNA
+
 **Background**
 
 In the ever-evolving world of football, with enormous passion from millions of fans across the globe, there is a growing demand for convenient yet comprehensive access to football data. Hence, a variety of mobile applications have been developed in the past decade. This project aims to create a mobile app – KickInsights, to further elevate fans’ football experience by tackling the common inefficiencies of current mobile application alternatives and implementing a game-changing match prediction system by leveraging the power of machine learning.
