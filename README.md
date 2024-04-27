@@ -2,7 +2,7 @@
 
 Project webpage: https://wp2023.cs.hku.hk/fyp23083/
 
-Promo video: https://youtu.be/vj2C1eZv_60
+Promotional video: https://youtu.be/vj2C1eZv_60
 
 Full demonstration video: https://youtu.be/zR4RKUquyNA
 
