@@ -35,5 +35,6 @@ firebase-debug.log
 # typescript
 *.tsbuildinfo
 
-# json credentials
+# hide files with credentials
 kickinsights-ccc1e-0c4372787a47.json
+base.js
