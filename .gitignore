@@ -34,3 +34,6 @@ firebase-debug.log
 
 # typescript
 *.tsbuildinfo
+
+# json credentials
+kickinsights-ccc1e-0c4372787a47.json
